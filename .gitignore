@@ -36,5 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-src/main/resources/*.properties/
 build.gradle
+
+src/main/resources/*.properties
+src/main/resources/*.yml
+
