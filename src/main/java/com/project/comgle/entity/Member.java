@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -42,5 +43,16 @@ public class Member {
         this.position = position;
         this.permission = permission;
         this.company = company;
+    }
+
+    public static Member of(String memberName, String email, String password, String position, boolean permission, Company company) {
+        return Member.builder()
+                .memberName(memberName)
+                .email(email)
+                .password(password)
+                .position(position)
+                .permission(permission)
+                .company(company)
+                .build();
     }
 }
