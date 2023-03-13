@@ -27,8 +27,8 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 20)
-    private String position;
+    @Enumerated(EnumType.STRING)
+    private PositionEnum position;
 
     @Column
     private boolean permission;
@@ -38,7 +38,7 @@ public class Member {
     private Company company;
 
     @Builder
-    private Member(String memberName, String email, String password, String position, boolean permission, Company company) {
+    private Member(String memberName, String email, String password, PositionEnum position, boolean permission, Company company) {
         this.memberName = memberName;
         this.email = email;
         this.password = password;
@@ -47,7 +47,7 @@ public class Member {
         this.company = company;
     }
 
-    public static Member of(String memberName, String email, String password, String position, boolean permission, Company company) {
+    public static Member of(String memberName, String email, String password, PositionEnum position, boolean permission, Company company) {
         return Member.builder()
                 .memberName(memberName)
                 .email(email)

@@ -4,5 +4,5 @@ public enum PositionEnum {
     ADMIN,
     OWNER,
     MANAGER,
-    MEMBER
+    MEMBER;
 }
