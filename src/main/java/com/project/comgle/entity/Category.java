@@ -20,7 +20,8 @@ public class Category {
     private String categoryName;
 
     @Builder
-    private Category(String categoryName) {
+    public Category(String categoryName) {
         this.categoryName = categoryName;
     }
+
 }

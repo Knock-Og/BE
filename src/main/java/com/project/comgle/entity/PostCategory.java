@@ -28,4 +28,12 @@ public class PostCategory {
         this.category = category;
         this.post = post;
     }
+
+    public static PostCategory of(Category category, Post post) {
+        return PostCategory.builder()
+                .category(category)
+                .post(post)
+                .build();
+    }
+
 }
