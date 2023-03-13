@@ -1,5 +1,6 @@
 package com.project.comgle.entity;
 
+import com.project.comgle.dto.request.SignupRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
