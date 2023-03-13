@@ -57,4 +57,8 @@ public class Member {
                 .company(company)
                 .build();
     }
+
+    public void permision(){
+        this.permission = true;
+    }
 }
