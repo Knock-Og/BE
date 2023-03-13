@@ -43,4 +43,14 @@ public class Company {
         this.businessNum = businessNum;
         this.companyEmail = companyEmail;
     }
+    public static Company of(String companyName, String address, String companyTel, String president, String businessNum, String companyEmail) {
+        return Company.builder()
+                .companyName(companyName)
+                .address(address)
+                .companyTel(companyTel)
+                .president(president)
+                .businessNum(businessNum)
+                .companyEmail(companyEmail)
+                .build();
+    }
 }
