@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Optional;
 
 @Service
@@ -64,6 +66,7 @@ public class MemberService {
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "회원가입 성공"));
     }
 
+
     public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -81,4 +84,5 @@ public class MemberService {
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "로그인 성공"));
     }
+
 }
