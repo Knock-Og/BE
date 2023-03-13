@@ -1,6 +1,7 @@
 package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
+import com.project.comgle.dto.request.LoginRequestDto;
 import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
@@ -43,8 +44,8 @@ public class MemberService {
         String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         String position = signupRequestDto.getPosition();
-        Boolean permission = true;
-        String companyName = signupRequestDto.getCompanyName();
+        boolean permission = true;
+        String companyName = signupRequestDto.getMemberName();
 
         Optional<Member> foundMember = memberRepository.findByEmail(email);
         if(foundMember.isPresent()){
