@@ -1,6 +1,7 @@
 package com.project.comgle.entity;
 
 import com.project.comgle.dto.request.SignupRequestDto;
+import com.project.comgle.entity.enumSet.PositionEnum;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
