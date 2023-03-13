@@ -79,10 +79,23 @@ public class MemberService {
         if(!passwordEncoder.matches(password, foundMember.get().getPassword())){
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
+
+        if((foundMember.get().isPermission()) == false){
+            throw new IllegalArgumentException("허가받지 않은 사용자입니다.");
+        }
+
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()));
 
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "로그인 성공"));
     }
 
+    public ResponseEntity<MessageResponseDto> checkEmail(String email){
+        Optional<Member> foundMember = memberRepository.findByEmail(email);
+        if(foundMember.isPresent()){
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        }
+        return ResponseEntity.ok()
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "사용 가능한 이메일입니다."));
+    }
 }
