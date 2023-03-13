@@ -1,13 +1,11 @@
 package com.project.comgle.controller;
 
+import com.project.comgle.dto.request.PositionRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PermissionResponseDto;
 import com.project.comgle.service.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +21,12 @@ public class AdminController {
     }
 
     @PostMapping("/permision/members/{member-id}")
-    public MessageResponseDto permision(@PathVariable(name="member-id") Long memberId){
+    public MessageResponseDto permision(@PathVariable(name = "member-id") Long memberId){
         return adminService.permisionMember(memberId);
+    }
+
+    @PutMapping("/position/members/{member-id}")
+    public MessageResponseDto updatePosition(@PathVariable(name = "member-id") Long memberId, @RequestBody PositionRequestDto positionRequestDto){
+        return adminService.updatePosition(memberId, positionRequestDto.getPosition());
     }
 }
