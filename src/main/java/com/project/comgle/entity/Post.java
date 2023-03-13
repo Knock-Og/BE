@@ -1,9 +1,11 @@
 package com.project.comgle.entity;
 
+import com.project.comgle.dto.request.PostRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,6 +35,14 @@ public class Post extends Timestamped {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    // 연관관계 추가
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Keyword> keywords = new ArrayList<>();
+
+//    // 연관관계 추가 (고민 중..)
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+//    private List<PostCategory> postCategories = new ArrayList<>();
+
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -45,4 +55,15 @@ public class Post extends Timestamped {
         this.member = member;
         this.comments = comments;
     }
+
+    public static Post from(PostRequestDto postRequestDto, Member member){
+        return Post.builder()
+                .title(postRequestDto.getTitle())
+                .content(postRequestDto.getContent())
+                .modifyPermission(postRequestDto.getModifyPermission())
+                .readablePosition(postRequestDto.getReadablePosition())
+                .member(member)
+                .build();
+    }
+
 }
