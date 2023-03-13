@@ -11,10 +11,10 @@ public class PermissionResponseDto {
     private Long id;
     private String memberName;
     private String email;
-    private String position;
+    private PositionEnum position;
 
     @Builder
-    private PermissionResponseDto(Long id, String memberName, String email, String position) {
+    private PermissionResponseDto(Long id, String memberName, String email, PositionEnum position) {
         this.id = id;
         this.memberName = memberName;
         this.email = email;

@@ -6,6 +6,7 @@ import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
+import com.project.comgle.entity.enumSet.PositionEnum;
 import com.project.comgle.jwt.JwtUtil;
 import com.project.comgle.repository.CompanyRepository;
 import com.project.comgle.repository.MemberRepository;
@@ -46,8 +47,8 @@ public class MemberService {
         String memberName = signupRequestDto.getMemberName();
         String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        String position = signupRequestDto.getPosition();
-        boolean permission = true;
+        PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
+        boolean permission = false;
         String companyName = signupRequestDto.getCompanyName();
 
         Optional<Member> foundMember = memberRepository.findByEmail(email);

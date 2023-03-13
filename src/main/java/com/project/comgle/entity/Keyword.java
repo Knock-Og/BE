@@ -27,4 +27,15 @@ public class Keyword {
         this.keyword = keyword;
         this.post = post;
     }
+
+    public static Keyword of(String keyword) {
+        return Keyword.builder()
+                .keyword(keyword)
+                .build();
+    }
+
+    public void addPost(Post post){
+        this.post = post;
+        post.getKeywords().add(this);
+    }
 }
