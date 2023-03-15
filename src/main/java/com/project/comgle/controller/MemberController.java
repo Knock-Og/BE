@@ -39,14 +39,18 @@ public class MemberController {
         return memberService.signup(signupRequestDto);
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
         return memberService.login(loginRequestDto,response);
     }
 
-    @GetMapping("/check")
-    public ResponseEntity<MessageResponseDto> checkEmail(@RequestParam String email){
+    @GetMapping("/check/email/{email}")
+    public ResponseEntity<MessageResponseDto> checkEmail(@PathVariable String email){
         return memberService.checkEmail(email);
+    }
+
+    @GetMapping("/check/name/{member-name}")
+    public ResponseEntity<MessageResponseDto> checkName(@PathVariable(name = "member-name") String memberName){
+        return memberService.checkName(memberName);
     }
 }
