@@ -6,6 +6,7 @@ import com.project.comgle.entity.Member;
 import com.project.comgle.entity.enumSet.PositionEnum;
 import com.project.comgle.repository.CategoryRepository;
 import com.project.comgle.repository.MemberRepository;
+import com.project.comgle.repository.PostCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class CategoryService {
 
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
+    private final PostCategoryRepository postCategoryRepository;
 
     @Transactional
     public MessageResponseDto create(String categoryName, Member member) {
@@ -36,6 +38,25 @@ public class CategoryService {
         categoryRepository.save(new Category(categoryName));
 
         return MessageResponseDto.of(HttpStatus.OK.value(), "카테고리 추가 완료");
+
+    }
+
+    @Transactional
+    public MessageResponseDto deleteCategory(Long categoryId, Member user) {
+
+        Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new IllegalStateException("해당 카테고리가 존재하지 않습니다.")
+        );
+
+        if(user.getPosition() != PositionEnum.ADMIN){
+            throw new IllegalArgumentException("ADMIN 계정만 가능합니다.");
+        }
+
+        postCategoryRepository.deleteAllByCategory(findCategory);
+        categoryRepository.delete(findCategory);
+
+        return MessageResponseDto.of(HttpStatus.OK.value(), "카테고리 삭제 완료");
+
 
     }
 }
