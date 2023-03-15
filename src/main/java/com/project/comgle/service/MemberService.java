@@ -82,9 +82,9 @@ public class MemberService {
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
 
-        /*if((foundMember.get().isPermission()) == false){
+        if((foundMember.get().isPermission()) == false){
             throw new IllegalArgumentException("허가받지 않은 사용자입니다.");
-        }*/
+        }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()));
 
