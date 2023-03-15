@@ -39,10 +39,6 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Keyword> keywords = new ArrayList<>();
 
-//    // 연관관계 추가 (고민 중..)
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    private List<PostCategory> postCategories = new ArrayList<>();
-
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -64,6 +60,11 @@ public class Post extends Timestamped {
                 .readablePosition(postRequestDto.getReadablePosition())
                 .member(member)
                 .build();
+    }
+
+    public void update(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
     }
 
 }
