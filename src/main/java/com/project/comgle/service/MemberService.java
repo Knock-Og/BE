@@ -2,7 +2,7 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
-import com.project.comgle.dto.request.SignupRequestDto;
+import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
@@ -61,29 +61,6 @@ public class MemberService {
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
     }
 
-    @Transactional
-    public ResponseEntity<MessageResponseDto> signup(SignupRequestDto signupRequestDto, Member member){
-
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
-
-        Company company = member.getCompany();
-
-        if(company == null){
-            throw new IllegalArgumentException("존재하지 않는 회사입니다.");
-        } else if ( member.getPosition() != PositionEnum.ADMIN) {
-            throw new IllegalArgumentException("ADMIN 권한이 필요합니다");
-        }
-
-        checkName(signupRequestDto.getMemberName(),company);
-        checkEmail(signupRequestDto.getEmail(),company);
-
-        Member newMember = Member.of(signupRequestDto,password,position,company);
-        memberRepository.save(newMember);
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "회원가입 성공"));
-    }
-
-
     @Transactional(readOnly = true)
     public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String email = loginRequestDto.getEmail();
@@ -104,25 +81,18 @@ public class MemberService {
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "로그인 성공"));
     }
 
-    @Transactional(readOnly = true)
-    public void checkEmail(String email,Company company){
-
-        Optional<Member> findMember = memberRepository.findByEmailAndCompany(email, company);
-
-        if(findMember.isPresent()){
-            throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
-        }
-
-    }
 
     @Transactional(readOnly = true)
-    public void checkName(String memberName,Company company) {
+    public List<MemberResponseDto> findMembers(Member member) {
 
-        Optional<Member> findMember = memberRepository.findByMemberNameAndCompany(memberName, company);
+        List<Member> findMemberList = memberRepository.findAllByCompany(member.getCompany());
 
-        if(findMember.isPresent()){
-            throw new IllegalArgumentException("중복된 사용자명가 존재합니다.");
+        List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
+
+        for (Member m : findMemberList) {
+            memberResponseDtos.add(MemberResponseDto.from(m));
         }
 
+        return memberResponseDtos;
     }
 }

@@ -5,6 +5,7 @@ import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
 
 import com.project.comgle.dto.request.SignupRequestDto;
+import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,25 +45,13 @@ public class MemberController {
         return memberService.companyAdd(companyRequestDto);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<MessageResponseDto> signup(@Valid @RequestBody SignupRequestDto signupRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return memberService.signup(signupRequestDto, userDetails.getUser());
-    }
-
     @PostMapping("/login")
     public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
         return memberService.login(loginRequestDto,response);
     }
 
-    @GetMapping("/check/email/{email}")
-    public ResponseEntity<MessageResponseDto> checkEmail(@PathVariable String email, @AuthenticationPrincipal UserDetailsImpl userDetails ){
-        memberService.checkEmail(email,userDetails.getUser().getCompany());
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(),"사용 가능합니다."));
-    }
-
-    @GetMapping("/check/name/{member-name}")
-    public ResponseEntity<MessageResponseDto> checkName(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        memberService.checkName(memberName,userDetails.getUser().getCompany());
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(),"사용 가능합니다."));
+    @GetMapping("/members")
+    public List<MemberResponseDto> getMembers(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return memberService.findMembers(userDetails.getUser());
     }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PermissionResponseDto {
+public class MemberResponseDto {
 
     private Long id;
     private String memberName;
@@ -14,15 +14,15 @@ public class PermissionResponseDto {
     private PositionEnum position;
 
     @Builder
-    private PermissionResponseDto(Long id, String memberName, String email, PositionEnum position) {
+    private MemberResponseDto(Long id, String memberName, String email, PositionEnum position) {
         this.id = id;
         this.memberName = memberName;
         this.email = email;
         this.position = position;
     }
 
-    public static PermissionResponseDto from(Member member){
-        return PermissionResponseDto.builder()
+    public static MemberResponseDto from(Member member){
+        return MemberResponseDto.builder()
                 .id(member.getId())
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
