@@ -65,7 +65,7 @@ public class BookMarkService {
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
 
-        List<BookMarkFolder> bookMarkFolders = bookMarkFolderRepository.findAllByMemberId(findMember.getId());
+        List<BookMarkFolder> bookMarkFolders = bookMarkFolderRepository.findAllByMember(findMember);
         List<String> bookMarkFoldersList = new ArrayList<>();
 
         for (int i = 0; i < bookMarkFolders.size(); i++) {

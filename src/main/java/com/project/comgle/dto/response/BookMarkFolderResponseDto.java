@@ -7,7 +7,7 @@ import lombok.Getter;
 public class BookMarkFolderResponseDto {
     private String bookMarkFolderName;
 
-    public BookMarkFolderResponseDto(BookMarkFolder bookMarkFolder){
-        this.bookMarkFolderName = bookMarkFolder.getBookMarkFolderName();
+    public BookMarkFolderResponseDto(BookMarkFolder bookMarkFolderName){
+        this.bookMarkFolderName = bookMarkFolderName.getBookMarkFolderName();
     }
 }
