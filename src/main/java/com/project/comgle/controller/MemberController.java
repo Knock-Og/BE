@@ -1,42 +1,42 @@
 package com.project.comgle.controller;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
-
 import com.project.comgle.dto.request.LoginRequestDto;
-
-import com.project.comgle.dto.request.SignupRequestDto;
+import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
+import com.project.comgle.exception.ErrorResponse;
+import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
+
     private final MemberService memberService;
 
-    @PostMapping("/company")
-    public ResponseEntity<MessageResponseDto> companyAdd(@Valid @RequestBody CompanyRequestDto companyRequestDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException("값을 제대로 입력 바랍니다.");
-        }
-        return memberService.companyAdd(companyRequestDto);
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> validException(BindingResult result){
+        log.error("error msg = {}",result.getFieldError().getDefaultMessage());
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), result.getFieldError().getDefaultMessage()));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<MessageResponseDto> signup(@Valid @RequestBody SignupRequestDto signupRequestDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new IllegalArgumentException("이메일 형식이 아닙니다.");
-        }
-        return memberService.signup(signupRequestDto);
+    @PostMapping("/company")
+    public ResponseEntity<MessageResponseDto> companyAdd(@Valid @RequestBody CompanyRequestDto companyRequestDto){
+        return memberService.companyAdd(companyRequestDto);
     }
 
     @PostMapping("/login")
@@ -44,13 +44,8 @@ public class MemberController {
         return memberService.login(loginRequestDto,response);
     }
 
-    @GetMapping("/check/email/{email}")
-    public ResponseEntity<MessageResponseDto> checkEmail(@PathVariable String email){
-        return memberService.checkEmail(email);
-    }
-
-    @GetMapping("/check/name/{member-name}")
-    public ResponseEntity<MessageResponseDto> checkName(@PathVariable(name = "member-name") String memberName){
-        return memberService.checkName(memberName);
+    @GetMapping("/members")
+    public List<MemberResponseDto> getMembers(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return memberService.findMembers(userDetails.getUser());
     }
 }

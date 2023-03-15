@@ -59,8 +59,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests() //  요청에 대한 보안 검사를 구성한다.
-                .antMatchers("/**").permitAll()
-
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated() // 나머지 URL에 대한 접근 권한을 설정합니다. 인증된 사용자만 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정
                 // JwtAuthFilter를 UsernamePasswordAuthenticationFilter 이전에 실행되도록 설정한다. JwtAuthFilter는 JWT 토큰을 검증하고 인증/인가를 처리한다.
