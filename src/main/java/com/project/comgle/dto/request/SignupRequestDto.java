@@ -23,6 +23,4 @@ public class SignupRequestDto {
     @NotNull(message = "직책은 필수 값입니다.")
     private String position;
 
-    @NotNull(message = "회사는 필수 값입니다.")
-    private String companyName;
 }
