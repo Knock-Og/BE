@@ -30,37 +30,39 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private PositionEnum position;
 
-    @Column
-    private boolean permission;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
     @Builder
-    private Member(String memberName, String email, String password, PositionEnum position, boolean permission, Company company) {
+    private Member(String memberName, String email, String password, PositionEnum position, Company company) {
         this.memberName = memberName;
         this.email = email;
         this.password = password;
         this.position = position;
-        this.permission = permission;
         this.company = company;
     }
 
-    public static Member of(String memberName, String email, String password, PositionEnum position, boolean permission, Company company) {
+    public static Member of(SignupRequestDto signupRequestDto, String password, PositionEnum position, Company company) {
+        return Member.builder()
+                .memberName(signupRequestDto.getMemberName())
+                .email(signupRequestDto.getEmail())
+                .password(password)
+                .position(position)
+                .company(company)
+                .build();
+    }
+
+    public static Member of(String memberName, String email, String password, PositionEnum position, Company company) {
         return Member.builder()
                 .memberName(memberName)
                 .email(email)
                 .password(password)
                 .position(position)
-                .permission(permission)
                 .company(company)
                 .build();
     }
 
-    public void permision(){
-        this.permission = true;
-    }
 
     public void updatePosition(PositionEnum position){
         this.position = position;
