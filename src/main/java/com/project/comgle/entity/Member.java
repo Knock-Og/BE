@@ -63,12 +63,6 @@ public class Member {
                 .build();
     }
 
-
-    public void permission(){
-        this.permission = true;
-    }
-
-
     public void updatePosition(PositionEnum position){
         this.position = position;
     }
