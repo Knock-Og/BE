@@ -1,10 +1,7 @@
 package com.project.comgle.controller;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
-
 import com.project.comgle.dto.request.LoginRequestDto;
-
-import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.exception.ErrorResponse;
@@ -20,9 +17,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
 import java.util.List;
 
