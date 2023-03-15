@@ -21,7 +21,7 @@ public class BookMarkController {
     // 즐겨찾기 폴더 추가
     @PostMapping("/book-marks/folders")
     public ResponseEntity<MessageResponseDto> createBookMarkFolder(@RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return bookMarkService.createBookMarkFolder(bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getUser());
+        return bookMarkService.createBookMarkFolder(bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
     // 즐겨찾기 폴더 삭제
@@ -39,12 +39,12 @@ public class BookMarkController {
     // 즐겨찾기 추가
     @PostMapping("/book-marks/{post-id}")
     public ResponseEntity<MessageResponseDto> postBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return bookMarkService.postBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getUser());
+        return bookMarkService.postBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
     //즐겨찾기 취소
     @DeleteMapping("/book-marks/{post-id}")
     public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return bookMarkService.delBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getUser());
+        return bookMarkService.delBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 }

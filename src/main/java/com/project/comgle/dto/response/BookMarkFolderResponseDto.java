@@ -9,5 +9,5 @@ public class BookMarkFolderResponseDto {
 
     public BookMarkFolderResponseDto(BookMarkFolder bookMarkFolderName){
         this.bookMarkFolderName = bookMarkFolderName.getBookMarkFolderName();
-    }
+
 }
