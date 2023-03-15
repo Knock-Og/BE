@@ -27,7 +27,13 @@ public class BookMarkController {
     // 즐겨찾기 폴더 삭제
     @DeleteMapping("/book-marks/folders")
     public ResponseEntity<MessageResponseDto> delBookMarkFolder(@RequestParam(name = "bf") String folderName, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return bookMarkService.delBookMarkFolder(folderName, userDetails.getMember());
+        return bookMarkService.delBookMarkFolder(folderName, userDetails.getUser());
+    }
+
+    // 즐겨찾기 폴더(만) 조회
+    @GetMapping("/book-marks/folders")
+    public List<String> readBookMarkFolder(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.readBookMarkFolder(userDetails.getUser());
     }
 
     // 즐겨찾기 추가
@@ -41,5 +47,4 @@ public class BookMarkController {
     public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
-
 }

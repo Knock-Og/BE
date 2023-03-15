@@ -58,6 +58,23 @@ public class BookMarkService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 폴더 삭제"));
     }
 
+    // 즐겨찾기 폴더(만) 조회
+    @Transactional(readOnly = true)
+    public List<String> readBookMarkFolder(Member member){
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버가 없습니다.")
+        );
+
+        List<BookMarkFolder> bookMarkFolders = bookMarkFolderRepository.findAllByMember(findMember);
+        List<String> bookMarkFoldersList = new ArrayList<>();
+
+        for (int i = 0; i < bookMarkFolders.size(); i++) {
+            bookMarkFoldersList.add(bookMarkFolders.get(i).getBookMarkFolderName());
+        }
+
+        return bookMarkFoldersList;
+    }
+
     // 즐겨찾기 추가
     @Transactional
     public ResponseEntity<MessageResponseDto> postBookMark(Long postId, String folderName, Member member){
@@ -88,5 +105,4 @@ public class BookMarkService {
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 등록 취소"));
     }
-
 }

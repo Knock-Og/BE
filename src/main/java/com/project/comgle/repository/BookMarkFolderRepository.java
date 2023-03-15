@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookMarkFolderRepository extends JpaRepository<BookMarkFolder,Long> {
-    List<BookMarkFolder> findAllByMemberId(Long id);
+
+    List<BookMarkFolder> findAllByMember(Member member);
+
     Optional<BookMarkFolder> findByBookMarkFolderNameAndMember(String folderName, Member member);
     Long countAllByMember(Member member);
 }
