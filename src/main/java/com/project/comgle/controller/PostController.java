@@ -7,9 +7,7 @@ import com.project.comgle.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,5 +18,10 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<MessageResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequestDto, userDetails);
+    }
+
+    @DeleteMapping("/posts/{post-id}")
+    public ResponseEntity<MessageResponseDto> deletePost(@PathVariable("post-id") Long id) {
+        return postService.deletePost(id);
     }
 }
