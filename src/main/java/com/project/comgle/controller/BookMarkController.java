@@ -30,6 +30,12 @@ public class BookMarkController {
         return bookMarkService.delBookMarkFolder(folderName, userDetails.getMember());
     }
 
+    // 즐겨찾기 폴더(만) 조회
+    @GetMapping("/book-marks/folders")
+    public List<String> readBookMarkFolder(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.readBookMarkFolder(userDetails.getMember());
+    }
+
     // 즐겨찾기 추가
     @PostMapping("/book-marks/{post-id}")
     public ResponseEntity<MessageResponseDto> postBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
