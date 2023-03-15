@@ -57,4 +57,35 @@ public class BookMarkService {
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 폴더 삭제"));
     }
+
+    // 즐겨찾기 추가
+    @Transactional
+    public ResponseEntity<MessageResponseDto> postBookMark(Long postId, String folderName, Member member){
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버가 없습니다.")
+        );
+
+        Optional<Post> findPost = postRepository.findById(postId);
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+
+        BookMark newBookMark = BookMark.of(findMember, findPost.get(), findBookMarkFolder.get());
+        bookMarkRepository.save(newBookMark);
+
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 등록 완료"));
+    }
+
+    // 즐겨찾기 취소
+    @Transactional
+    public ResponseEntity<MessageResponseDto> delBookMark(Long postId, String folderName, Member member){
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버가 없습니다.")
+        );
+
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+        Optional<BookMark> bookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(findBookMarkFolder.get().getId(), postId);
+
+        bookMarkRepository.delete(bookMark.get());
+
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 등록 취소"));
+    }
 }

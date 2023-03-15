@@ -29,4 +29,16 @@ public class BookMarkController {
     public ResponseEntity<MessageResponseDto> delBookMarkFolder(@RequestParam(name = "bf") String folderName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMarkFolder(folderName, userDetails.getMember());
     }
+
+    // 즐겨찾기 추가
+    @PostMapping("/book-marks/{post-id}")
+    public ResponseEntity<MessageResponseDto> postBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.postBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
+    }
+
+    //즐겨찾기 취소
+    @DeleteMapping("/book-marks/{post-id}")
+    public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.delBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
+    }
 }
