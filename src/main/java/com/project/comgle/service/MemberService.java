@@ -24,6 +24,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+
     private final MemberRepository memberRepository;
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
@@ -92,11 +93,27 @@ public class MemberService {
     }
 
     public ResponseEntity<MessageResponseDto> checkEmail(String email){
-        Optional<Member> foundMember = memberRepository.findByEmail(email);
-        if(foundMember.isPresent()){
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+
+        if(findMember.isPresent()){
+            throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
         }
+
         return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "사용 가능한 이메일입니다."));
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "사용 가능합니다."));
+    }
+
+    public ResponseEntity<MessageResponseDto> checkName(String memberName) {
+
+        Optional<Member> findMember = memberRepository.findByMemberName(memberName);
+
+        if(findMember.isPresent()){
+            throw new IllegalArgumentException("중복된 사용자명가 존재합니다.");
+        }
+
+        return ResponseEntity.ok()
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "사용 가능합니다."));
+
     }
 }
