@@ -66,6 +66,7 @@ public class MemberService {
 
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
+
         Company company = member.getCompany();
 
         if(company == null){
