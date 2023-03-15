@@ -48,7 +48,7 @@ public class MemberService {
         String email = signupRequestDto.getEmail();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
-        boolean permission = false;
+        boolean permission = true;
         String companyName = signupRequestDto.getCompanyName();
 
         Optional<Member> foundMember = memberRepository.findByEmail(email);
