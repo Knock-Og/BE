@@ -2,6 +2,7 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
+import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
@@ -60,32 +61,6 @@ public class MemberService {
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
     }
-
-    public ResponseEntity<MessageResponseDto> signup(SignupRequestDto signupRequestDto){
-        String memberName = signupRequestDto.getMemberName();
-        String email = signupRequestDto.getEmail();
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
-        boolean permission = true;
-        String companyName = signupRequestDto.getCompanyName();
-
-        Optional<Member> foundMember = memberRepository.findByEmail(email);
-        if(foundMember.isPresent()){
-            throw new IllegalArgumentException("이미 사용자가 존재합니다.");
-        }
-
-        Company foundCompany = companyRepository.findByCompanyName(companyName);
-        if(foundCompany == null){
-            throw new IllegalArgumentException("존재하지 않는 회사입니다.");
-        }
-
-        Member member = Member.of(memberName,email,password,position,permission,foundCompany);
-        memberRepository.save(member);
-        return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "회원가입 성공"));
-    }
-
-
 
     @Transactional(readOnly = true)
     public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
