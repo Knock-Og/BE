@@ -88,4 +88,5 @@ public class BookMarkService {
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 등록 취소"));
     }
+
 }

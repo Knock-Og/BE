@@ -41,4 +41,5 @@ public class BookMarkController {
     public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "post-id") Long postId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMark(postId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
+
 }
