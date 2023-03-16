@@ -33,7 +33,7 @@ public class PostService {
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
 
         Post newPost = Post.from(postRequestDto, userDetails.getUser());
-
+        categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getUser().getCompany());
         for (String k: postRequestDto.getKeywords()) {
             Keyword keyword = Keyword.of(k);
             keyword.addPost(newPost);

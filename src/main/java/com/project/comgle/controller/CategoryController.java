@@ -39,9 +39,17 @@ public class CategoryController {
 
     }
 
+    @PutMapping("/categories/{category-id}")
+    public MessageResponseDto update( @PathVariable(name = "category-id") Long categoryId,
+                                      @Valid @RequestBody CategoryRequestDto categoryRequestDto,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails){
+        log.info("role = {}" , userDetails.getAuthorities());
+        return categoryService.updateCategory(categoryId, categoryRequestDto.getCategoryName() ,userDetails.getUser());
+    }
+
     @DeleteMapping("/categories/{category-id}")
     public MessageResponseDto delete(@PathVariable(name = "category-id") Long categoryId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         log.info("role = {}" , userDetails.getAuthorities());
-        return categoryService.deleteCategory(categoryId, userDetails.getUser());
+        return categoryService.deleteCategory(categoryId, userDetails.getMember());
     }
 }

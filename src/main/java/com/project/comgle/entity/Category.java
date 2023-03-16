@@ -19,9 +19,24 @@ public class Category {
     @Column(nullable = false, length = 20)
     private String categoryName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMPANY_ID", nullable = false)
+    private Company company;
+
     @Builder
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
+
+    @Builder
+    public Category(String categoryName, Company company) {
+        this.categoryName = categoryName;
+        this.company = company;
+    }
+
+    public void update(String categoryName){
+        this.categoryName = categoryName;
+    }
+
 
 }
