@@ -1,5 +1,6 @@
 package com.project.comgle.security;
 
+import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,12 +10,15 @@ import java.util.Collection;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
+
     private final Member member;
     private final String username;
+    private final Company company;
 
-    public UserDetailsImpl(Member member, String username) {
+    public UserDetailsImpl(Member member, String username, Company company) {
         this.member = member;
         this.username = username;
+        this.company = company;
     }
 
     public Member getUser() {
