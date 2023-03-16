@@ -1,5 +1,6 @@
 package com.project.comgle.service;
 
+import com.project.comgle.dto.response.CategoryResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Category;
 import com.project.comgle.entity.Member;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,10 +44,27 @@ public class CategoryService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<CategoryResponseDto> findCategories(Member member) {
+
+        Optional<Member> findMember = memberRepository.findById(member.getId());
+
+        List<Category> categoryList = categoryRepository.findAllByCompany(findMember.get().getCompany());
+        List<CategoryResponseDto> categoryResponseDtos = new ArrayList<>();
+
+        for (Category category : categoryList) {
+            categoryResponseDtos.add(CategoryResponseDto.from(category));
+        }
+
+        return categoryResponseDtos;
+
+    }
+
     @Transactional
     public MessageResponseDto updateCategory(Long categoryId, String categoryName, Member member) {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new IllegalStateException("해당 카테고리가 존재하지 않습니다.")
         );
@@ -79,6 +99,4 @@ public class CategoryService {
 
 
     }
-
-
 }

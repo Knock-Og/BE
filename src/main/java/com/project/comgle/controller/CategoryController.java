@@ -1,6 +1,7 @@
 package com.project.comgle.controller;
 
 import com.project.comgle.dto.request.CategoryRequestDto;
+import com.project.comgle.dto.response.CategoryResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,11 +34,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/categories")
-
     public MessageResponseDto createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-
         return categoryService.create(categoryRequestDto.getCategoryName().trim(), userDetails.getUser());
+    }
 
+    @GetMapping("/categories")
+    public List<CategoryResponseDto> findAll(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return categoryService.findCategories(userDetails.getMember());
     }
 
     @PutMapping("/categories/{category-id}")
