@@ -22,4 +22,12 @@ public class CommentController {
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(postId, commentRequestDto, userDetails);
     }
+
+    // 댓글삭제
+    @DeleteMapping("/comments/{comment-id}")
+    public ResponseEntity<MessageResponseDto> deleteComment(@PathVariable(name = "post-id") Long postId,
+                                                            @PathVariable(name = "comment-id") Long commentId,
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.deleteComment(postId, commentId, userDetails);
+    }
 }
