@@ -23,6 +23,7 @@ public class Category {
     @JoinColumn(name = "COMPANY_ID", nullable = false)
     private Company company;
 
+    //Post 담당자와 추후 협의할 사항
     @Builder
     public Category(String categoryName) {
         this.categoryName = categoryName;

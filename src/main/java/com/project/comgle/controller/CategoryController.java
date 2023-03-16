@@ -35,25 +35,23 @@ public class CategoryController {
 
     @PostMapping("/categories")
     public MessageResponseDto createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return categoryService.create(categoryRequestDto.getCategoryName().trim(), userDetails.getUser());
+        return categoryService.create(categoryRequestDto.getCategoryName().trim(), userDetails.getMember(), userDetails.getCompany());
     }
 
     @GetMapping("/categories")
     public List<CategoryResponseDto> findAll(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return categoryService.findCategories(userDetails.getMember());
+        return categoryService.findCategories(userDetails.getCompany());
     }
 
     @PutMapping("/categories/{category-id}")
     public MessageResponseDto update( @PathVariable(name = "category-id") Long categoryId,
                                       @Valid @RequestBody CategoryRequestDto categoryRequestDto,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails){
-        log.info("role = {}" , userDetails.getAuthorities());
-        return categoryService.updateCategory(categoryId, categoryRequestDto.getCategoryName() ,userDetails.getUser());
+        return categoryService.updateCategory(categoryId, categoryRequestDto.getCategoryName() ,userDetails);
     }
 
     @DeleteMapping("/categories/{category-id}")
     public MessageResponseDto delete(@PathVariable(name = "category-id") Long categoryId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        log.info("role = {}" , userDetails.getAuthorities());
         return categoryService.deleteCategory(categoryId, userDetails.getMember());
     }
 }
