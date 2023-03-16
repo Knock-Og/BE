@@ -34,6 +34,11 @@ public class BookMarkService {
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
 
+        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+        if(bookMarkFolder.isPresent()){
+            throw new IllegalArgumentException("해당 폴더가 이미 존재합니다.");
+        }
+
         Long countFolder = bookMarkFolderRepository.countAllByMember(member);
         if(countFolder>100){
             throw new IllegalArgumentException("최대 폴더 갯수를 초과하였습니다.");
@@ -53,9 +58,30 @@ public class BookMarkService {
         );
 
         Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+        if(bookMarkFolder.isEmpty()){
+            throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
+
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 폴더 삭제"));
+    }
+
+    // 즐겨찾기 폴더 수정
+    @Transactional
+    public ResponseEntity<MessageResponseDto> updateBookMarkFolder(String folderName, String modifyFolderName, Member member){
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버가 없습니다.")
+        );
+
+        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+        if(bookMarkFolder.isEmpty()){
+            throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
+
+        bookMarkFolder.get().update(modifyFolderName);
+
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 폴더 수정 완료"));
     }
 
     // 즐겨찾기 폴더(만) 조회
@@ -66,6 +92,10 @@ public class BookMarkService {
         );
 
         List<BookMarkFolder> bookMarkFolders = bookMarkFolderRepository.findAllByMember(findMember);
+        if(bookMarkFolders.isEmpty()){
+            throw new IllegalArgumentException("폴더가 존재하지 않습니다.");
+        }
+
         List<String> bookMarkFoldersList = new ArrayList<>();
 
         for (int i = 0; i < bookMarkFolders.size(); i++) {
@@ -83,7 +113,14 @@ public class BookMarkService {
         );
 
         Optional<Post> findPost = postRepository.findById(postId);
+        if(findPost.isEmpty()){
+            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+        }
+
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+        if(findBookMarkFolder.isEmpty()){
+            throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
 
         BookMark newBookMark = BookMark.of(findMember, findPost.get(), findBookMarkFolder.get());
         bookMarkRepository.save(newBookMark);
@@ -99,6 +136,10 @@ public class BookMarkService {
         );
 
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+        if(findBookMarkFolder.isEmpty()){
+            throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
+
         Optional<BookMark> bookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(findBookMarkFolder.get().getId(), postId);
 
         bookMarkRepository.delete(bookMark.get());
