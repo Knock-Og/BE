@@ -5,13 +5,11 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.PostService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Getter
 @RestController
 @RequiredArgsConstructor
 public class PostController {

@@ -10,7 +10,6 @@ import com.project.comgle.repository.KeywordRepository;
 import com.project.comgle.repository.PostCategoryRepository;
 import com.project.comgle.repository.PostRepository;
 import com.project.comgle.security.UserDetailsImpl;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-
-@Getter
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -53,17 +50,13 @@ public class PostService {
 
     @Transactional
     public ResponseEntity<MessageResponseDto> deletePost(Long id, Member member) {
-        Optional<Post> post = postRepository.findById(id);
+
+        Optional<Post> post = postRepository.findByIdAndMember(id, member);
         if (post.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
-        }
-        Optional<Post> compare = postRepository.findByIdAndMember(id, member);
-        if (compare.isEmpty()) {
-            throw new IllegalArgumentException("해당 작성자의 게시물이 없습니다.");
+            throw new IllegalArgumentException("해당 게시물이 없습니다.");
         }
 
-//        List<Keyword> keywordList = keywordRepository.findAllByPost(post.get());
-        List<Keyword> keywordList = post.get().getKeywords();
+        List<Keyword> keywordList = keywordRepository.findAllByPost(post.get());
         for (Keyword k : keywordList) {
             keywordRepository.delete(k);
         }

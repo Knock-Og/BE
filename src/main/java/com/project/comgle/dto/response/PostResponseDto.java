@@ -19,7 +19,7 @@ public class PostResponseDto {
     String[] keywords;
 
     @Builder
-    public PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords) {
+    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
