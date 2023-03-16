@@ -21,7 +21,7 @@ public class AdminController {
 
     @PostMapping("/signup")
     public ResponseEntity<MessageResponseDto> signup(@Valid @RequestBody SignupRequestDto signupRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminService.signup(signupRequestDto, userDetails.getUser());
+        return adminService.signup(signupRequestDto, userDetails.getMember());
     }
 
     @PutMapping("/position/members/{member-id}")
@@ -30,14 +30,14 @@ public class AdminController {
     }
 
     @GetMapping("/check/email/{email}")
-    public ResponseEntity<MessageResponseDto> checkEmail(@PathVariable String email, @AuthenticationPrincipal UserDetailsImpl userDetails ){
-        adminService.checkEmail(email,userDetails.getUser().getCompany());
+    public ResponseEntity<MessageResponseDto> checkEmail(@PathVariable String email){
+        adminService.checkEmail(email);
         return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(),"사용 가능합니다."));
     }
 
     @GetMapping("/check/name/{member-name}")
     public ResponseEntity<MessageResponseDto> checkName(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        adminService.checkName(memberName,userDetails.getUser().getCompany());
+        adminService.checkName(memberName,userDetails.getMember().getCompany());
         return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(),"사용 가능합니다."));
     }
 

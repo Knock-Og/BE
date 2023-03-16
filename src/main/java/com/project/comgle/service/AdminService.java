@@ -64,7 +64,7 @@ public class AdminService {
         }
 
         checkName(signupRequestDto.getMemberName(),company);
-        checkEmail(signupRequestDto.getEmail(),company);
+        checkEmail(signupRequestDto.getEmail());
 
         Member newMember = Member.of(signupRequestDto,password,position,company);
         memberRepository.save(newMember);
@@ -72,9 +72,9 @@ public class AdminService {
     }
 
     @Transactional(readOnly = true)
-    public void checkEmail(String email,Company company){
+    public void checkEmail(String email){
 
-        Optional<Member> findMember = memberRepository.findByEmailAndCompany(email, company);
+        Optional<Member> findMember = memberRepository.findByEmail(email);
 
         if(findMember.isPresent()){
             throw new IllegalArgumentException("중복된 이메일이 존재합니다.");
