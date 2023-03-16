@@ -41,4 +41,8 @@ public class BookMarkFolder {
                 .member(member)
                 .build();
     }
+
+    public void update(String bookMarkFolderName){
+        this.bookMarkFolderName = bookMarkFolderName;
+    }
 }
