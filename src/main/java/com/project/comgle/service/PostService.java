@@ -2,6 +2,7 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.PostRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
+import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.entity.*;
 import com.project.comgle.entity.enumSet.PositionEnum;
 import com.project.comgle.repository.CategoryRepository;
@@ -9,17 +10,17 @@ import com.project.comgle.repository.KeywordRepository;
 import com.project.comgle.repository.PostCategoryRepository;
 import com.project.comgle.repository.PostRepository;
 import com.project.comgle.security.UserDetailsImpl;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+
+@Getter
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -51,13 +52,18 @@ public class PostService {
 
 
     @Transactional
-    public ResponseEntity<MessageResponseDto> deletePost(Long id) {
+    public ResponseEntity<MessageResponseDto> deletePost(Long id, Member member) {
         Optional<Post> post = postRepository.findById(id);
         if (post.isEmpty()) {
             throw new IllegalArgumentException("해당 게시글이 없습니다.");
         }
+        Optional<Post> compare = postRepository.findByIdAndMember(id, member);
+        if (compare.isEmpty()) {
+            throw new IllegalArgumentException("해당 작성자의 게시물이 없습니다.");
+        }
 
-        List<Keyword> keywordList = keywordRepository.findAllByPost(post.get());
+//        List<Keyword> keywordList = keywordRepository.findAllByPost(post.get());
+        List<Keyword> keywordList = post.get().getKeywords();
         for (Keyword k : keywordList) {
             keywordRepository.delete(k);
         }
@@ -127,11 +133,32 @@ public class PostService {
 
             PostCategory renewPostCategory = PostCategory.of(renewCategory, post.get());
             postCategoryRepository.save(renewPostCategory);
-
         }
 
         post.get().update(postRequestDto);
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<PostResponseDto> readPost(Long id, Member member) {
+        Optional<Post> post = postRepository.findById(id);
+        if (post.isEmpty()) {
+            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+        }
+
+        List<Keyword> keywords = keywordRepository.findAllByPost(post.get());
+        String[] keywordList = new String[keywords.size()];
+        for (int i=0; i < keywords.size(); i++) {
+            keywordList[i] = keywords.get(i).getKeyword();
+        }
+
+        Optional<PostCategory> postCategory = postCategoryRepository.findByPost(post.get());
+        Optional<Category> category = categoryRepository.findById(postCategory.get().getId());
+        String getCategory = category.get().getCategoryName();
+
+        // 댓글은 구현 후 추가 예정
+
+        return ResponseEntity.ok().body(PostResponseDto.of(post.get(), getCategory, keywordList));
     }
 
 }
