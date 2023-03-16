@@ -61,7 +61,7 @@ public class PostService {
             keywordRepository.delete(k);
         }
 
-        Optional<PostCategory> postCategory = postCategoryRepository.findById(post.get().getId());
+        Optional<PostCategory> postCategory = postCategoryRepository.findByPostId(post.get().getId());
         if(postCategory.isPresent()){
             postCategoryRepository.delete(postCategory.get());
             categoryRepository.deleteById(postCategory.get().getCategory().getId());
