@@ -25,9 +25,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    // DB에서 멤버를찾아와야한다.
-    private final MemberRepository memberRepository;
-
     // 댓글등록
     public ResponseEntity<MessageResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Optional<Post> findPost = postRepository.findById(postId);
@@ -51,13 +48,13 @@ public class CommentService {
     public ResponseEntity<MessageResponseDto> deleteComment(Long postId, Long commentId, UserDetailsImpl userDetails) {
         Optional<Comment> findComment = commentRepository.findById(commentId);
 
-        Member findMember = memberRepository.findById(userDetails.getMember().getId()).get();
+        Optional<Post> findPost = postRepository.findById(postId);
 
         if (findComment.isEmpty()) {
             throw new IllegalArgumentException("해당 댓글이 없습니다.");
         }
-        if (findMember != findComment.get().getMember()) {
-            throw new IllegalArgumentException("댓글삭제에 대한 권한이 없습니다.");
+        if (findPost.isEmpty()) {
+            throw new IllegalArgumentException("게시글이 이미 삭제되었습니다.");
         }
 
         // 댓글 DB 삭제
