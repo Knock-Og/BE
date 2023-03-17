@@ -1,6 +1,7 @@
 package com.project.comgle.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder
     private Comment(String comment,Post post, Member member) {
         this.comment = comment;
         this.post = post;
