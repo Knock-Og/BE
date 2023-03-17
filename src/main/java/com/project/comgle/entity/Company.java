@@ -1,5 +1,6 @@
 package com.project.comgle.entity;
 
+import com.project.comgle.dto.request.CompanyRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +44,7 @@ public class Company {
         this.businessNum = businessNum;
         this.companyEmail = companyEmail;
     }
+
     public static Company of(String companyName, String address, String companyTel, String president, String businessNum, String companyEmail) {
         return Company.builder()
                 .companyName(companyName)
@@ -51,6 +53,17 @@ public class Company {
                 .president(president)
                 .businessNum(businessNum)
                 .companyEmail(companyEmail)
+                .build();
+    }
+
+    public static Company from(CompanyRequestDto companyRequestDto){
+        return Company.builder()
+                .companyName(companyRequestDto.getCompanyName())
+                .address(companyRequestDto.getAddress())
+                .companyTel(companyRequestDto.getCompanyTel())
+                .president(companyRequestDto.getPresident())
+                .businessNum(companyRequestDto.getBusinessNum())
+                .companyEmail(companyRequestDto.getCompanyEmail())
                 .build();
     }
 }

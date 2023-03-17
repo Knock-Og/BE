@@ -49,15 +49,14 @@ public class MemberService {
 
     @Transactional
     public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
-        String companyName = companyRequestDto.getCompanyName();
-        String address = companyRequestDto.getAddress();
-        String companyTel = companyRequestDto.getCompanyTel();
-        String president = companyRequestDto.getPresident();
-        String businessNum = companyRequestDto.getBusinessNum();
-        String companyEmail = companyRequestDto.getCompanyEmail();
+        Company findCompany = companyRepository.findByCompanyName(companyRequestDto.getCompanyName());
+        if(findCompany != null){
+            throw new IllegalArgumentException("이미 존재하는 회사입니다.");
+        }
 
-        Company company = Company.of(companyName,address,companyTel,president,businessNum,companyEmail);
+        Company company = Company.from(companyRequestDto);
         companyRepository.save(company);
+
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
     }
