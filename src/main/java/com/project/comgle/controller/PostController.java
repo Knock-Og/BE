@@ -2,6 +2,7 @@ package com.project.comgle.controller;
 
 import com.project.comgle.dto.request.PostRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
+import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,17 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{post-id}")
-    public ResponseEntity<MessageResponseDto> deletePost(@PathVariable("post-id") Long id) {
-        return postService.deletePost(id);
+    public ResponseEntity<MessageResponseDto> deletePost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(id, userDetails.getMember());
     }
 
     @PutMapping("/posts/{post-id}")
     public ResponseEntity<MessageResponseDto> updatePost(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePost(id, postRequestDto, userDetails.getUser());
+    }
+
+    @GetMapping("/posts/{post-id}")
+    public ResponseEntity<PostResponseDto> readPost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.readPost(id, userDetails.getMember());
     }
 }

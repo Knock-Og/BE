@@ -1,5 +1,6 @@
 package com.project.comgle.service;
 
+import com.project.comgle.dto.response.BookMarkFolderResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.BookMark;
 import com.project.comgle.entity.BookMarkFolder;
@@ -27,7 +28,7 @@ public class BookMarkService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
 
-    // 즐겨찾기 폴더 생성
+    // 즐겨찾기 폴더 추가
     @Transactional
     public ResponseEntity<MessageResponseDto> createBookMarkFolder(String folderName, Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
@@ -52,12 +53,12 @@ public class BookMarkService {
 
     // 즐겨찾기 폴더 삭제
     @Transactional
-    public ResponseEntity<MessageResponseDto> delBookMarkFolder(String folderName, Member member){
+    public ResponseEntity<MessageResponseDto> delBookMarkFolder(Long folderId, Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
 
-        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, findMember);
         if(bookMarkFolder.isEmpty()){
             throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
         }
@@ -69,14 +70,19 @@ public class BookMarkService {
 
     // 즐겨찾기 폴더 수정
     @Transactional
-    public ResponseEntity<MessageResponseDto> updateBookMarkFolder(String folderName, String modifyFolderName, Member member){
+    public ResponseEntity<MessageResponseDto> updateBookMarkFolder(Long folderId, String modifyFolderName, Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
 
-        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+        Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, findMember);
         if(bookMarkFolder.isEmpty()){
             throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
+
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(modifyFolderName,findMember);
+        if(findBookMarkFolder.isPresent()){
+            throw new IllegalArgumentException("중복된 이름의 폴더가 존재합니다.");
         }
 
         bookMarkFolder.get().update(modifyFolderName);
@@ -86,7 +92,7 @@ public class BookMarkService {
 
     // 즐겨찾기 폴더(만) 조회
     @Transactional(readOnly = true)
-    public List<String> readBookMarkFolder(Member member){
+    public List<BookMarkFolderResponseDto> readBookMarkFolder(Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
@@ -96,18 +102,18 @@ public class BookMarkService {
             throw new IllegalArgumentException("폴더가 존재하지 않습니다.");
         }
 
-        List<String> bookMarkFoldersList = new ArrayList<>();
+        List<BookMarkFolderResponseDto> bookMarkFolderList = new ArrayList<>();
 
-        for (int i = 0; i < bookMarkFolders.size(); i++) {
-            bookMarkFoldersList.add(bookMarkFolders.get(i).getBookMarkFolderName());
+        for(BookMarkFolder bookMarkFolder : bookMarkFolders){
+            bookMarkFolderList.add(BookMarkFolderResponseDto.of(bookMarkFolder.getId(), bookMarkFolder.getBookMarkFolderName()));
         }
 
-        return bookMarkFoldersList;
+        return bookMarkFolderList;
     }
 
     // 즐겨찾기 추가
     @Transactional
-    public ResponseEntity<MessageResponseDto> postBookMark(Long postId, String folderName, Member member){
+    public ResponseEntity<MessageResponseDto> postBookMark(Long folderId, Long postId, Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
@@ -117,7 +123,7 @@ public class BookMarkService {
             throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
         }
 
-        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, findMember);
         if(findBookMarkFolder.isEmpty()){
             throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
         }
@@ -130,17 +136,17 @@ public class BookMarkService {
 
     // 즐겨찾기 취소
     @Transactional
-    public ResponseEntity<MessageResponseDto> delBookMark(Long postId, String folderName, Member member){
+    public ResponseEntity<MessageResponseDto> delBookMark(Long folderId, Long postId, Member member){
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 멤버가 없습니다.")
         );
 
-        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, findMember);
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, findMember);
         if(findBookMarkFolder.isEmpty()){
             throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
         }
 
-        Optional<BookMark> bookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(findBookMarkFolder.get().getId(), postId);
+        Optional<BookMark> bookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(folderId, postId);
 
         bookMarkRepository.delete(bookMark.get());
 
