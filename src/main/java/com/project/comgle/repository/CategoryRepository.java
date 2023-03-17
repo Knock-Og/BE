@@ -13,6 +13,8 @@ public interface CategoryRepository extends JpaRepository <Category,Long> {
 
     Optional<Category> findByCategoryNameAndCompany(String categoryName, Company company);
 
+    Optional<Category> findByCategoryNameAndCompanyId(String categoryName, Long companyId);
+
     List<Category> findAllByCompany(Company company);
 
 }

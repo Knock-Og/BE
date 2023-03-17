@@ -30,19 +30,20 @@ public class PostService {
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
 
-        Post newPost = Post.from(postRequestDto, userDetails.getUser());
-        categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getUser().getCompany());
+        Post newPost = Post.from(postRequestDto, userDetails.getMember());
         for (String k: postRequestDto.getKeywords()) {
             Keyword keyword = Keyword.of(k);
             keyword.addPost(newPost);
         }
-
-        Category category = new Category(postRequestDto.getCategory());
-        categoryRepository.save(category);
         postRepository.save(newPost);
 
-        PostCategory postCategory = PostCategory.of(category, newPost);
-        postCategoryRepository.save(postCategory);
+        Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getMember().getCompany());
+        if (findCategory.isEmpty()) {
+            throw new IllegalArgumentException("해당 카테고리가 존재하지 않습니다.");
+        }
+
+        PostCategory newPostCategory = PostCategory.of(findCategory.get(), newPost);
+        postCategoryRepository.save(newPostCategory);
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "작성 완료"));
     }
