@@ -1,15 +1,11 @@
 package com.project.comgle.service;
 
+import com.project.comgle.dto.request.PostRequestDto;
 import com.project.comgle.dto.response.BookMarkFolderResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
-import com.project.comgle.entity.BookMark;
-import com.project.comgle.entity.BookMarkFolder;
-import com.project.comgle.entity.Member;
-import com.project.comgle.entity.Post;
-import com.project.comgle.repository.BookMarkFolderRepository;
-import com.project.comgle.repository.BookMarkRepository;
-import com.project.comgle.repository.MemberRepository;
-import com.project.comgle.repository.PostRepository;
+import com.project.comgle.dto.response.PostResponseDto;
+import com.project.comgle.entity.*;
+import com.project.comgle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +23,9 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final KeywordRepository keywordRepository;
+    private final PostCategoryRepository postCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     // 즐겨찾기 폴더 추가
     @Transactional
@@ -151,5 +150,43 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark.get());
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "즐겨찾기 등록 취소"));
+    }
+
+    // 즐겨찾기 폴더 별 게시글 조회
+    public List<PostResponseDto> readPostForBookMark(Long folderId, Member member){
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(
+                () -> new IllegalArgumentException("해당 멤버가 없습니다.")
+        );
+
+        Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, findMember);
+        if(findBookMarkFolder.isEmpty()){
+            throw new IllegalArgumentException("해당 폴더가 존재하지 않습니다.");
+        }
+
+        List<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId);
+        List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+
+        for (int i = 0; i < bookMarkList.size(); i++) {
+            Optional<Post> findPost = postRepository.findById(bookMarkList.get(i).getPost().getId());
+
+            List<Keyword> keywords = keywordRepository.findAllByPost(findPost.get());
+            String[] keywordList = new String[keywords.size()];
+            for (int j = 0; j < keywords.size(); j++) {
+                keywordList[j] = keywords.get(j).getKeyword();
+            }
+
+            Optional<PostCategory> postCategory = postCategoryRepository.findByPost(findPost.get());
+            Optional<Category> category = categoryRepository.findById(postCategory.get().getId());
+            String getCategory = category.get().getCategoryName();
+
+            postResponseDtoList.add(PostResponseDto.of(findPost.get(), getCategory, keywordList));
+        }
+
+        // 이후 리팩토링
+        if(postResponseDtoList.isEmpty()){
+            System.out.println("폴더에 넣은 게시글이 없습니다.");
+        }
+
+        return postResponseDtoList;
     }
 }
