@@ -3,7 +3,9 @@ package com.project.comgle.controller;
 import com.project.comgle.dto.request.BookMarkFolderRequestDto;
 import com.project.comgle.dto.response.BookMarkFolderResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
+import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.entity.BookMarkFolder;
+import com.project.comgle.entity.Post;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.BookMarkService;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +54,11 @@ public class BookMarkController {
     @DeleteMapping("/bookmark/folders/{folder-id}/bookmarks/{post-id}")
     public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "folder-id") Long folderId, @PathVariable(name = "post-id") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMark(folderId, postId, userDetails.getMember());
+    }
+
+    //즐겨찾기 폴더 별 게시글 조회
+    @GetMapping("/bookmark/folders/{folder-id}/bookmarks")
+    public List<PostResponseDto> readPostForBookMark(@PathVariable(name = "folder-id") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.readPostForBookMark(folderId, userDetails.getMember());
     }
 }
