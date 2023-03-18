@@ -1,6 +1,5 @@
 package com.project.comgle.service;
 
-import com.project.comgle.dto.request.PostRequestDto;
 import com.project.comgle.dto.response.BookMarkFolderResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
@@ -24,7 +23,6 @@ public class BookMarkService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final KeywordRepository keywordRepository;
-    private final PostCategoryRepository postCategoryRepository;
     private final CategoryRepository categoryRepository;
 
     // 즐겨찾기 폴더 추가
@@ -175,9 +173,7 @@ public class BookMarkService {
                 keywordList[j] = keywords.get(j).getKeyword();
             }
 
-            Optional<PostCategory> postCategory = postCategoryRepository.findByPost(findPost.get());
-            Optional<Category> category = categoryRepository.findById(postCategory.get().getId());
-            String getCategory = category.get().getCategoryName();
+            String getCategory = findPost.get().getCategory().getCategoryName();
 
             postResponseDtoList.add(PostResponseDto.of(findPost.get(), getCategory, keywordList));
         }
