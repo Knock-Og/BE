@@ -4,8 +4,6 @@ import com.project.comgle.dto.request.BookMarkFolderRequestDto;
 import com.project.comgle.dto.response.BookMarkFolderResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
-import com.project.comgle.entity.BookMarkFolder;
-import com.project.comgle.entity.Post;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.BookMarkService;
 import lombok.RequiredArgsConstructor;

@@ -9,7 +9,6 @@ import com.project.comgle.entity.enumSet.PositionEnum;
 import com.project.comgle.repository.CategoryRepository;
 import com.project.comgle.repository.CompanyRepository;
 import com.project.comgle.repository.MemberRepository;
-import com.project.comgle.repository.PostCategoryRepository;
 import com.project.comgle.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,6 @@ public class CategoryService {
 
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
-    private final PostCategoryRepository postCategoryRepository;
     private final CompanyRepository companyRepository;
 
     @Transactional
@@ -94,7 +92,7 @@ public class CategoryService {
             throw new IllegalArgumentException("ADMIN 계정만 가능합니다.");
         }
 
-        postCategoryRepository.deleteAllByCategory(findCategory);
+//        postCategoryRepository.deleteAllByCategory(findCategory);
         categoryRepository.delete(findCategory);
 
         return MessageResponseDto.of(HttpStatus.OK.value(), "카테고리 삭제 완료");

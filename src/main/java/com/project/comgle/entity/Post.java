@@ -1,6 +1,7 @@
 package com.project.comgle.entity;
 
 import com.project.comgle.dto.request.PostRequestDto;
+import com.project.comgle.entity.enumSet.PositionEnum;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,15 +27,19 @@ public class Post extends Timestamped {
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
 
-    @Column(nullable = false, length = 20)
-    private String modifyPermission;
+    @Enumerated(EnumType.STRING)
+    private PositionEnum modifyPermission;
 
-    @Column(nullable = false, length = 20)
-    private String readablePosition;
+    @Enumerated(EnumType.STRING)
+    private PositionEnum readablePosition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     // 연관관계 추가
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
@@ -43,28 +49,31 @@ public class Post extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    private Post(String title, String content, String modifyPermission, String readablePosition, Member member, List<Comment> comments) {
+    private Post(String title, String content, PositionEnum modifyPermission, PositionEnum readablePosition, Member member,Category category, List<Comment> comments) {
         this.title = title;
         this.content = content;
         this.modifyPermission = modifyPermission;
         this.readablePosition = readablePosition;
+        this.category = category;
         this.member = member;
         this.comments = comments;
     }
 
-    public static Post from(PostRequestDto postRequestDto, Member member){
+    public static Post from(PostRequestDto postRequestDto, Category category,Member member){
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
-                .modifyPermission(postRequestDto.getModifyPermission())
-                .readablePosition(postRequestDto.getReadablePosition())
+                .modifyPermission(PositionEnum.valueOf(postRequestDto.getModifyPermission().strip().toUpperCase()))
+                .readablePosition(PositionEnum.valueOf(postRequestDto.getReadablePosition().strip().toUpperCase()))
+                .category(category)
                 .member(member)
                 .build();
     }
 
-    public void update(PostRequestDto postRequestDto) {
+    public void update(PostRequestDto postRequestDto,Category category) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
+        this.category = category;
     }
 
 }
