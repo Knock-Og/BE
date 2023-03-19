@@ -1,6 +1,7 @@
 package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CommentRequestDto;
+import com.project.comgle.dto.response.CommentResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Comment;
 import com.project.comgle.entity.Member;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +31,11 @@ public class CommentService {
     // 댓글등록
     public ResponseEntity<MessageResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Optional<Post> findPost = postRepository.findById(postId);
+
         if (findPost.isEmpty()) {
             throw new IllegalArgumentException("해당 게시글이 없습니다.");
         }
+
         // 댓글생성
         Comment comment = Comment.builder()
                 .comment(commentRequestDto.getComment())
@@ -42,6 +47,25 @@ public class CommentService {
         commentRepository.save(comment);
 
         return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 작성 완료"));
+    }
+
+    // 댓글조회
+    @Transactional(readOnly = true)
+    public List<CommentResponseDto> getComments(Long postId) {
+        Optional<Post> getPost = postRepository.findById(postId);
+
+        if (getPost.isEmpty()) {
+            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+        }
+
+        List<Comment> getComments = commentRepository.findAllByPostOrderByCreatedAtDesc(getPost.get());
+
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        for (Comment comment : getComments) {
+            commentResponseDtos.add(CommentResponseDto.from(comment));
+        }
+
+        return commentResponseDtos;
     }
 
     // 댓글삭제
