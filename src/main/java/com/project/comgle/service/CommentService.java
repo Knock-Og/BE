@@ -67,25 +67,25 @@ public class CommentService {
     }
 
     // 댓글수정
-//    public ResponseEntity<MessageResponseDto> updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
-//        Optional<Post> getPost = postRepository.findById(postId);
-//        if (getPost.isEmpty()) {
-//            throw new IllegalArgumentException("게시글이 없습니다.");
-//        }
-//
-//        Optional<Comment> getComment = commentRepository.findById(commentId);
-//        if (getComment.isEmpty()) {
-//            throw new IllegalArgumentException("해당 댓글이 없습니다.");
-//        }
-//
-//        if (!getComment.get().getMember().getId().equals(userDetails.getMember().getId())) {
-//            throw new IllegalArgumentException("해당 댓글을 수정할 권한이 없습니다.");
-//        }
-//
-//        getComment.get().updateComment(commentRequestDto);
-//
-//        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 수정 완료"));
-//    }
+    public ResponseEntity<MessageResponseDto> updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+        Optional<Post> getPost = postRepository.findById(postId);
+        if (getPost.isEmpty()) {
+            throw new IllegalArgumentException("게시글이 없습니다.");
+        }
+
+        Optional<Comment> getComment = commentRepository.findById(commentId);
+        if (getComment.isEmpty()) {
+            throw new IllegalArgumentException("해당 댓글이 없습니다.");
+        }
+
+        if (!getComment.get().getMember().getId().equals(userDetails.getMember().getId())) {
+            throw new IllegalArgumentException("해당 댓글을 수정할 권한이 없습니다.");
+        }
+
+        getComment.get().updateComment(commentRequestDto);
+
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 수정 완료"));
+    }
 
     // 댓글삭제
     public ResponseEntity<MessageResponseDto> deleteComment(Long postId, Long commentId, UserDetailsImpl userDetails) {
