@@ -16,7 +16,7 @@ public class PostResponseDto {
 
     private String category;
 //    List<Comment> comments;
-    String[] keywords;
+    private String[] keywords;
 
     @Builder
     private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords) {
@@ -43,5 +43,6 @@ public class PostResponseDto {
                 .keywords(keywords)
                 .build();
     }
+
 
 }
