@@ -24,8 +24,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
-    private final CompanyRepository companyRepository;
-    private final MemberRepository memberRepository;
+
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -119,7 +118,7 @@ public class PostService {
             keywordList[i] = keywords.get(i).getKeyword();
         }
 
-        // 댓글은 구현 후 추가 예정
+        // 댓글
 
         return ResponseEntity.ok()
                 .body(

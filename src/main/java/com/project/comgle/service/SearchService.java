@@ -29,7 +29,6 @@ public class SearchService {
     @Transactional
     public List<SearchResponseDto> searchKeyword(String keyword, Member member) {
 
-//        List<Post> findPosts = postRepository.findAllByKeywordsContainsOrderByCreatedAtDesc(keyword);
         List<Keyword> findKeyword = keywordRepository.findAllByKeyword(keyword);
         List<Post> findPosts = new ArrayList<>();
 
@@ -49,7 +48,6 @@ public class SearchService {
             }
 
             List<Comment> commentList = commentRepository.findAllByPost(post);
-//            List<Comment> commentList = post.getComments();
 
             searchResponseDtoList.add(SearchResponseDto.of(post, keywordList, commentList.size()));
         }
