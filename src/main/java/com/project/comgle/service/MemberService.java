@@ -2,7 +2,6 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
-import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;

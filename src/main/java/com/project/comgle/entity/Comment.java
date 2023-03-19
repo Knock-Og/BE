@@ -1,5 +1,6 @@
 package com.project.comgle.entity;
 
+import com.project.comgle.dto.request.CommentRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +32,9 @@ public class Comment extends Timestamped {
         this.comment = comment;
         this.post = post;
         this.member = member;
+    }
+
+    public void updateComment(CommentRequestDto commentRequestDto) {
+        this.comment = commentRequestDto.getComment();
     }
 }
