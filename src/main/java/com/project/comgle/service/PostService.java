@@ -15,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +24,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
-    private final CompanyRepository companyRepository;
-    private final MemberRepository memberRepository;
+
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -39,8 +35,9 @@ public class PostService {
             throw new IllegalArgumentException("카테고리가 유효하지 않습니다.");
         }
         Post newPost = Post.from(postRequestDto, findCategory.get(),userDetails.getUser());
+        Set<String> keySet = new HashSet<>(Arrays.asList(postRequestDto.getKeywords()));
 
-        for (String k: postRequestDto.getKeywords()) {
+        for (String k: keySet) {
             Keyword keyword = Keyword.of(k);
             keyword.addPost(newPost);
         }
@@ -121,7 +118,7 @@ public class PostService {
             keywordList[i] = keywords.get(i).getKeyword();
         }
 
-        // 댓글은 구현 후 추가 예정
+        // 댓글
 
         return ResponseEntity.ok()
                 .body(
