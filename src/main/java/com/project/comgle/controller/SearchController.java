@@ -22,4 +22,9 @@ public class SearchController {
         return searchService.searchKeyword(keyword, userDetails.getMember());
     }
 
+    @GetMapping("/category")
+    public List<SearchResponseDto> searchCategory(@RequestParam("c") String category, UserDetailsImpl userDetails){
+        return searchService.searchCategory(category, userDetails.getMember());
+    }
+
 }

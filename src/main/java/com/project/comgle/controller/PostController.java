@@ -16,22 +16,22 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public ResponseEntity<MessageResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }
 
-    @DeleteMapping("/posts/{post-id}")
+    @DeleteMapping("/post/{post-id}")
     public ResponseEntity<MessageResponseDto> deletePost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails.getMember());
     }
 
-    @PutMapping("/posts/{post-id}")
+    @PutMapping("/post/{post-id}")
     public ResponseEntity<MessageResponseDto> updatePost(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePost(id, postRequestDto, userDetails.getUser());
     }
 
-    @GetMapping("/posts/{post-id}")
+    @GetMapping("/post/{post-id}")
     public ResponseEntity<PostResponseDto> readPost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.readPost(id, userDetails.getMember());
     }
