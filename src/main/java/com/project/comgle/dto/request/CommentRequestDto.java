@@ -1,7 +1,12 @@
 package com.project.comgle.dto.request;
 
+
 import com.project.comgle.dto.common.SchemaDescriptionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import com.project.comgle.entity.Comment;
+import lombok.Builder;
+
 import lombok.Getter;
 
 @Getter

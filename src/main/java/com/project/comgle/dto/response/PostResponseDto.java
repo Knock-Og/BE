@@ -32,8 +32,11 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Category.NAME, example = "공지사항")
     private String category;
 
+
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     String[] keywords;
+
+    private String[] keywords;
 
     //    List<Comment> comments;
 
@@ -62,5 +65,6 @@ public class PostResponseDto {
                 .keywords(keywords)
                 .build();
     }
+
 
 }
