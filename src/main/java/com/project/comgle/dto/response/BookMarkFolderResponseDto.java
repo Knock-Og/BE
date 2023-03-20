@@ -1,12 +1,18 @@
 package com.project.comgle.dto.response;
 
+import com.project.comgle.dto.common.SchemaDescriptionUtils;
 import com.project.comgle.entity.BookMarkFolder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class BookMarkFolderResponseDto {
+
+    @Schema(description = SchemaDescriptionUtils.ID)
     private Long id;
+
+    @Schema(description = SchemaDescriptionUtils.BookMarkForder.NAME , example = "폴더1")
     private String bookMarkFolderName;
 
     @Builder

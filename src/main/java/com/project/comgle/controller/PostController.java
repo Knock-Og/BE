@@ -5,6 +5,7 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "POST", description = "게시글 관련 API Document")
 public class PostController {
 
     private final PostService postService;

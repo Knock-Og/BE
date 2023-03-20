@@ -6,6 +6,7 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "CATEGORY", description = "카테고리 관련 API Document")
 public class CategoryController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

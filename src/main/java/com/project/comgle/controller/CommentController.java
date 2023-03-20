@@ -5,6 +5,7 @@ import com.project.comgle.dto.response.CommentResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.CommentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post/{post-id}")
+@Tag(name = "COMMENT", description = "댓글 관련 API Document")
 public class CommentController {
     private final CommentService commentService;
 

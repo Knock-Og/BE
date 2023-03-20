@@ -6,6 +6,8 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.BookMarkService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "BOOKMARK", description = "북마크 관련 API Document")
 public class BookMarkController {
     private final BookMarkService bookMarkService;
 

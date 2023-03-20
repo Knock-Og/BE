@@ -7,6 +7,7 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "MEMBER", description = "회원 관련 API Document")
 public class MemberController {
 
     private final MemberService memberService;
