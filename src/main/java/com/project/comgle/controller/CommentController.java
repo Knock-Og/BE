@@ -32,6 +32,15 @@ public class CommentController {
         return commentService.getComments(postId);
     }
 
+    // 댓글수정
+    @PutMapping("/comment/{comment-id}")
+    public ResponseEntity<MessageResponseDto> updateComment(@PathVariable(name = "post-id") Long postId,
+                                                            @PathVariable(name = "comment-id") Long commentId,
+                                                            @RequestBody CommentRequestDto commentRequestDto,
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.updateComment(postId, commentId, commentRequestDto, userDetails);
+    }
+
     // 댓글삭제
     @DeleteMapping("/comment/{comment-id}")
     public ResponseEntity<MessageResponseDto> deleteComment(@PathVariable(name = "post-id") Long postId,

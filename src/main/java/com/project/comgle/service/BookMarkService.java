@@ -23,7 +23,7 @@ public class BookMarkService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final KeywordRepository keywordRepository;
-    private final CategoryRepository categoryRepository;
+//    private final CategoryRepository categoryRepository;
 
     // 즐겨찾기 폴더 추가
     @Transactional
