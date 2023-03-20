@@ -5,10 +5,12 @@ import com.project.comgle.entity.Post;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Getter
 public class PostResponseDto {
+
     @Schema(description = SchemaDescriptionUtils.ID )
     private Long id;
 

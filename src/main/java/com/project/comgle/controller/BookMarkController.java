@@ -9,6 +9,7 @@ import com.project.comgle.service.BookMarkService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,43 +22,50 @@ import java.util.List;
 public class BookMarkController {
     private final BookMarkService bookMarkService;
 
-    // 즐겨찾기 폴더 추가
+    @Operation(summary = "즐겨찾기 폴더 추가 API", description = "해당 MEMBER의 즐겨찾기 폴더를 추가합니다. 폴더는 최대 100개까지 가능합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/bookmark/folders")
     public ResponseEntity<MessageResponseDto> createBookMarkFolder(@RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.createBookMarkFolder(bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
-    // 즐겨찾기 폴더 삭제
+    @Operation(summary = "즐겨찾기 폴더 삭제 API", description = "해당 MEMBER의 즐겨찾기 폴더를 삭제합니다")
+    @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/bookmark/folders/{folder-id}")
     public ResponseEntity<MessageResponseDto> delBookMarkFolder(@PathVariable(name = "folder-id") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMarkFolder(folderId, userDetails.getMember());
     }
 
-    // 즐겨찾기 폴더 수정
+    @Operation(summary = "즐겨찾기 폴더 수정 API", description = "해당 MEMBER가 지정한 즐겨찾기 폴더명을수정합니다")
+    @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/bookmark/folders/{folder-id}")
     public ResponseEntity<MessageResponseDto> updateBookMarkFolder(@PathVariable(name = "folder-id") Long folderId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.updateBookMarkFolder(folderId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
-    // 즐겨찾기 폴더(만) 조회
+    @Operation(summary = "즐겨찾기 폴더 전체 조회 API", description = "해당 MEMBER가 생성한 모든 폴더를 조회합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/folders")
     public List<BookMarkFolderResponseDto> readBookMarkFolder(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.readBookMarkFolder(userDetails.getMember());
     }
 
-    // 즐겨찾기 추가
+    @Operation(summary = "즐겨찾기 추가 API", description = "해당 폴더에 즐겨찾기를 추가합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/bookmark/folders/{folder-id}/bookmarks/{post-id}")
     public ResponseEntity<MessageResponseDto> postBookMark(@PathVariable(name = "folder-id") Long folderId, @PathVariable(name = "post-id") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.postBookMark(folderId, postId, userDetails.getMember());
     }
 
-    //즐겨찾기 취소
+    @Operation(summary = "즐겨찾기 취소 API", description = "해당 폴더에 즐겨찾기를 취소합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/bookmark/folders/{folder-id}/bookmarks/{post-id}")
     public ResponseEntity<MessageResponseDto> delBookMark(@PathVariable(name = "folder-id") Long folderId, @PathVariable(name = "post-id") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMark(folderId, postId, userDetails.getMember());
     }
 
-    //즐겨찾기 폴더 별 게시글 조회
+    @Operation(summary = "즐겨찾기 폴더 별 게시글 조회 API", description = "해당 폴더에 즐겨찾기한 게시글을 모두 조회합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/folders/{folder-id}/bookmarks")
     public List<PostResponseDto> readPostForBookMark(@PathVariable(name = "folder-id") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.readPostForBookMark(folderId, userDetails.getMember());

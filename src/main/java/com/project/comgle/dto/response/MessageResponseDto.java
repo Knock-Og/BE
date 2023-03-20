@@ -4,8 +4,6 @@ import com.project.comgle.dto.common.SchemaDescriptionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public class MessageResponseDto {
