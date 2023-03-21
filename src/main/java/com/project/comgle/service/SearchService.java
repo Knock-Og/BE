@@ -56,7 +56,7 @@ public class SearchService {
     @Transactional
     public List<SearchResponseDto> searchCategory(String category, Member member) {
 
-        Optional<Category> findCategory =  categoryRepository.findAllByCategoryName(category);
+        Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(category, member.getCompany());
         if (findCategory.isEmpty()) {
             throw new IllegalArgumentException("해당 카테고리의 게시물이 없습니다.");
         }
