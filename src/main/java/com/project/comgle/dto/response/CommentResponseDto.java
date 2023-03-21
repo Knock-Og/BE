@@ -1,6 +1,8 @@
 package com.project.comgle.dto.response;
 
+import com.project.comgle.dto.common.SchemaDescriptionUtils;
 import com.project.comgle.entity.Comment;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,10 +11,20 @@ import java.time.LocalTime;
 
 @Getter
 public class CommentResponseDto {
+
+    @Schema(description = SchemaDescriptionUtils.ID)
     private Long id;
+
+    @Schema(description = SchemaDescriptionUtils.Member.NAME , example = "user")
     private String memberName;
+
+    @Schema(description = SchemaDescriptionUtils.Comment.COMMENT, example = "댓글내용")
     private String comment;
+
+    @Schema(description = SchemaDescriptionUtils.CREATE_AT)
     private LocalDateTime createdAt;
+
+    @Schema(description = SchemaDescriptionUtils.MODIFIED_AT)
     private LocalDateTime modifiedAt;
 
     @Builder
