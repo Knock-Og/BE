@@ -34,9 +34,8 @@ public class PostResponseDto {
 
 
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
-    String[] keywords;
-
     private String[] keywords;
+
 
     //    List<Comment> comments;
 
