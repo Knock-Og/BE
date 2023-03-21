@@ -20,6 +20,8 @@ public class PostController {
 
     private final PostService postService;
 
+
+    @PostMapping("/post")
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/posts")
@@ -27,6 +29,7 @@ public class PostController {
         return postService.createPost(postRequestDto, userDetails);
     }
 
+    @DeleteMapping("/post/{post-id}")
     @Operation(summary = "게시글 삭제 API", description = "해당 게시글을 삭제합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/posts/{post-id}")
@@ -34,6 +37,7 @@ public class PostController {
         return postService.deletePost(id, userDetails.getMember());
     }
 
+    @PutMapping("/post/{post-id}")
     @Operation(summary = "게시글 수정 API", description = "해당 게시글을 수정합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/posts/{post-id}")
@@ -41,6 +45,7 @@ public class PostController {
         return postService.updatePost(id, postRequestDto, userDetails.getUser());
     }
 
+    @GetMapping("/post/{post-id}")
     @Operation(summary = "게시글 조회 API", description = "상세보기 PAGE를 위해 해당 게시글을 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/posts/{post-id}")
