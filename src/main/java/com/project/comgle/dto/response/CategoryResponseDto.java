@@ -1,13 +1,18 @@
 package com.project.comgle.dto.response;
 
+import com.project.comgle.dto.common.SchemaDescriptionUtils;
 import com.project.comgle.entity.Category;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class CategoryResponseDto {
 
+    @Schema(description = SchemaDescriptionUtils.ID)
     private Long id;
+
+    @Schema(description = SchemaDescriptionUtils.Category.NAME)
     private String categoryName;
 
     @Builder
