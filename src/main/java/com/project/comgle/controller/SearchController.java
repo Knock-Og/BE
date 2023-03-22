@@ -20,7 +20,7 @@ public class SearchController {
 
     @GetMapping("/search")
     public List<SearchResponseDto> searchKeyword(@RequestParam("k") String keyword, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return searchService.searchKeyword(keyword, userDetails.getMember());
+        return searchService.searchKeyword(keyword, userDetails.getCompany());
     }
 
     @GetMapping("/category")
