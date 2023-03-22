@@ -5,6 +5,8 @@ import com.project.comgle.dto.response.CommentResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Comment;
 import com.project.comgle.entity.Post;
+import com.project.comgle.exception.CustomException;
+import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.repository.CommentRepository;
 import com.project.comgle.repository.PostRepository;
 import com.project.comgle.security.UserDetailsImpl;
@@ -31,7 +33,7 @@ public class CommentService {
         Optional<Post> findPost = postRepository.findById(postId);
 
         if (findPost.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         // 댓글생성
@@ -44,7 +46,7 @@ public class CommentService {
         // 댓글 DB 저장
         commentRepository.save(comment);
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 작성 완료"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Add Comment Successfully"));
     }
 
     // 댓글조회
@@ -53,7 +55,7 @@ public class CommentService {
         Optional<Post> getPost = postRepository.findById(postId);
 
         if (getPost.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         List<Comment> getComments = commentRepository.findAllByPostOrderByCreatedAtDesc(getPost.get());
@@ -70,21 +72,21 @@ public class CommentService {
     public ResponseEntity<MessageResponseDto> updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Optional<Post> getPost = postRepository.findById(postId);
         if (getPost.isEmpty()) {
-            throw new IllegalArgumentException("게시글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         Optional<Comment> getComment = commentRepository.findById(commentId);
         if (getComment.isEmpty()) {
-            throw new IllegalArgumentException("해당 댓글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_COMMENT);
         }
 
         if (!getComment.get().getMember().getId().equals(userDetails.getMember().getId())) {
-            throw new IllegalArgumentException("해당 댓글을 수정할 권한이 없습니다.");
+            throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         }
 
         getComment.get().updateComment(commentRequestDto);
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 수정 완료"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Update Comment Successfully"));
     }
 
     // 댓글삭제
@@ -94,15 +96,15 @@ public class CommentService {
         Optional<Post> findPost = postRepository.findById(postId);
 
         if (findComment.isEmpty()) {
-            throw new IllegalArgumentException("해당 댓글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_COMMENT);
         }
         if (findPost.isEmpty()) {
-            throw new IllegalArgumentException("게시글이 이미 삭제되었습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         // 댓글 DB 삭제
         commentRepository.delete(findComment.get());
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "댓글 삭제 완료"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Delete Comment Successfully"));
     }
 }
