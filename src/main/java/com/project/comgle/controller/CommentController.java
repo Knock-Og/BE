@@ -38,7 +38,7 @@ public class CommentController {
         return commentService.getComments(postId);
     }
 
-    @Operation(summary = "댓글 삭제 API", description = "해당 게시글에 해당 댓글을 삭제합니다.")
+    @Operation(summary = "댓글 수정 API", description = "해당 게시글에 해당 댓글을 수정합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/comment/{comment-id}")
     public ResponseEntity<MessageResponseDto> updateComment(@PathVariable(name = "post-id") Long postId,
@@ -48,6 +48,8 @@ public class CommentController {
         return commentService.updateComment(postId, commentId, commentRequestDto, userDetails);
     }
 
+    @Operation(summary = "댓글 삭제 API", description = "해당 게시글에 해당 댓글을 삭제합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/comment/{comment-id}")
     public ResponseEntity<MessageResponseDto> deleteComment(@PathVariable(name = "post-id") Long postId,
                                                             @PathVariable(name = "comment-id") Long commentId,
