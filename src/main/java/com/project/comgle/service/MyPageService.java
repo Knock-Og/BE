@@ -3,6 +3,8 @@ package com.project.comgle.service;
 import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.entity.Keyword;
 import com.project.comgle.entity.Post;
+import com.project.comgle.exception.CustomException;
+import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.repository.PostRepository;
 import com.project.comgle.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
