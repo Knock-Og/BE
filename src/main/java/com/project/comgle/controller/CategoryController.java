@@ -1,9 +1,9 @@
 package com.project.comgle.controller;
 
+import com.project.comgle.dto.common.ErrorResponse;
 import com.project.comgle.dto.request.CategoryRequestDto;
 import com.project.comgle.dto.response.CategoryResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
-import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,10 +1,10 @@
 package com.project.comgle.controller;
 
+import com.project.comgle.dto.common.ErrorResponse;
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
-import com.project.comgle.exception.ErrorResponse;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;

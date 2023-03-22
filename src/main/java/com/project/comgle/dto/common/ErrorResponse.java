@@ -1,11 +1,9 @@
-package com.project.comgle.exception;
+package com.project.comgle.dto.common;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ErrorResponse {
     private int status;
     private String message;

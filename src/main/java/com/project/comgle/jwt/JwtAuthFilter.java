@@ -1,7 +1,7 @@
 package com.project.comgle.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.comgle.exception.ErrorResponse;
+import com.project.comgle.dto.common.ErrorResponse;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
