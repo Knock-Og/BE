@@ -22,7 +22,7 @@ public class SwaggerConfig {
                 .description("Knock 프로젝트 API 명세서입니다."); // 문서 설명
 
 /*         Swagger UI에서 요청 시 Token을 Header에 담아 보내기 위한 설정
-        추후 적용
+        추후 적용*/
         String jwtSchemeName = "jwtAuth";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
         Components components = new Components()
@@ -30,13 +30,13 @@ public class SwaggerConfig {
                         .name(jwtSchemeName)
                         .type(SecurityScheme.Type.HTTP) // HTTP 방식
                         .scheme("bearer")
-                        .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)*/
+                        .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
 
         return new OpenAPI()
                 .info(info)
-                .components(new Components());
-/*                .addSecurityItem(securityRequirement)
-                .components(components);*/
+                .components(new Components())
+                .addSecurityItem(securityRequirement)
+                .components(components);
 
     }
 }
