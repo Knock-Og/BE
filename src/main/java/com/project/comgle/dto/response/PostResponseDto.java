@@ -52,7 +52,7 @@ public class PostResponseDto {
         this.keywords = keywords;
     }
 
-    public static PostResponseDto of(Post post, String category,String[] keywords) {
+    public static PostResponseDto of(Post post, String category, String[] keywords) {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .memberName(post.getMember().getMemberName())
@@ -64,6 +64,4 @@ public class PostResponseDto {
                 .keywords(keywords)
                 .build();
     }
-
-
 }
