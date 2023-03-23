@@ -5,6 +5,7 @@ import com.project.comgle.dto.response.CommentResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Comment;
 import com.project.comgle.entity.Post;
+import com.project.comgle.entity.WeightEnum;
 import com.project.comgle.exception.CustomException;
 import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.repository.CommentRepository;
@@ -45,6 +46,8 @@ public class CommentService {
 
         // 댓글 DB 저장
         commentRepository.save(comment);
+
+        findPost.get().updateMethod(WeightEnum.COMMENTCOUNT.getNum());
 
         return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Add Comment Successfully"));
     }

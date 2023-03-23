@@ -36,11 +36,10 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     private String[] keywords;
 
-
-    //    List<Comment> comments;
+    private int postViews;
 
     @Builder
-    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords) {
+    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords, int postViews) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
@@ -48,8 +47,8 @@ public class PostResponseDto {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.category = category;
-//        this.comments= comments;
         this.keywords = keywords;
+        this.postViews = postViews;
     }
 
     public static PostResponseDto of(Post post, String category, String[] keywords) {
@@ -62,6 +61,20 @@ public class PostResponseDto {
                 .modifiedAt(post.getModifiedAt())
                 .category(category)
                 .keywords(keywords)
+                .build();
+    }
+
+    public static PostResponseDto of(Post post, String category, String[] keywords, int postViews) {
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .memberName(post.getMember().getMemberName())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdAt(post.getCreatedAt())
+                .modifiedAt(post.getModifiedAt())
+                .category(category)
+                .keywords(keywords)
+                .postViews(postViews)
                 .build();
     }
 }
