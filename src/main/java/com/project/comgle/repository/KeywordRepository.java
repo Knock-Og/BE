@@ -12,6 +12,5 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     List<Keyword> findAllByPost(Post post);
 
     List<Keyword> findAllByKeyword(String keyword);
-
     void deleteAllByPost(Post post);
 }
