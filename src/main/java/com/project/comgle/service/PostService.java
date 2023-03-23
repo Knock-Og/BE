@@ -3,10 +3,7 @@ package com.project.comgle.service;
 import com.project.comgle.dto.request.PostRequestDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.dto.response.PostResponseDto;
-import com.project.comgle.entity.Category;
-import com.project.comgle.entity.Keyword;
-import com.project.comgle.entity.Member;
-import com.project.comgle.entity.Post;
+import com.project.comgle.entity.*;
 import com.project.comgle.repository.*;
 import com.project.comgle.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +21,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
-
+    private final LogRepository logRepository;
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -97,6 +94,10 @@ public class PostService {
         }
 
         findPost.get().update(postRequestDto,findCategory.get());
+
+        String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
+        Log newLog = Log.of(findPost.get(), content, member.getMemberName());
+        logRepository.save(newLog);
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
     }

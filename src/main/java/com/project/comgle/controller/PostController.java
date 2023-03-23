@@ -41,7 +41,7 @@ public class PostController {
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/post/{post-id}")
     public ResponseEntity<MessageResponseDto> updatePost(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.updatePost(id, postRequestDto, userDetails.getUser());
+        return postService.updatePost(id, postRequestDto, userDetails.getMember());
     }
 
 
