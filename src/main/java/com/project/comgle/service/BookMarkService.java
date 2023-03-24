@@ -139,6 +139,8 @@ public class BookMarkService {
         BookMark newBookMark = BookMark.of(findMember.get(), findPost.get(), findBookMarkFolder.get());
         bookMarkRepository.save(newBookMark);
 
+        findPost.get().updateMethod(WeightEnum.BOOKMARK.getNum());
+
         return SuccessResponse.of(HttpStatus.CREATED, "Register BookMark");
     }
 
