@@ -27,6 +27,12 @@ public class Post extends Timestamped {
     @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
     private String content;
 
+    @Column(nullable = false)
+    private int postViews = 0;
+
+    @Column(nullable = false)
+    private int score = 0;
+
     @Enumerated(EnumType.STRING)
     private PositionEnum modifyPermission;
 
@@ -49,7 +55,7 @@ public class Post extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    private Post(String title, String content, PositionEnum modifyPermission, PositionEnum readablePosition, Member member,Category category, List<Comment> comments) {
+    private Post(String title, String content, PositionEnum modifyPermission, PositionEnum readablePosition, Member member,Category category, List<Comment> comments, int postViews, int score) {
         this.title = title;
         this.content = content;
         this.modifyPermission = modifyPermission;
@@ -57,6 +63,8 @@ public class Post extends Timestamped {
         this.category = category;
         this.member = member;
         this.comments = comments;
+        this.postViews = postViews;
+        this.score = score;
     }
 
     public static Post from(PostRequestDto postRequestDto, Category category,Member member){
@@ -74,6 +82,11 @@ public class Post extends Timestamped {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
         this.category = category;
+    }
+
+    public void updateMethod(int weight) {
+        this.postViews += (weight==3) ? 1 : 0;
+        this.score += weight;
     }
 
 }
