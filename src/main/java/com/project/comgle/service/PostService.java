@@ -21,6 +21,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
+
     private final LogRepository logRepository;
 
     @Transactional
@@ -106,6 +107,9 @@ public class PostService {
     public ResponseEntity<PostResponseDto> readPost(Long id, Member member) {
 
         Optional<Post> post = postRepository.findById(id);
+        if (member.getCompany().getId() != post.get().getMember().getCompany().getId()) {
+            throw new IllegalArgumentException("해당 회사의 게시글이 없습니다.");
+        }
 
         if (post.isEmpty()) {
             throw new IllegalArgumentException("해당 게시글이 없습니다.");
@@ -119,13 +123,17 @@ public class PostService {
             keywordList[i] = keywords.get(i).getKeyword();
         }
 
-        // 댓글
+        post.get().updateMethod(WeightEnum.POSTVIEWS.getNum());
+        postRepository.saveAndFlush(post.get());
+
+        Integer postViews = post.get().getPostViews();
 
         return ResponseEntity.ok()
                 .body(
                         PostResponseDto.of( post.get(),
                                 post.get().getCategory().getCategoryName(),
-                                keywordList)
+                                keywordList,
+                                postViews)
                 );
     }
 
