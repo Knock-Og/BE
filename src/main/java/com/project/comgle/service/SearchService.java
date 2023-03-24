@@ -2,7 +2,6 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.response.SearchResponseDto;
 import com.project.comgle.entity.*;
-import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.repository.CategoryRepository;
 import com.project.comgle.repository.CommentRepository;
 import com.project.comgle.repository.KeywordRepository;
@@ -105,6 +104,7 @@ public class SearchService {
 
         List<String> nouns = result.getNouns();
         log.info( "search keywords = {}", String.join(", " , nouns));
+
         return nouns;
     }
 }

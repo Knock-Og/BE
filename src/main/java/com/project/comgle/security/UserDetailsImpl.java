@@ -2,10 +2,13 @@ package com.project.comgle.security;
 
 import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
+import com.project.comgle.entity.enumSet.PositionEnum;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
@@ -21,13 +24,14 @@ public class UserDetailsImpl implements UserDetails {
         this.company = company;
     }
 
-    public Member getUser() {
-        return member;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        PositionEnum position = member.getPosition();
+
+        SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(position.getAuthority());
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(adminAuthority);
+        return authorities;
     }
 
     @Override

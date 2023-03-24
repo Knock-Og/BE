@@ -34,7 +34,7 @@ public class PostService {
         if (findCategory.isEmpty()){
             throw new IllegalArgumentException("카테고리가 유효하지 않습니다.");
         }
-        Post newPost = Post.from(postRequestDto, findCategory.get(),userDetails.getUser());
+        Post newPost = Post.from(postRequestDto, findCategory.get(),userDetails.getMember());
         Set<String> keySet = new HashSet<>(Arrays.asList(postRequestDto.getKeywords()));
 
         for (String k: keySet) {

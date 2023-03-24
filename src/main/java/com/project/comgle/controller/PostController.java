@@ -20,14 +20,12 @@ public class PostController {
 
     private final PostService postService;
 
-
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/posts")
     public ResponseEntity<MessageResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }
-
 
     @Operation(summary = "게시글 삭제 API", description = "해당 게시글을 삭제합니다.")
     @ResponseStatus(value = HttpStatus.OK)
@@ -36,14 +34,12 @@ public class PostController {
         return postService.deletePost(id, userDetails.getMember());
     }
 
-
     @Operation(summary = "게시글 수정 API", description = "해당 게시글을 수정합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/post/{post-id}")
     public ResponseEntity<MessageResponseDto> updatePost(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.updatePost(id, postRequestDto, userDetails.getUser());
+        return postService.updatePost(id, postRequestDto, userDetails.getMember());
     }
-
 
     @Operation(summary = "게시글 조회 API", description = "상세보기 PAGE를 위해 해당 게시글을 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
