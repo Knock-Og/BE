@@ -5,6 +5,7 @@ import com.project.comgle.security.UserDetailsImpl;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,25 +22,23 @@ public class Log {
     private String content;
 
     @Column(nullable = false)
-    private String logModify;
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Builder
-    private Log(String memberName, String content, String logModify, Post post) {
+    private Log(String memberName, String content, Post post) {
         this.memberName = memberName;
         this.content = content;
-        this.logModify = logModify;
         this.post = post;
     }
 
-    public static Log of (String memberName, String content, String logModify, Post post) {
+    public static Log of (String memberName, String content,  Post post) {
         return Log.builder()
                 .memberName(memberName)
                 .content(content)
-                .logModify(logModify)
                 .post(post)
                 .build();
     }
