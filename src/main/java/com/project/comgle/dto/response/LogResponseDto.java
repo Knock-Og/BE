@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
+
 @Getter
 public class LogResponseDto {
     private String memberName;
@@ -25,7 +27,7 @@ public class LogResponseDto {
         return LogResponseDto.builder()
                 .memberName(log.getMemberName())
                 .content(log.getContent())
-                .createDate("편집한 시간 : " + log.getCreateDate())
+                .createDate("편집한 시간 : " + log.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 }
