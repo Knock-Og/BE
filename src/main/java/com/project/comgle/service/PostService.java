@@ -97,7 +97,7 @@ public class PostService {
         findPost.get().update(postRequestDto,findCategory.get());
 
         String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
-        Log newLog = Log.of(findPost.get(), content, member.getMemberName());
+        Log newLog = Log.of (member.getMemberName(), content, findPost.get());
         logRepository.save(newLog);
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
