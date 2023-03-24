@@ -30,13 +30,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> validException(BindingResult result){
-        log.error("error msg = {}",result.getFieldError().getDefaultMessage());
-        return ResponseEntity.badRequest()
-                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), result.getFieldError().getDefaultMessage()));
-    }
-
     @Operation(summary = "회사 등록 API", description = "서비스에 해당 회사를 등록합니다")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/company")
@@ -55,6 +48,6 @@ public class MemberController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/members")
     public List<MemberResponseDto> getMembers(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return memberService.findMembers(userDetails.getUser());
+        return memberService.findMembers(userDetails.getMember());
     }
 }

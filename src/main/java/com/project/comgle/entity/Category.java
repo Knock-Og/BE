@@ -23,16 +23,17 @@ public class Category {
     @JoinColumn(name = "COMPANY_ID", nullable = false)
     private Company company;
 
-    //Post 담당자와 추후 협의할 사항
     @Builder
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    @Builder
-    public Category(String categoryName, Company company) {
+    private Category(String categoryName, Company company) {
         this.categoryName = categoryName;
         this.company = company;
+    }
+
+    public static Category of(String categoryName, Company company){
+        return Category.builder()
+                .categoryName(categoryName)
+                .company(company)
+                .build();
     }
 
     public void update(String categoryName){

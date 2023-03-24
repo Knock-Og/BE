@@ -1,10 +1,10 @@
 package com.project.comgle.controller;
 
-import com.project.comgle.dto.response.PostResponseDto;
 import com.project.comgle.dto.response.SearchResponseDto;
 import com.project.comgle.security.UserDetailsImpl;
 import com.project.comgle.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "SEARCH", description = "게시글 조건 조회 관련 API Document")
 public class SearchController {
 
     private final SearchService searchService;

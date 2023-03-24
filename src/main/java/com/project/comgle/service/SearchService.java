@@ -2,6 +2,12 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.response.SearchResponseDto;
 import com.project.comgle.entity.*;
+
+import com.project.comgle.repository.CategoryRepository;
+import com.project.comgle.repository.CommentRepository;
+import com.project.comgle.repository.KeywordRepository;
+import com.project.comgle.repository.PostRepository;
+
 import com.project.comgle.repository.*;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
@@ -105,6 +111,7 @@ public class SearchService {
         KomoranResult result = komoran.analyze(keyword);
 
         List<String> nouns = result.getNouns();
+        
         log.info("search keywords = {}", String.join(", ", nouns));
         return nouns;
     }
