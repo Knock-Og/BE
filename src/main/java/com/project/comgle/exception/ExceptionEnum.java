@@ -18,6 +18,12 @@ public enum ExceptionEnum {
     INVALID_TOKEN(400,"Token is not valid."),
     // 잘못된 요청값입니다
     INVALID_VALUE(400,"Invalid request value."),
+    // SMS 전송 에러발생입니다.
+    SMS_SEND_ERR(400,"fail send sms message"),
+    // SMS 전송 에러발생입니다.
+    INVALID_AUTHENTICATION_CODE(400,"Invalid authentication code"),
+    // SMS 인증한 내역이 없을경우
+    NOT_EXIST_AUTHENTICATION_CODE(400," Not exist authentication code"),
 
 
 

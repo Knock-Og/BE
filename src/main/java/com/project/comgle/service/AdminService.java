@@ -2,7 +2,6 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.common.SuccessResponse;
 import com.project.comgle.dto.request.SignupRequestDto;
-import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
 import com.project.comgle.entity.enumSet.PositionEnum;
@@ -11,7 +10,6 @@ import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

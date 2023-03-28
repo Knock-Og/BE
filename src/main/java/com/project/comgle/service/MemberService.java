@@ -2,6 +2,7 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
+import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
@@ -31,20 +32,6 @@ public class MemberService {
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    // 개발 단계용
-    @PostConstruct
-    @Transactional
-    public void init(){
-        List<Company> companyList = new ArrayList<>();
-        List<Member> adminList = new ArrayList<>();
-        companyList.add(Company.of("삼성","논현동","02-111-1111","이재용","123-45-67890","samsung@samsung.com"));
-        companyList.add(Company.of("애플","벨리","02-111-1111","잡슨","123-45-67890","apple@apple.com"));
-        companyRepository.saveAll(companyList);
-        adminList.add(Member.of("삼성ADMIN","admin@samsung.com",passwordEncoder.encode("1234"),PositionEnum.ADMIN,companyList.get(0)));
-        adminList.add(Member.of("애플ADMIN","admin@apple.com",passwordEncoder.encode("1234"),PositionEnum.ADMIN,companyList.get(1)));
-        memberRepository.saveAll(adminList);
-    }
 
     @Transactional
     public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
@@ -94,4 +81,5 @@ public class MemberService {
 
         return memberResponseDtos;
     }
+
 }

@@ -1,6 +1,5 @@
 package com.project.comgle.controller;
 
-import com.project.comgle.dto.common.ErrorResponse;
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
@@ -14,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -50,4 +47,5 @@ public class MemberController {
     public List<MemberResponseDto> getMembers(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return memberService.findMembers(userDetails.getMember());
     }
+
 }
