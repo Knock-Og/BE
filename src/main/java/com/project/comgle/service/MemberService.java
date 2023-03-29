@@ -2,6 +2,7 @@ package com.project.comgle.service;
 
 import com.project.comgle.dto.request.CompanyRequestDto;
 import com.project.comgle.dto.request.LoginRequestDto;
+import com.project.comgle.dto.request.SignupRequestDto;
 import com.project.comgle.dto.response.MemberResponseDto;
 import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
@@ -33,8 +34,6 @@ public class MemberService {
     private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-
 
     @Transactional
     public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
@@ -84,4 +83,5 @@ public class MemberService {
 
         return memberResponseDtos;
     }
+
 }

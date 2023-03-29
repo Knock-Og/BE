@@ -15,6 +15,9 @@ public class PostRequestDto {
     @Schema(description = SchemaDescriptionUtils.Post.CONTENT,  example = "내용입니다.")
     private String content;
 
+    @Schema(description = SchemaDescriptionUtils.Post.EditingStatus,  example = "편집상태")
+    private String editingStatus;
+
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     private String[] keywords;
 

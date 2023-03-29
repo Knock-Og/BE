@@ -26,6 +26,9 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, length = 20)
+    private String phoneNum;
+
     @Enumerated(EnumType.STRING)
     private PositionEnum position;
 
@@ -34,31 +37,26 @@ public class Member {
     private Company company;
 
     @Builder
-    private Member(String memberName, String email, String password, PositionEnum position, Company company) {
+    private Member(String memberName, String email, String password,
+                   PositionEnum position, Company company, String phoneNum) {
         this.memberName = memberName;
         this.email = email;
         this.password = password;
         this.position = position;
         this.company = company;
+        this.phoneNum = phoneNum;
     }
 
-    public static Member of(SignupRequestDto signupRequestDto, String password, PositionEnum position, Company company) {
+
+    public static Member of(SignupRequestDto signupRequestDto, String password,
+                            PositionEnum position, Company company) {
         return Member.builder()
                 .memberName(signupRequestDto.getMemberName())
                 .email(signupRequestDto.getEmail())
                 .password(password)
                 .position(position)
                 .company(company)
-                .build();
-    }
-
-    public static Member of(String memberName, String email, String password, PositionEnum position, Company company) {
-        return Member.builder()
-                .memberName(memberName)
-                .email(email)
-                .password(password)
-                .position(position)
-                .company(company)
+                .phoneNum(signupRequestDto.getPhoneNum())
                 .build();
     }
 
