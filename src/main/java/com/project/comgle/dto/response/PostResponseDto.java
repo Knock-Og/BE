@@ -36,8 +36,10 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     private String[] keywords;
 
+    @Schema(description = SchemaDescriptionUtils.Post.POSTVIEWS)
     private int postViews;
 
+    @Schema(description = SchemaDescriptionUtils.Post.EditingStatus)
     private String editingStatus;
 
     @Builder

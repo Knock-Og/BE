@@ -26,6 +26,9 @@ public class PostService {
     private final EmitterRepository emitterRepository;
 
     private final LogRepository logRepository;
+    private final BookMarkRepository bookMarkRepository;
+    private final CommentRepository commentRepository;
+
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -58,6 +61,9 @@ public class PostService {
         }
 
         keywordRepository.deleteAllByPost(post.get());
+        bookMarkRepository.deleteAllByPost(post.get());
+        commentRepository.deleteAllByPost(post.get());
+        logRepository.deleteAllByPost(post.get());
 
         postRepository.delete(post.get());
 

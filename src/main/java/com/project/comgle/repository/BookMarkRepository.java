@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     Optional<BookMark> findByBookMarkFolderIdAndPostId(Long folderId, Long postId);
     List<BookMark> findAllByBookMarkFolderId(Long folderId);
-
+    void deleteAllByPost(Post post);
 }
