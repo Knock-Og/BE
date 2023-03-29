@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -21,6 +23,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
+    private final EmitterRepository emitterRepository;
 
     private final LogRepository logRepository;
 
@@ -95,6 +98,16 @@ public class PostService {
         }
 
         findPost.get().update(postRequestDto,findCategory.get());
+
+        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
+        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
+            try {
+                emitter.send(SseEmitter.event().name("post connected"));
+                emitter.complete();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
         Log newLog = Log.of (member.getMemberName(), content, findPost.get());

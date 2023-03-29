@@ -28,6 +28,8 @@ public class SchemaDescriptionUtils {
         public static final String TITLE = "제목";
         public static final String CONTENT = "내용";
 
+        public static final String EditingStatus = "편집상태";
+
         public static final String MEDIFY_PERMISSION = "수정권한";
         public static final String READABLE_POSITION = "읽기권한";
     }

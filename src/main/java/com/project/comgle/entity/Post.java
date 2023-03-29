@@ -33,6 +33,10 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private int score = 0;
 
+    // 편집 중 = true
+    @Column(nullable = false)
+    private String editingStatus = "false";
+
     @Enumerated(EnumType.STRING)
     private PositionEnum modifyPermission;
 
@@ -55,7 +59,7 @@ public class Post extends Timestamped {
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    private Post(String title, String content, PositionEnum modifyPermission, PositionEnum readablePosition, Member member,Category category, List<Comment> comments, int postViews, int score) {
+    private Post(String title, String content, PositionEnum modifyPermission, PositionEnum readablePosition, Member member,Category category, List<Comment> comments, int postViews, int score, String editingStatus) {
         this.title = title;
         this.content = content;
         this.modifyPermission = modifyPermission;
@@ -65,12 +69,14 @@ public class Post extends Timestamped {
         this.comments = comments;
         this.postViews = postViews;
         this.score = score;
+        this.editingStatus = editingStatus;
     }
 
     public static Post from(PostRequestDto postRequestDto, Category category,Member member){
         return Post.builder()
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
+                .editingStatus(postRequestDto.getEditingStatus())
                 .modifyPermission(PositionEnum.valueOf(postRequestDto.getModifyPermission().strip().toUpperCase()))
                 .readablePosition(PositionEnum.valueOf(postRequestDto.getReadablePosition().strip().toUpperCase()))
                 .category(category)
@@ -81,12 +87,17 @@ public class Post extends Timestamped {
     public void update(PostRequestDto postRequestDto,Category category) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
+        this.editingStatus = "false";
         this.category = category;
     }
 
     public void updateMethod(int weight) {
         this.postViews += (weight==3) ? 1 : 0;
         this.score += weight;
+    }
+
+    public void updateStatus(String editingStatus) {
+        this.editingStatus = editingStatus;
     }
 
 }
