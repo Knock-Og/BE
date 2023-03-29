@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        @font-face {
+            font-family: 'SUIT-Bold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+            font-weight: Bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SUIT-SemiBold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+            font-weight: SemiBold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SUIT-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SUIT-Medium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+            font-weight: Medium;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<div style="max-width: 600px;margin:80px auto; padding:0 30px;">
+    <div style="border-top:4px solid #007FFF;padding:50px 0;border-bottom:1px solid #ddd;">
+        <h1 style=" word-break:keep-all;font-family: 'SUIT-bold';font-size:28px;font-weight:700; color:#1d1d1d;"><span style="color:#007FFF">Knock</span> 인증코드</h1>
+        <p style="word-break:keep-all;font-family: 'SUIT-semibold';font-size:15px;font-weight:600; line-height: 1.5;margin-top:30px;color:#1d1d1d;">
+            안녕하세요.<br/>
+            팀의 협업과 효율적인 커뮤니케이션을 위한 사내문서관리 서비스, Knock입니다.<br/>
+            아래의 인증코드를 입력하시면 임시비밀번호가 발송됩니다.
+        </p>
+        <p style="word-break:keep-all;font-family: 'SUIT-semibold';font-size:18px;font-weight:600; background:#f3f5f1;line-height:30px;padding:20px 20px;box-sizing: border-box; font-weight:500;margin-top:30px;color:#1d1d1d;" th:text="${code}"></p>
+        <p style="word-break:keep-all;font-family: 'SUIT-semibold';font-size:15px;font-weight:600; margin-top:30px;color:#1d1d1d;">위 인증코드 입력해주세요!</p>
+    </div>
+</div>
+</body>
+</html>

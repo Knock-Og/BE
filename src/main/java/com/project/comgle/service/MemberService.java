@@ -8,6 +8,8 @@ import com.project.comgle.dto.response.MessageResponseDto;
 import com.project.comgle.entity.Company;
 import com.project.comgle.entity.Member;
 import com.project.comgle.entity.enumSet.PositionEnum;
+import com.project.comgle.exception.CustomException;
+import com.project.comgle.exception.ExceptionEnum;
 import com.project.comgle.jwt.JwtUtil;
 import com.project.comgle.repository.CompanyRepository;
 import com.project.comgle.repository.MemberRepository;
@@ -37,7 +39,7 @@ public class MemberService {
     public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
         Company findCompany = companyRepository.findByCompanyName(companyRequestDto.getCompanyName());
         if(findCompany != null){
-            throw new IllegalArgumentException("이미 존재하는 회사입니다.");
+            throw new CustomException(ExceptionEnum.DUPLICATE_COMPANY);
         }
 
         Company company = Company.from(companyRequestDto);
@@ -54,11 +56,11 @@ public class MemberService {
 
         Optional<Member> foundMember = memberRepository.findByEmail(email);
         if(foundMember.isEmpty()){
-            throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         if(!passwordEncoder.matches(password, foundMember.get().getPassword())){
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
+            throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()));

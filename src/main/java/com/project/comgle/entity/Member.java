@@ -63,4 +63,8 @@ public class Member {
     public void updatePosition(PositionEnum position){
         this.position = position;
     }
+
+    public void updatePwd(String password) {
+        this.password = password;
+    }
 }
