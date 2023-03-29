@@ -108,7 +108,7 @@ public class PostService {
         SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
         findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
             try {
-                emitter.send(SseEmitter.event().name("post connected"));
+                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
                 emitter.complete();
             } catch (IOException e) {
                 throw new RuntimeException(e);
