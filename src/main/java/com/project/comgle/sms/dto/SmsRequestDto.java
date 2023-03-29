@@ -19,22 +19,19 @@ public class SmsRequestDto {
 
     String countryCode;
 
-    String subject;
-
     String from;
 
     String content;
 
     List<MessageDto> messages;
 
-    public static SmsRequestDto of(String type, String contentType, String countryCode,String subject,
+    public static SmsRequestDto of(String type, String contentType, String countryCode,
                                    String from, String content, List<MessageDto> messages){
 
         return SmsRequestDto.builder()
                 .type(type)
                 .contentType(contentType)
                 .countryCode(countryCode)
-                .subject(subject)
                 .from(from)
                 .content(content)
                 .messages(messages)

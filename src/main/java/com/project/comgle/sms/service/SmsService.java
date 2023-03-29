@@ -32,7 +32,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -105,7 +104,7 @@ public class SmsService {
         return ResponseEntity.ok().body(findEmail);
     }
     // Signature 필드 값 생성을 위한 메서드
-    public String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
+    private String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         // one space
         String space = " ";
         // new line
@@ -157,9 +156,7 @@ public class SmsService {
         List<MessageDto> messages = new ArrayList<>();
         messages.add(messageDto);
 
-        SmsRequestDto request = SmsRequestDto.of("LMS","COMM","82","[knock 본인인증]",
-                phone, messageDto.getContent(), messages);
-
+        SmsRequestDto request = SmsRequestDto.of("SMS","COMM","82", phone, messageDto.getContent(), messages);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String body = objectMapper.writeValueAsString(request);
