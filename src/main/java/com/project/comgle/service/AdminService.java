@@ -75,9 +75,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public void checkEmail(String email){
 
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-
-        if(findMember.isPresent()){
+        if(memberRepository.findByEmail(email).isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_EMAIL);
         }
     }
@@ -85,9 +83,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public void checkName(String memberName,Company company) {
 
-        Optional<Member> findMember = memberRepository.findByMemberNameAndCompany(memberName, company);
-
-        if(findMember.isPresent()){
+        if(memberRepository.findByMemberNameAndCompany(memberName, company).isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_MEMBER);
         }
     }

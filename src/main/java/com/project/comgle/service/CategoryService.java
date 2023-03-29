@@ -29,7 +29,6 @@ public class CategoryService {
 
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
-    private final CompanyRepository companyRepository;
 
     @Transactional
     public SuccessResponse create(String categoryName, Member member, Company company) {
@@ -61,8 +60,6 @@ public class CategoryService {
 
         isAdmin(member);
 
-        Optional<Member> findMember = memberRepository.findById(member.getId());
-
         Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY)
         );
@@ -80,7 +77,6 @@ public class CategoryService {
     public SuccessResponse deleteCategory(Long categoryId, Member member, Company company) {
 
         isAdmin(member);
-
 
         Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY)

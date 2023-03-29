@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,6 @@ public class MemberService {
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "로그인 성공"));
     }
-
 
     @Transactional(readOnly = true)
     public List<MemberResponseDto> findMembers(Member member) {

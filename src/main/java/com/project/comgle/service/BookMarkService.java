@@ -19,12 +19,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BookMarkService {
+
     private final BookMarkFolderRepository bookMarkFolderRepository;
     private final BookMarkRepository bookMarkRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final KeywordRepository keywordRepository;
-
 
     // 즐겨찾기 폴더 추가
     @Transactional
