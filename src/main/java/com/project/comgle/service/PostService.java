@@ -116,7 +116,7 @@ public class PostService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<PostResponseDto> readPost(Long id, Member member) {
 
         Optional<Post> post = postRepository.findById(id);
