@@ -23,12 +23,16 @@ public class MemberResponseDto {
             example = "MEMBER",allowableValues = {"MEMEBER", "MANAGER","OWNER"})
     private PositionEnum position;
 
+    @Schema(description = SchemaDescriptionUtils.Member.TEL, example = "010-1111-1111")
+    private String phoneNum;
+
     @Builder
-    private MemberResponseDto(Long id, String memberName, String email, PositionEnum position) {
+    private MemberResponseDto(Long id, String memberName, String email, PositionEnum position, String phoneNum) {
         this.id = id;
         this.memberName = memberName;
         this.email = email;
         this.position = position;
+        this.phoneNum = phoneNum;
     }
 
     public static MemberResponseDto from(Member member){
@@ -37,6 +41,7 @@ public class MemberResponseDto {
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .position(member.getPosition())
+                .phoneNum(member.getPhoneNum())
                 .build();
     }
 }
