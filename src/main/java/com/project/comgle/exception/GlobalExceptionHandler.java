@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> customException(CustomException e){
-        log.error("CustomException error = {}" , e.getMessage());
+        log.error("CustomException error = {}" , e.getExceptionEnum().getMsg());
         return ResponseEntity.status(e.getExceptionEnum().getCode())
                 .body(ErrorResponse.of(e.getExceptionEnum().getCode(),e.getExceptionEnum().getMsg())
                 );
