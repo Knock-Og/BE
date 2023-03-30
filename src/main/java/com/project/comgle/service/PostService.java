@@ -105,15 +105,15 @@ public class PostService {
 
         findPost.get().update(postRequestDto,findCategory.get());
 
-        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
-        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
-            try {
-                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
-                emitter.complete();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+//        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
+//        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
+//            try {
+//                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
+//                emitter.complete();
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
 
         String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
         Log newLog = Log.of (member.getMemberName(), content, findPost.get());
@@ -154,6 +154,24 @@ public class PostService {
                                 keywordList,
                                 postViews)
                 );
+    }
+
+    // 임시로 editingStatus 수정
+    @Transactional
+    public ResponseEntity<MessageResponseDto> changeEditingStatus(Long id, Member member) {
+
+        Optional<Post> findPost = postRepository.findById(id);
+
+        if (findPost.isEmpty()) {
+            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+        } else if (member.getPosition().getNum() < findPost.get().getModifyPermission().getNum()) {
+            throw new IllegalArgumentException("수정 가능한 회원 등급이 아닙니다.");
+        }
+
+        findPost.get().updateStatus("true");
+        postRepository.save(findPost.get());
+
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "편집상태 수정"));
     }
 
 }
