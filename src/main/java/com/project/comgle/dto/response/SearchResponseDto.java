@@ -17,8 +17,12 @@ public class SearchResponseDto {
     private String[] keywords;
     private int commentCount;
 
+    private int postViews;
+
+    private String editingStatus;
+
     @Builder
-    private SearchResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String[] keywords, int commentCount) {
+    private SearchResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String[] keywords, int commentCount, int postViews, String editingStatus) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
@@ -27,6 +31,8 @@ public class SearchResponseDto {
         this.modifiedAt = modifiedAt;
         this.keywords = keywords;
         this.commentCount = commentCount;
+        this.postViews = postViews;
+        this.editingStatus = editingStatus;
     }
 
 
@@ -40,6 +46,8 @@ public class SearchResponseDto {
                 .modifiedAt(post.getModifiedAt())
                 .keywords(keywords)
                 .commentCount(commentCount)
+                .postViews(post.getPostViews())
+                .editingStatus(post.getEditingStatus())
                 .build();
     }
 }

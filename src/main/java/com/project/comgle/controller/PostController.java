@@ -22,7 +22,7 @@ public class PostController {
 
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping("/posts")
+    @PostMapping("/post")
     public ResponseEntity<MessageResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }

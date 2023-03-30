@@ -26,6 +26,9 @@ public class PostService {
     private final EmitterRepository emitterRepository;
 
     private final LogRepository logRepository;
+    private final BookMarkRepository bookMarkRepository;
+    private final CommentRepository commentRepository;
+
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -58,6 +61,9 @@ public class PostService {
         }
 
         keywordRepository.deleteAllByPost(post.get());
+        bookMarkRepository.deleteAllByPost(post.get());
+        commentRepository.deleteAllByPost(post.get());
+        logRepository.deleteAllByPost(post.get());
 
         postRepository.delete(post.get());
 
@@ -102,7 +108,7 @@ public class PostService {
         SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
         findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
             try {
-                emitter.send(SseEmitter.event().name("post connected"));
+                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
                 emitter.complete();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -116,7 +122,7 @@ public class PostService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public ResponseEntity<PostResponseDto> readPost(Long id, Member member) {
 
         Optional<Post> post = postRepository.findById(id);

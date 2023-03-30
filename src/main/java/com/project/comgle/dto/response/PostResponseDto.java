@@ -36,10 +36,14 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     private String[] keywords;
 
+    @Schema(description = SchemaDescriptionUtils.Post.POSTVIEWS)
     private int postViews;
 
+    @Schema(description = SchemaDescriptionUtils.Post.EditingStatus)
+    private String editingStatus;
+
     @Builder
-    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords, int postViews) {
+    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords, int postViews, String editingStatus) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
@@ -49,6 +53,7 @@ public class PostResponseDto {
         this.category = category;
         this.keywords = keywords;
         this.postViews = postViews;
+        this.editingStatus = editingStatus;
     }
 
     public static PostResponseDto of(Post post, String category, String[] keywords) {
@@ -75,6 +80,7 @@ public class PostResponseDto {
                 .category(category)
                 .keywords(keywords)
                 .postViews(postViews)
+                .editingStatus(post.getEditingStatus())
                 .build();
     }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
     List<Log> findAllByPostOrderByCreateDateDesc(Post post);
+
+    void deleteAllByPost(Post post);
 }
