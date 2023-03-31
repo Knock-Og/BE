@@ -174,7 +174,6 @@ public class PostService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "편집상태 수정"));
     }
 
-    // docker test2
-    // docker test3
+    // docker test4
 
 }
