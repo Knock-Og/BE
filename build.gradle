@@ -16,10 +16,52 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // jwt token
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // swagger
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
+    // spring-security 사용 시 Swagger에서 @AuthenticationPrincipal 노출 시키지 않기 위해 지정
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.6.6'
+
+    // 형태소 분석 라이브러리
+    // https://mvnrepository.com/artifact/com.github.shin285/KOMORAN
+    implementation group: 'com.github.shin285', name: 'KOMORAN', version: '3.3.4'
+    // https://mvnrepository.com/artifact/org.apache.opennlp/opennlp-tools
+    implementation group: 'org.apache.opennlp', name: 'opennlp-tools', version: '1.9.1'
+
+    // NAVER SMS
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+    //spring email 연결 라이브러리
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
+
+    //thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    //Redis
+    implementation 'org.springframework.data:spring-data-redis:2.7.5'
+    implementation 'io.lettuce:lettuce-core:6.2.1.RELEASE'
 }
 
 tasks.named('test') {
