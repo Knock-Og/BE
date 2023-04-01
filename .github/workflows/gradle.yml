@@ -81,7 +81,7 @@ jobs:
       # 서버에서 Docker 이미지 실행
       # HOST_DEV = 퍼블릭 IPv4 DNS , USERNAME = ubuntu, KEY = pem 키 전체
     - name: EC2 Docker Run
-      uses: appleboy/ssh-action@master
+      uses: appleboy/ssh-action@v0.1.6
       if: contains(github.ref, 'dev')
       with:
         host: ${{ secrets.HOST_DEV }}
