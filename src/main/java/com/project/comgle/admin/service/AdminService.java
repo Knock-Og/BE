@@ -23,7 +23,7 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public SuccessResponse updatePosition(Long memberId, String pos) {
+    public SuccessResponse modifyPosition(Long memberId, String pos) {
 
         PositionEnum position ;
 
@@ -49,7 +49,7 @@ public class AdminService {
     }
 
     @Transactional
-    public SuccessResponse signup(SignupRequestDto signupRequestDto, Member member){
+    public SuccessResponse addMember(SignupRequestDto signupRequestDto, Member member){
 
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());

@@ -57,7 +57,7 @@ public class SmsService {
     private String phone;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<SmsResponseDto> sendSmsCode(FindEmailRequestDto emailCheckRequestDto) {
+    public ResponseEntity<SmsResponseDto> SendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
 
         Member findMember = memberRepository.findByMemberNameStartingWithAndPhoneNum(emailCheckRequestDto.getMemberName(),
                 emailCheckRequestDto.getPhoneNum()).orElseThrow(
@@ -67,12 +67,10 @@ public class SmsService {
         int authenticationCode = new Random().nextInt(900000)+100000;
 
         SmsResponseDto smsResponseDto ;
-        try {
-            smsResponseDto = sendSms(SmsMessageDto.of( findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode ));
-            smsResponseDto.setPhoneNum(findMember.getPhoneNum());
-        } catch (IOException | URISyntaxException | InvalidKeyException | NoSuchAlgorithmException e) {
-            throw new CustomException(ExceptionEnum.SMS_SEND_ERR);
-        }
+
+        smsResponseDto = sendSms(SmsMessageDto.of( findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode ));
+        smsResponseDto.setPhoneNum(findMember.getPhoneNum());
+
         smsCodeMap.put(findMember.getPhoneNum(), authenticationCode);
 
         return ResponseEntity.ok()
@@ -100,6 +98,12 @@ public class SmsService {
         smsCodeMap.remove(findMember.getPhoneNum());
 
         return ResponseEntity.ok().body(findEmail);
+    }
+
+    public void clearSmsCode(){
+        log.info("before smsCodeMap size = {}", smsCodeMap.size());
+        smsCodeMap.clear();
+        log.info("Current Time : {} - Success smsCodeMap Clear ", LocalTime.now());
     }
 
     // Signature 필드 값 생성을 위한 메서드
@@ -170,12 +174,6 @@ public class SmsService {
         }
 
         return response;
-    }
-
-    public void clearSmsCode(){
-        log.info("before smsCodeMap size = {}", smsCodeMap.size());
-        smsCodeMap.clear();
-        log.info("Current Time : {} - Success smsCodeMap Clear ", LocalTime.now());
     }
 
 }
