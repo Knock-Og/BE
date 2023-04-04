@@ -1,7 +1,7 @@
 package com.project.comgle.auth.controller;
 
 import com.project.comgle.auth.dto.FindEmailRequestDto;
-import com.project.comgle.auth.dto.SmsResponseDto;
+import com.project.comgle.auth.dto.FindEmailResponseDto;
 import com.project.comgle.auth.service.SmsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +23,8 @@ public class SmsController {
 
     @Operation(summary = "SMS 코드 발송 API", description = "Email과 연락처를 통해서 유효한 회원인지 확인 후 SMS 코드를 발송 합니다.")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping("/sms")
-    public ResponseEntity<SmsResponseDto> sendSmsCode(@RequestBody FindEmailRequestDto emailCheckRequestDto) {
+    @PostMapping("/auth/sms")
+    public ResponseEntity<FindEmailResponseDto> smsCodeSend(@RequestBody FindEmailRequestDto emailCheckRequestDto) {
         return smsService.sendSmsCode(emailCheckRequestDto);
     }
 

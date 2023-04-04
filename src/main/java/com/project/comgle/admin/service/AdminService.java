@@ -1,7 +1,7 @@
 package com.project.comgle.admin.service;
 
+import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.global.common.response.SuccessResponse;
-import com.project.comgle.member.dto.SignupRequestDto;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;

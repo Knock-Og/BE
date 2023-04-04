@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SmsResponseDto {
+public class FindEmailResponseDto {
 
     private String requestId;
 
@@ -20,8 +20,8 @@ public class SmsResponseDto {
     @Setter
     private String phoneNum;
 
-    public static SmsResponseDto of(String requestId, LocalDateTime requestTime, String statusCode, String statusName){
-        return SmsResponseDto.builder()
+    public static FindEmailResponseDto of(String requestId, LocalDateTime requestTime, String statusCode, String statusName){
+        return FindEmailResponseDto.builder()
                 .requestId(requestId)
                 .requestTime(requestTime)
                 .statusCode(statusCode)
