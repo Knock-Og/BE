@@ -23,34 +23,34 @@ public class PostController {
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/post")
-    public ResponseEntity<MessageResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponseDto> postCreate(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.createPost(postRequestDto, userDetails);
     }
 
     @Operation(summary = "게시글 삭제 API", description = "해당 게시글을 삭제합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/post/{post-id}")
-    public ResponseEntity<MessageResponseDto> deletePost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponseDto> postDelete(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails.getMember());
     }
 
     @Operation(summary = "게시글 수정 API", description = "해당 게시글을 수정합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/post/{post-id}")
-    public ResponseEntity<MessageResponseDto> updatePost(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponseDto> postUpdate(@PathVariable("post-id") Long id, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.updatePost(id, postRequestDto, userDetails.getMember());
     }
 
     @Operation(summary = "게시글 조회 API", description = "상세보기 PAGE를 위해 해당 게시글을 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/post/{post-id}")
-    public ResponseEntity<PostResponseDto> readPost(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<PostResponseDto> postRead(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.readPost(id, userDetails.getMember());
     }
 
     // 임시로 editingStatus 수정을 위한 API
     @PutMapping("post/{post-id}/editingStatus")
-    public ResponseEntity<MessageResponseDto> changeEditingStatus(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponseDto> editingStatusChange(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.changeEditingStatus(id, userDetails.getMember());
     }
 }
