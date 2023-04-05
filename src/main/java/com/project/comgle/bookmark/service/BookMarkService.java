@@ -1,5 +1,6 @@
 package com.project.comgle.bookmark.service;
 
+import com.project.comgle.bookmark.dto.PostPageResponseDto;
 import com.project.comgle.bookmark.entity.BookMark;
 import com.project.comgle.bookmark.entity.BookMarkFolder;
 import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
@@ -17,6 +18,7 @@ import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -174,7 +176,7 @@ public class BookMarkService {
     }
 
     // 즐겨찾기 폴더 별 게시글 조회
-    public List<PostResponseDto> readPostForBookMark(Long folderId, Member member){
+    public PostPageResponseDto readPostForBookMark(Long folderId, int page, Member member){
         Optional<Member> findMember = memberRepository.findById(member.getId());
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
@@ -185,7 +187,17 @@ public class BookMarkService {
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
 
-        List<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId);
+        int nowPage = page-1;   // 현재 페이지
+        int size = 10;  // 한 페이지당 게시글 수
+
+        int endP = bookMarkRepository.countByBookMarkFolderId(findBookMarkFolder.get().getId());
+        if(endP % size == 0){
+            endP = endP / size;
+        } else if (endP % size > 0) {
+            endP = endP / size + 1;
+        }
+
+        List<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId, PageRequest.of(nowPage, size)).toList();
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
         for (int i = 0; i < bookMarkList.size(); i++) {
@@ -206,7 +218,7 @@ public class BookMarkService {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
-        return postResponseDtoList;
+        return PostPageResponseDto.of(endP,postResponseDtoList);
     }
 
 }
