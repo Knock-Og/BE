@@ -1,14 +1,12 @@
-package com.project.comgle.member.dto;
+package com.project.comgle.admin.dto;
 
 import com.project.comgle.global.utils.SchemaDescriptionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@AllArgsConstructor
 public class SignupRequestDto {
 
     @NotNull(message = "회원명은 필수 값입니다.")

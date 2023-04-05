@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -65,10 +66,8 @@ public class WebSecurityConfig {
         http.authorizeRequests() //  요청에 대한 보안 검사를 구성한다.
                 .antMatchers("/login").permitAll()
                 .antMatchers("/check/**").permitAll()
-                .antMatchers("/mail/auth").permitAll()
-                .antMatchers("/member/pwd/**").permitAll()
-                .antMatchers("/member/email").permitAll()
-                .antMatchers("/sms").permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/member/**").permitAll()
                 .antMatchers("/connect/**").permitAll()
                 .anyRequest().authenticated() // 나머지 URL에 대한 접근 권한을 설정합니다. 인증된 사용자만 접근할 수 있다.
                 // JWT 인증/인가를 사용하기 위한 설정

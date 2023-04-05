@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class EmailAuthResponseDto {
+
     private String password;
 
     public EmailAuthResponseDto(String password) {

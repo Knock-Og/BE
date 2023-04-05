@@ -35,7 +35,7 @@ public class EmailService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public SuccessResponse sendEmail(String toEmail) throws MessagingException {
+    public SuccessResponse sendEmailCode(String toEmail) throws MessagingException {
 
         if (redisUtil.existData(toEmail)) {
             redisUtil.deleteData(toEmail);
@@ -54,7 +54,31 @@ public class EmailService {
     }
 
     @Transactional
-    public MimeMessage createEmailForm(String email) throws MessagingException {
+    public EmailAuthResponseDto findPassWord(String toEmail, String code){
+
+        String codeFoundByEmail = redisUtil.getData(toEmail);
+        if (codeFoundByEmail == null) {
+            throw new CustomException(ExceptionEnum.INVALID_VALUE);
+        }
+
+        Optional<Member> findMember = memberRepository.findByEmail(toEmail);
+        if(findMember.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
+        }
+
+        if(codeFoundByEmail.equals(code)){
+            String newPwd = getRandomPwd();
+            String newPwdEncode = passwordEncoder.encode(newPwd);
+
+            findMember.get().updatePwd(newPwdEncode);
+
+            return new EmailAuthResponseDto(newPwd);
+        }
+
+        throw new CustomException(ExceptionEnum.INVALID_VALUE);
+    }
+
+    private MimeMessage createEmailForm(String email) throws MessagingException {
 
         String authNum = createCode();
 
@@ -69,21 +93,20 @@ public class EmailService {
         return message;
     }
 
-    @Transactional
-    public String createCode() {
+    private String createCode() {
 
         Random random = new Random();
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
 
         for(int i = 0; i < 12; i++) {
             int index = random.nextInt(3);
 
             switch (index) {
                 case 0 :
-                    key.append((char) ((int)random.nextInt(26) + 97));
+                    key.append((char) (random.nextInt(26) + 97));
                     break;
                 case 1:
-                    key.append((char) ((int)random.nextInt(26) + 65));
+                    key.append((char) (random.nextInt(26) + 65));
                     break;
                 case 2:
                     key.append(random.nextInt(9));
@@ -94,8 +117,7 @@ public class EmailService {
         return key.toString();
     }
 
-    @Transactional
-    public String setContext(String code) {
+    private String setContext(String code) {
 
         Context context = new Context();
         context.setVariable("code", code);
@@ -103,51 +125,23 @@ public class EmailService {
         return templateEngine.process("mail", context);
     }
 
-    @Transactional
-    public EmailAuthResponseDto checkMailCode(String toEmail, String code){
+    private String getRandomPwd(){
 
-        String codeFoundByEmail = redisUtil.getData(toEmail);
-        if (codeFoundByEmail == null) {
-            throw new CustomException(ExceptionEnum.INVALID_VALUE);
-        }
-
-        Optional<Member> findMember = memberRepository.findByEmail(toEmail);
-        if(findMember.isEmpty()){
-            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
-        }
-
-        if(codeFoundByEmail.equals(code)){
-            String newPwd = getRamdomPwd();
-            String newPwdEncode = passwordEncoder.encode(newPwd);
-
-            findMember.get().updatePwd(newPwdEncode);
-
-            return new EmailAuthResponseDto(newPwd);
-        }
-
-        throw new CustomException(ExceptionEnum.INVALID_VALUE);
-    }
-
-    // 비밀번호 랜덤
-    @Transactional
-    public String getRamdomPwd(){
-
+        // 강력한 난수를 발생시키기 위해 SecureRandom을 사용
+        SecureRandom sr = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
         char[] charSet = new char[] {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
                 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
                 '!', '@', '#', '$', '%', '^', '&' };
 
-        StringBuffer sb = new StringBuffer();
-        SecureRandom sr = new SecureRandom();   // 강력한 난수를 발생시키기 위해 SecureRandom을 사용
-        sr.setSeed(new Date().getTime());
-
-        int idx = 0;
         int len = charSet.length;
 
-        for (int i=0; i<16; i++) {
-            idx = sr.nextInt(len);
-            sb.append(charSet[idx]);
+        sr.setSeed(new Date().getTime());
+
+        for (int i = 0 ; i < 16 ; i++) {
+            sb.append(charSet[sr.nextInt(len)]);
         }
 
         return sb.toString();

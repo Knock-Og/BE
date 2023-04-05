@@ -9,7 +9,7 @@ import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.repository.MemberRepository;
 import com.project.comgle.auth.dto.SmsMessageDto;
 import com.project.comgle.auth.dto.SmsRequestDto;
-import com.project.comgle.auth.dto.SmsResponseDto;
+import com.project.comgle.auth.dto.FindEmailResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -57,7 +57,7 @@ public class SmsService {
     private String phone;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<SmsResponseDto> SendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+    public ResponseEntity<SmsResponseDto> sendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
 
         Member findMember = memberRepository.findByMemberNameStartingWithAndPhoneNum(emailCheckRequestDto.getMemberName(),
                 emailCheckRequestDto.getPhoneNum()).orElseThrow(
@@ -66,15 +66,13 @@ public class SmsService {
 
         int authenticationCode = new Random().nextInt(900000)+100000;
 
-        SmsResponseDto smsResponseDto ;
-
-        smsResponseDto = sendSms(SmsMessageDto.of( findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode ));
+        SmsResponseDto smsResponseDto = sendSms(SmsMessageDto.of(findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode));
         smsResponseDto.setPhoneNum(findMember.getPhoneNum());
 
         smsCodeMap.put(findMember.getPhoneNum(), authenticationCode);
 
         return ResponseEntity.ok()
-                .body(smsResponseDto);
+                .body(findEmailResponseDto);
 
     }
 
@@ -145,7 +143,7 @@ public class SmsService {
     }
 
     // 메세지 발송 메서드
-    private SmsResponseDto sendSms(SmsMessageDto messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private FindEmailResponseDto sendSms(SmsMessageDto messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
 
         // NAVER SMS Service를 활용하기 위한 요청 Header
         Long time = System.currentTimeMillis();
@@ -167,10 +165,10 @@ public class SmsService {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-        SmsResponseDto response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, SmsResponseDto.class);
+        FindEmailResponseDto response = restTemplate.postForObject(new URI("https://sens.apigw.ntruss.com/sms/v2/services/"+ serviceId +"/messages"), httpBody, FindEmailResponseDto.class);
 
         if(Objects.isNull(response)){
-            throw new CustomException(ExceptionEnum.SMS_SEND_ERR);
+            throw new CustomException(ExceptionEnum.SEND_SMS_CODE_ERR);
         }
 
         return response;
