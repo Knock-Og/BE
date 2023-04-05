@@ -1,11 +1,15 @@
 package com.project.comgle.mypage.service;
 
+import com.project.comgle.bookmark.dto.PostPageResponseDto;
+import com.project.comgle.global.exception.CustomException;
+import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
 import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -14,12 +18,28 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MyPageService {
+
     private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getAllMyPosts(UserDetailsImpl userDetails) {
+    public PostPageResponseDto getAllMyPosts(int page, UserDetailsImpl userDetails) {
 
-        List<Post> allMyPosts = postRepository.findAllByMember(userDetails.getMember());
+        int nowPage = page-1;   // 현재 페이지
+        int size = 10;  // 한 페이지당 게시글 수
+
+        List<Post> allMyPosts = postRepository.findAllByMember(userDetails.getMember(), PageRequest.of(nowPage, size)).toList();
+
+        if(allMyPosts.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+        }
+
+        int endP = postRepository.countByMember(userDetails.getMember());
+        if(endP % size == 0){
+            endP = endP / size;
+        } else if (endP % size > 0) {
+            endP = endP / size + 1;
+        }
+
         List<PostResponseDto> responseDtos = new ArrayList<>();
         for (Post post : allMyPosts) {
             List<Keyword> keywords = post.getKeywords();
@@ -29,7 +49,12 @@ public class MyPageService {
             }
             responseDtos.add(PostResponseDto.of(post, post.getCategory().getCategoryName(), keyword));
         }
-        return responseDtos;
+
+        if(responseDtos.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+        }
+
+        return PostPageResponseDto.of(endP,responseDtos);
     }
 
 }

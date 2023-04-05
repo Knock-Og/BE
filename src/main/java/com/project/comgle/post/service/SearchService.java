@@ -2,7 +2,10 @@ package com.project.comgle.post.service;
 
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.company.entity.Company;
+import com.project.comgle.global.exception.CustomException;
+import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.entity.Member;
+import com.project.comgle.post.dto.SearchPageResponseDto;
 import com.project.comgle.post.dto.SearchResponseDto;
 import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.post.entity.Keyword;
@@ -16,6 +19,8 @@ import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
@@ -68,18 +73,28 @@ public class SearchService {
         return searchResponseDtoList;
     }
 
-
     @Transactional
-    public List<SearchResponseDto> searchCategory(String category, Member member) {
+    public SearchPageResponseDto searchCategory(String category, int page, Member member) {
 
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(category, member.getCompany());
         if (findCategory.isEmpty()) {
             throw new IllegalArgumentException("해당 카테고리의 게시물이 없습니다.");
         }
-        List<Post> findPosts = postRepository.findAllByCategoryId(findCategory.get().getId());
-        Collections.sort(findPosts, Comparator.comparingInt(Post::getScore).reversed());
+
+        int nowPage = page-1;   // 현재 페이지
+        int size = 10;  // 한 페이지당 게시글 수
+
+        int endP = postRepository.countByCategoryId(findCategory.get().getId());
+        if(endP % size == 0){
+            endP = endP / size;
+        } else if (endP % size > 0) {
+            endP = endP / size + 1;
+        }
+
+        Page<Post> findPosts = postRepository.findAllByCategoryId(findCategory.get().getId(), PageRequest.of(nowPage, size));
 
         List<SearchResponseDto> searchResponseDtoList = new ArrayList<>();
+
         for (Post post : findPosts) {
             List<Keyword> keywords = post.getKeywords();
             String[] keywordList = new String[keywords.size()];
@@ -92,7 +107,11 @@ public class SearchService {
             searchResponseDtoList.add(SearchResponseDto.of(post, keywordList, commentList.size()));
         }
 
-        return searchResponseDtoList;
+        if(searchResponseDtoList.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+        }
+
+        return  SearchPageResponseDto.of(endP,searchResponseDtoList);
     }
 
     // 키워드 명사 추출
