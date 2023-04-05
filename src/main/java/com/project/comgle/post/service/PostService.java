@@ -23,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -39,7 +38,6 @@ public class PostService {
     private final LogRepository logRepository;
     private final BookMarkRepository bookMarkRepository;
     private final CommentRepository commentRepository;
-
 
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
@@ -97,6 +95,8 @@ public class PostService {
             throw new IllegalArgumentException("해당 카테고리가 없습니다.");
         }
 
+        String oldContent = findPost.get().getContent();
+
         List<Keyword> currentKeywords = keywordRepository.findAllByPost(findPost.get());
         List<String> inputKeyWords = new ArrayList<>(Arrays.asList(postRequestDto.getKeywords()));
         List<String> newKeywords = new ArrayList<>();
@@ -116,7 +116,7 @@ public class PostService {
             }
         }
 
-        findPost.get().update(postRequestDto,findCategory.get());
+        findPost.get().update(postRequestDto, findCategory.get());
 
 //        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
 //        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
@@ -129,7 +129,20 @@ public class PostService {
 //        });
 
         String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
-        Log newLog = Log.of (member.getMemberName(), content, findPost.get());
+
+        String newContent = postRequestDto.getContent();
+
+        List<Integer> changedLineNum = new ArrayList<>();
+        String[] oldContentLines = oldContent.split("[.]");
+        String[] newContentLines = newContent.split("[.]");
+        for (int i = 0; i < oldContentLines.length; i++) {
+            if (!oldContentLines[i].equals(newContentLines[i])) {
+                changedLineNum.add(i + 1);
+            }
+        }
+
+        Log newLog = Log.of (member.getMemberName(), content, oldContent, newContent, changedLineNum, findPost.get());
+
         logRepository.save(newLog);
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
