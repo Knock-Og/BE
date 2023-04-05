@@ -6,22 +6,22 @@ import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.PostRequestDto;
+import com.project.comgle.post.entity.*;
 import com.project.comgle.post.repository.EmitterRepository;
 import com.project.comgle.post.repository.KeywordRepository;
 import com.project.comgle.post.repository.LogRepository;
 import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.post.dto.PostResponseDto;
-import com.project.comgle.post.entity.WeightEnum;
-import com.project.comgle.post.entity.Keyword;
-import com.project.comgle.post.entity.Log;
-import com.project.comgle.post.entity.Post;
 import com.project.comgle.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -113,15 +113,15 @@ public class PostService {
 
         findPost.get().update(postRequestDto,findCategory.get());
 
-//        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
-//        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
-//            try {
-//                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
-//                emitter.complete();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
+        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
+        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
+            try {
+                emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
+                emitter.complete();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
         Log newLog = Log.of (member.getMemberName(), content, findPost.get());
