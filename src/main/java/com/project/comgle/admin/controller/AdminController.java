@@ -2,7 +2,7 @@ package com.project.comgle.admin.controller;
 
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.member.dto.PositionRequestDto;
-import com.project.comgle.member.dto.SignupRequestDto;
+import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.admin.service.AdminService;

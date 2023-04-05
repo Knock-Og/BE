@@ -2,7 +2,7 @@ package com.project.comgle.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.comgle.auth.dto.FindEmailRequestDto;
-import com.project.comgle.auth.dto.SmsResponseDto;
+import com.project.comgle.auth.dto.FindEmailResponseDto;
 import com.project.comgle.auth.service.SmsService;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -31,16 +30,15 @@ public class SmsController {
 
     @Operation(summary = "SMS 코드 발송 API", description = "Email과 연락처를 통해서 유효한 회원인지 확인 후 SMS 코드를 발송 합니다.")
     @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping("/sms")
-    public ResponseEntity<SmsResponseDto> smsCodeSend(@RequestBody FindEmailRequestDto emailCheckRequestDto) {
+    @PostMapping("/auth/sms")
+    public ResponseEntity<FindEmailResponseDto> smsCodeSend(@RequestBody FindEmailRequestDto emailCheckRequestDto) {
 
         try {
-            return smsService.SendSmsCode(emailCheckRequestDto);
+            return smsService.sendSmsCode(emailCheckRequestDto);
         } catch (UnsupportedEncodingException | URISyntaxException | NoSuchAlgorithmException | InvalidKeyException |
                  JsonProcessingException e) {
-            throw new CustomException(ExceptionEnum.SMS_SEND_ERR);
+            throw new CustomException(ExceptionEnum.SEND_SMS_CODE_ERR);
         }
-
     }
 
     @Operation(summary = "회원 Email 찾기 API", description = "SMS 코드 확인 후 EMAIL을 발송합니다.")

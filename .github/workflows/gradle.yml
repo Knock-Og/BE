@@ -4,9 +4,9 @@
 # Repo Action 페이지에 나타날 이름 
 name: Spring Boot & Gradle CI/CD
 
-# Event Trigger 
+# Event Trigger
 # dev branch에 push 또는 pull request가 발생할 경우 동작
-# branch 단위 외에도, tag나 cron 식 등을 사용할 수 있음 
+# branch 단위 외에도, tag나 cron 식 등을 사용할 수 있음
 on:
   push:
     branches: [ dev ]
@@ -54,7 +54,7 @@ jobs:
           echo "${{ secrets.YML_DEV }}" >> ./application.yml
           echo "${{ secrets.YML_COMMON_DEV }}" >> ./application-common.yml
           echo "${{ secrets.YML_DB_DEV }}" >> ./application-db.yml
-          
+
         shell: bash
 
         ## gradle build
@@ -72,6 +72,7 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+
         # 서버에서 Docker 이미지 실행
         # HOST_DEV = 퍼블릭 IPv4 DNS , USERNAME = ubuntu, KEY = pem 키 전체( 만약 안될시 ubuntu에서 password 생성)
       - name: EC2 Docker Run
@@ -88,4 +89,5 @@ jobs:
             sudo docker stop $(docker ps -a -q) 
             sudo docker rm $(docker ps -a -q)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
-            sudo docker run -d -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
+

@@ -1,9 +1,9 @@
 package com.project.comgle.bookmark.controller;
 
+import com.project.comgle.bookmark.dto.PostPageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.bookmark.dto.BookMarkFolderRequestDto;
 import com.project.comgle.bookmark.dto.BookMarkFolderResponseDto;
-import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.bookmark.service.BookMarkService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "BOOKMARK", description = "북마크 관련 API Document")
 public class BookMarkController {
+
     private final BookMarkService bookMarkService;
 
     @Operation(summary = "즐겨찾기 폴더 추가 API", description = "해당 MEMBER의 즐겨찾기 폴더를 추가합니다. 폴더는 최대 100개까지 가능합니다.")
@@ -65,8 +66,8 @@ public class BookMarkController {
     @Operation(summary = "즐겨찾기 폴더 별 게시글 조회 API", description = "해당 폴더에 즐겨찾기한 게시글을 모두 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/folder/{folder-id}/bookmarks")
-    public List<PostResponseDto> readPostForBookMark(@PathVariable(name = "folder-id") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return bookMarkService.readPostForBookMark(folderId, userDetails.getMember());
+    public PostPageResponseDto readPostForBookMark(@PathVariable(name = "folder-id") Long folderId, @RequestParam("p") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return bookMarkService.readPostForBookMark(folderId, page, userDetails.getMember());
     }
 
 }

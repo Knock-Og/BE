@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class SuccessResponse {
+
     private int status;
     private String message;
 
