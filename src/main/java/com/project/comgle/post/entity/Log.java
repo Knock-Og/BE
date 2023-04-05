@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +21,15 @@ public class Log {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    private String oldContent;
+
+    @Column(nullable = false, columnDefinition = "MEDIUMTEXT")
+    private String newContent;
+
+    @ElementCollection
+    private List<Integer> changedLineNum;
+
     @Column(nullable = false)
     private LocalDateTime createDate = LocalDateTime.now();
 
@@ -28,16 +38,22 @@ public class Log {
     private Post post;
 
     @Builder
-    private Log(String memberName, String content, Post post) {
+    private Log(String memberName, String content, String oldContent, String newContent, List<Integer> changedLineNum, Post post) {
         this.memberName = memberName;
         this.content = content;
+        this.oldContent = oldContent;
+        this.newContent = newContent;
+        this.changedLineNum = changedLineNum;
         this.post = post;
     }
 
-    public static Log of (String memberName, String content,  Post post) {
+    public static Log of (String memberName, String content, String oldContent, String newContent, List<Integer> changedLineNum, Post post) {
         return Log.builder()
                 .memberName(memberName)
                 .content(content)
+                .oldContent(oldContent)
+                .newContent(newContent)
+                .changedLineNum(changedLineNum)
                 .post(post)
                 .build();
     }

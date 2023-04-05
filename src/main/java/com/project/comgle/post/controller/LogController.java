@@ -27,5 +27,4 @@ public class LogController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return logService.getAllLogs(postId, userDetails);
     }
-
 }
