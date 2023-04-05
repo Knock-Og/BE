@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -35,10 +34,10 @@ public class SmsController {
     public ResponseEntity<FindEmailResponseDto> smsCodeSend(@RequestBody FindEmailRequestDto emailCheckRequestDto) {
 
         try {
-            return smsService.SendSmsCode(emailCheckRequestDto);
+            return smsService.sendSmsCode(emailCheckRequestDto);
         } catch (UnsupportedEncodingException | URISyntaxException | NoSuchAlgorithmException | InvalidKeyException |
                  JsonProcessingException e) {
-            throw new CustomException(ExceptionEnum.SMS_SEND_ERR);
+            throw new CustomException(ExceptionEnum.SEND_SMS_CODE_ERR);
         }
     }
 

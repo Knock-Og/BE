@@ -25,7 +25,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -57,7 +56,7 @@ public class SmsService {
     private String phone;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<SmsResponseDto> sendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+    public ResponseEntity<FindEmailResponseDto> sendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
 
         Member findMember = memberRepository.findByMemberNameStartingWithAndPhoneNum(emailCheckRequestDto.getMemberName(),
                 emailCheckRequestDto.getPhoneNum()).orElseThrow(
@@ -66,8 +65,8 @@ public class SmsService {
 
         int authenticationCode = new Random().nextInt(900000)+100000;
 
-        SmsResponseDto smsResponseDto = sendSms(SmsMessageDto.of(findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode));
-        smsResponseDto.setPhoneNum(findMember.getPhoneNum());
+        FindEmailResponseDto findEmailResponseDto = sendSms(SmsMessageDto.of(findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode));
+        findEmailResponseDto.setPhoneNum(findMember.getPhoneNum());
 
         smsCodeMap.put(findMember.getPhoneNum(), authenticationCode);
 

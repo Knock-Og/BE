@@ -18,13 +18,17 @@ import com.project.comgle.post.entity.Log;
 import com.project.comgle.post.entity.Post;
 import com.project.comgle.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostService {
 
@@ -40,6 +44,7 @@ public class PostService {
     @Transactional
     public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
 
+        log.info("category = {}" , postRequestDto.getCategory());
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getCompany());
 
         if (findCategory.isEmpty()){
