@@ -2,7 +2,7 @@ package com.project.comgle.admin.controller;
 
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.member.dto.PositionRequestDto;
-import com.project.comgle.member.dto.SignupRequestDto;
+import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.admin.service.AdminService;
@@ -26,22 +26,22 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
     @PostMapping("/signup")
-    public SuccessResponse signup(@Valid @RequestBody SignupRequestDto signupRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminService.signup(signupRequestDto, userDetails.getMember());
+    public SuccessResponse memberAdd(@Valid @RequestBody SignupRequestDto signupRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminService.addMember(signupRequestDto, userDetails.getMember());
     }
 
     @Operation(summary = "직책변경 API", description = "회원의 직책을 변경합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
     @PutMapping("/member/{member-id}/position")
-    public SuccessResponse updatePosition(@PathVariable(name = "member-id") Long memberId, @RequestBody PositionRequestDto positionRequestDto){
-        return adminService.updatePosition(memberId, positionRequestDto.getPosition());
+    public SuccessResponse positionModify(@PathVariable(name = "member-id") Long memberId, @RequestBody PositionRequestDto positionRequestDto){
+        return adminService.modifyPosition(memberId, positionRequestDto.getPosition());
     }
 
     @Operation(summary = "Email 중복 확인 API", description = "회원가입 시 Email 중복 확인합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/check/email/{email}")
-    public SuccessResponse checkEmail(@PathVariable String email){
+    public SuccessResponse emailCheck(@PathVariable String email){
         adminService.checkEmail(email);
         return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
     }
@@ -49,7 +49,7 @@ public class AdminController {
     @Operation(summary = "회원명 중복 확인 API", description = "회원가입 시 회원명 중복 확인합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/check/name/{member-name}")
-    public SuccessResponse checkName(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkName(memberName,userDetails.getMember().getCompany());
         return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
     }
