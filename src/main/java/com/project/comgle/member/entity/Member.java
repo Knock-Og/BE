@@ -1,6 +1,6 @@
 package com.project.comgle.member.entity;
 
-import com.project.comgle.member.dto.SignupRequestDto;
+import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.company.entity.Company;
 import lombok.AccessLevel;
 import lombok.Builder;

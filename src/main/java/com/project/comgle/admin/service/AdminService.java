@@ -1,7 +1,7 @@
 package com.project.comgle.admin.service;
 
+import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.global.common.response.SuccessResponse;
-import com.project.comgle.member.dto.SignupRequestDto;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;
@@ -23,7 +23,7 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public SuccessResponse updatePosition(Long memberId, String pos) {
+    public SuccessResponse modifyPosition(Long memberId, String pos) {
 
         PositionEnum position ;
 
@@ -49,7 +49,7 @@ public class AdminService {
     }
 
     @Transactional
-    public SuccessResponse signup(SignupRequestDto signupRequestDto, Member member){
+    public SuccessResponse addMember(SignupRequestDto signupRequestDto, Member member){
 
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
