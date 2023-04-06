@@ -9,8 +9,11 @@ import java.util.Optional;
 public interface BookMarkFolderRepository extends JpaRepository<BookMarkFolder,Long> {
 
     List<BookMarkFolder> findAllByMember(Member member);
+
     Optional<BookMarkFolder> findByBookMarkFolderNameAndMember(String folderName, Member member);
+
     Optional<BookMarkFolder> findByIdAndMember(Long folderId, Member member);
+
     Long countAllByMember(Member member);
 
 }

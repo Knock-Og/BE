@@ -41,16 +41,19 @@ public class BookMarkService {
     public SuccessResponse createBookMarkFolder(String folderName, Member member){
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(folderName, member);
+
         if(bookMarkFolder.isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_FOLDER);
         }
 
         Long countFolder = bookMarkFolderRepository.countAllByMember(member);
+
         if(countFolder>100){
             throw new CustomException(ExceptionEnum.EXCEED_FOLDER_NUM);
         }
@@ -59,17 +62,21 @@ public class BookMarkService {
         bookMarkFolderRepository.save(newBookMarkFolder);
 
         return SuccessResponse.of(HttpStatus.CREATED, "Add BookMark Folder Successful");
+
     }
 
     // 즐겨찾기 폴더 삭제
     @Transactional
     public SuccessResponse delBookMarkFolder(Long folderId, Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
+
         if(bookMarkFolder.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
@@ -77,22 +84,27 @@ public class BookMarkService {
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Delete BookMark Folder Successful");
+
     }
 
     // 즐겨찾기 폴더 수정
     @Transactional
     public SuccessResponse updateBookMarkFolder(Long folderId, String modifyFolderName, Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
+
         if(bookMarkFolder.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
 
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByBookMarkFolderNameAndMember(modifyFolderName,member);
+
         if(findBookMarkFolder.isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_FOLDER);
         }
@@ -100,17 +112,21 @@ public class BookMarkService {
         bookMarkFolder.get().update(modifyFolderName);
 
         return SuccessResponse.of(HttpStatus.CREATED, "Modifying BookMark Folder Successful");
+
     }
 
     // 즐겨찾기 폴더(만) 조회
     @Transactional(readOnly = true)
     public List<BookMarkFolderResponseDto> readBookMarkFolder(Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         List<BookMarkFolder> bookMarkFolders = bookMarkFolderRepository.findAllByMember(member);
+
         if(bookMarkFolders.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
@@ -122,27 +138,33 @@ public class BookMarkService {
         }
 
         return bookMarkFolderList;
+
     }
 
     // 즐겨찾기 추가
     @Transactional
     public SuccessResponse postBookMark(Long folderId, Long postId, Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<Post> findPost = postRepository.findById(postId);
+
         if(findPost.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
+
         if(findBookMarkFolder.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
 
         Optional<BookMark> findBookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(folderId, postId);
+
         if(findBookMark.isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_POST);
         }
@@ -153,17 +175,21 @@ public class BookMarkService {
         findPost.get().updateMethod(WeightEnum.BOOKMARK.getNum());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Register BookMark");
+
     }
 
     // 즐겨찾기 취소
     @Transactional
     public SuccessResponse delBookMark(Long folderId, Long postId, Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
+
         if(findBookMarkFolder.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
@@ -173,24 +199,29 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Unregister BookMark");
+
     }
 
     // 즐겨찾기 폴더 별 게시글 조회
     public PostPageResponseDto readPostForBookMark(Long folderId, int page, Member member){
+
         Optional<Member> findMember = memberRepository.findById(member.getId());
+
         if(findMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
         Optional<BookMarkFolder> findBookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
+
         if(findBookMarkFolder.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
 
-        int nowPage = page-1;   // 현재 페이지
+        int nowPage = page - 1;   // 현재 페이지
         int size = 10;  // 한 페이지당 게시글 수
 
         int endP = bookMarkRepository.countByBookMarkFolderId(findBookMarkFolder.get().getId());
+
         if(endP % size == 0){
             endP = endP / size;
         } else if (endP % size > 0) {
@@ -205,6 +236,7 @@ public class BookMarkService {
 
             List<Keyword> keywords = keywordRepository.findAllByPost(findPost.get());
             String[] keywordList = new String[keywords.size()];
+
             for (int j = 0; j < keywords.size(); j++) {
                 keywordList[j] = keywords.get(j).getKeyword();
             }
@@ -219,6 +251,7 @@ public class BookMarkService {
         }
 
         return PostPageResponseDto.of(endP,postResponseDtoList);
+
     }
 
 }
