@@ -9,7 +9,6 @@ import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.admin.repository.CategoryRepository;
-import com.project.comgle.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

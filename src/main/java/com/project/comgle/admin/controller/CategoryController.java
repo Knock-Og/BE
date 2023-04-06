@@ -1,5 +1,6 @@
 package com.project.comgle.admin.controller;
 
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.admin.dto.CategoryRequestDto;
 import com.project.comgle.admin.dto.CategoryResponseDto;
@@ -33,6 +34,7 @@ public class CategoryController {
         return categoryService.create(categoryRequestDto.getCategoryName().trim(), userDetails.getMember(), userDetails.getCompany());
     }
 
+    @ExeTimer
     @Operation(summary = "모든 카테고리 조회 API", description = "사내 모든 카테고리를 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/categories")
