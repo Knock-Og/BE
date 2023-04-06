@@ -1,6 +1,7 @@
 package com.project.comgle.member.controller;
 
 import com.project.comgle.company.dto.CompanyRequestDto;
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
 import com.project.comgle.global.common.response.MessageResponseDto;
@@ -40,7 +41,8 @@ public class MemberController {
         return memberService.login(loginRequestDto,response);
     }
 
-    @Operation(summary = "회원 회원 조회 API", description = "사내 서비스에 등록된 모든 직원을 조회합니다.")
+    @ExeTimer
+    @Operation(summary = "전체 회원 조회 API", description = "해당 회사 모든 직원을 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/members")
     public List<MemberResponseDto> getMembers(@AuthenticationPrincipal UserDetailsImpl userDetails){

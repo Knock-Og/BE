@@ -2,6 +2,7 @@ package com.project.comgle.comment.controller;
 
 import com.project.comgle.comment.dto.CommentRequestDto;
 import com.project.comgle.comment.dto.CommentResponseDto;
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.comment.service.CommentService;
@@ -30,6 +31,7 @@ public class CommentController {
         return commentService.createComment(postId, commentRequestDto, userDetails);
     }
 
+    @ExeTimer
     @Operation(summary = "댓글 모두 조회 API", description = "해당 게시글에 댓글을 모두 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/comments")

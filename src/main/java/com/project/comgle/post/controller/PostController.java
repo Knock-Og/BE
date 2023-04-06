@@ -1,5 +1,6 @@
 package com.project.comgle.post.controller;
 
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.post.dto.PostRequestDto;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.post.dto.PostResponseDto;
@@ -41,6 +42,7 @@ public class PostController {
         return postService.updatePost(id, postRequestDto, userDetails.getMember());
     }
 
+    @ExeTimer
     @Operation(summary = "게시글 조회 API", description = "상세보기 PAGE를 위해 해당 게시글을 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/post/{post-id}")
