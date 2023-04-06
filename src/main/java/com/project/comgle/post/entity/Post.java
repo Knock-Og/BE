@@ -38,7 +38,7 @@ public class Post extends Timestamped {
 
     // 편집 중 = true
     @Column(nullable = false)
-    private String editingStatus = "false";
+    private String editingStatus;
 
     @Enumerated(EnumType.STRING)
     private PositionEnum modifyPermission;
