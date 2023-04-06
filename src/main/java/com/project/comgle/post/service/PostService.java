@@ -132,8 +132,8 @@ public class PostService {
         String newContent = postRequestDto.getContent();
 
         List<Integer> changedLineNum = new ArrayList<>();
-        String[] oldContentLines = oldContent.split("[.]");
-        String[] newContentLines = newContent.split("[.]");
+        String[] oldContentLines = oldContent.split("\n");
+        String[] newContentLines = newContent.split("\n");
         for (int i = 0; i < oldContentLines.length; i++) {
             if (!oldContentLines[i].equals(newContentLines[i])) {
                 changedLineNum.add(i + 1);
