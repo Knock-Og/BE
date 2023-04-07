@@ -7,10 +7,7 @@ import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.PostRequestDto;
 import com.project.comgle.post.entity.*;
-import com.project.comgle.post.repository.EmitterRepository;
-import com.project.comgle.post.repository.KeywordRepository;
-import com.project.comgle.post.repository.LogRepository;
-import com.project.comgle.post.repository.PostRepository;
+import com.project.comgle.post.repository.*;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
@@ -33,6 +30,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final KeywordRepository keywordRepository;
+    private final KeywordRepositoryImpl keywordRepositoryImpl;
     private final EmitterRepository emitterRepository;
     private final LogRepository logRepository;
     private final BookMarkRepository bookMarkRepository;
@@ -96,7 +94,7 @@ public class PostService {
 
         String oldContent = findPost.get().getContent();
 
-        List<Keyword> currentKeywords = keywordRepository.findAllByPost(findPost.get());
+        List<Keyword> currentKeywords = keywordRepositoryImpl.findAllByPost(findPost.get());
         List<String> inputKeyWords = new ArrayList<>(Arrays.asList(postRequestDto.getKeywords()));
         List<String> newKeywords = new ArrayList<>();
 
@@ -161,7 +159,7 @@ public class PostService {
             throw new IllegalArgumentException("읽기 가능한 회원 등급이 아닙니다.");
         }
 
-        List<Keyword> keywords = keywordRepository.findAllByPost(post.get());
+        List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(post.get());
         String[] keywordList = new String[keywords.size()];
         for (int i=0; i < keywords.size(); i++) {
             keywordList[i] = keywords.get(i).getKeyword();
@@ -198,9 +196,5 @@ public class PostService {
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "편집상태 수정"));
     }
-
-
-    // docker test4
-
 
 }
