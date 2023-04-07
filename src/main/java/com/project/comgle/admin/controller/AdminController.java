@@ -54,4 +54,12 @@ public class AdminController {
         return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
     }
 
+    @Operation(summary = "연락처 중복 확인 API", description = "회원가입 시 연락처 중복 확인합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/check/phone/{phone-num}")
+    public SuccessResponse phoneCheck(@PathVariable(name = "phone-num") String phoneNum, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        adminService.checkPhone(phoneNum);
+        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+    }
+
 }
