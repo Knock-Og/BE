@@ -16,4 +16,6 @@ public interface BookMarkFolderRepository extends JpaRepository<BookMarkFolder,L
 
     Long countAllByMember(Member member);
 
+    void deleteAllByMember(Member member);
+
 }
