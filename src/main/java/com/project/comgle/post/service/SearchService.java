@@ -1,6 +1,9 @@
 package com.project.comgle.post.service;
 
 import com.project.comgle.admin.entity.Category;
+import com.project.comgle.admin.repository.CategoryRepository;
+import com.project.comgle.comment.entity.Comment;
+import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.exception.CustomException;
@@ -8,13 +11,8 @@ import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.SearchPageResponseDto;
 import com.project.comgle.post.dto.SearchResponseDto;
-import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
-import com.project.comgle.admin.repository.CategoryRepository;
-import com.project.comgle.comment.repository.CommentRepository;
-import com.project.comgle.post.repository.KeywordRepository;
-import com.project.comgle.post.repository.KeywordRepositoryImpl;
 import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.post.repository.PostRepositoryImpl;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
@@ -26,11 +24,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.*;
-import java.util.stream.Collectors;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -135,7 +133,7 @@ public class SearchService {
 
         List<String> nouns = result.getNouns();
         
-        log.info("search keywords = {}, time = {}", String.join(", ", nouns), System.currentTimeMillis() - start  + "ms";
+        log.info("search keywords = {}, time = {}", String.join(", ", nouns), System.currentTimeMillis() - start  + "ms");
 
         return nouns;
     }

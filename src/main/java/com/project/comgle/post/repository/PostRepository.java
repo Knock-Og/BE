@@ -24,6 +24,7 @@ import javax.persistence.PersistenceContext;
 public interface PostRepository extends JpaRepository<Post,Long> {
 
     Optional<Post> findByIdAndMember(Long postId, Member member);
+    List<Post> findAllByMember(Member member);
     Page<Post> findAllByMember(Member member, Pageable pageable);
 //    Set<Post> findAllByTitleContainsOrContentContaining(String title,String content);
     int countByCategoryId(Long categoryId);
