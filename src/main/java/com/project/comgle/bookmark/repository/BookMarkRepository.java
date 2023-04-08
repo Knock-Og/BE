@@ -18,4 +18,6 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
     int countByBookMarkFolderId(Long folderId);
 
+    void deleteAllByPostIn(List<Post> post);
+
 }

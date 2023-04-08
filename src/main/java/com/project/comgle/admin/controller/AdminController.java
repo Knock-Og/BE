@@ -30,6 +30,14 @@ public class AdminController {
         return adminService.addMember(signupRequestDto, userDetails.getMember());
     }
 
+    @Operation(summary = "회원탈퇴 API", description = "회원을 탈퇴시킵니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Secured(PositionEnum.Authority.ADMIN)
+    @DeleteMapping("/member/{member-id}")
+    public SuccessResponse memberRemove(@PathVariable(name = "member-id") Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminService.removeMember(memberId, userDetails.getMember(), userDetails.getCompany());
+    }
+
     @Operation(summary = "직책변경 API", description = "회원의 직책을 변경합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
