@@ -29,6 +29,9 @@ public class Member {
     @Column(nullable = false, length = 20)
     private String phoneNum;
 
+    @Column(nullable = true)
+    private boolean valid = true;
+
     @Enumerated(EnumType.STRING)
     private PositionEnum position;
 

@@ -4,13 +4,13 @@ import com.project.comgle.admin.entity.Category;
 import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.comment.repository.CommentRepository;
+import com.project.comgle.global.common.response.MessageResponseDto;
+import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.PostRequestDto;
+import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.entity.*;
 import com.project.comgle.post.repository.*;
-import com.project.comgle.global.common.response.MessageResponseDto;
-import com.project.comgle.post.dto.PostResponseDto;
-import com.project.comgle.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
