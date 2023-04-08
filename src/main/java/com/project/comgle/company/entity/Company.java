@@ -30,6 +30,9 @@ public class Company {
     @Column(nullable = false, length = 20)
     private String businessNum;
 
+    @Column(nullable = true)
+    private boolean valid = true;
+
     @Column(nullable = false, length = 20)
     private String companyEmail;
 

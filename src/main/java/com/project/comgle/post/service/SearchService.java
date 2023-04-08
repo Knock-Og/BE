@@ -54,8 +54,7 @@ public class SearchService {
                 ).collect(Collectors.toList());
     }
 
-/*
-        List<String> keywords = getWords(keyword);
+      /*  List<String> keywords = getWords(keyword);
         List<Post> postList = new ArrayList<>();
 
         for (String key : keywords) {
@@ -75,6 +74,7 @@ public class SearchService {
 
             List<Comment> commentList = commentRepository.findAllByPost(post);
 */
+
 
 
 
@@ -132,7 +132,7 @@ public class SearchService {
         KomoranResult result = komoran.analyze(keyword);
 
         List<String> nouns = result.getNouns();
-        
+
         log.info("search keywords = {}, time = {}", String.join(", ", nouns), System.currentTimeMillis() - start  + "ms");
 
         return nouns;

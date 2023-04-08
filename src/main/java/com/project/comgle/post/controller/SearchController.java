@@ -36,5 +36,5 @@ public class SearchController {
     public SearchPageResponseDto categorySearch(@RequestParam("c") String category, @RequestParam("p") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return searchService.searchCategory(category, page, userDetails.getMember());
     }
-    
+
 }

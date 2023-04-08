@@ -40,6 +40,9 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String editingStatus;
 
+    @Column(nullable = true)
+    private boolean valid = true;
+
     @Enumerated(EnumType.STRING)
     private PositionEnum modifyPermission;
 
