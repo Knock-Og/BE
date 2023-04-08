@@ -1,18 +1,27 @@
 package com.project.comgle.admin.service;
 
 import com.project.comgle.admin.dto.SignupRequestDto;
+import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
+import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.company.entity.Company;
+import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.repository.MemberRepository;
+import com.project.comgle.post.entity.Post;
+import com.project.comgle.post.repository.LogRepository;
+import com.project.comgle.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +29,11 @@ import java.util.Optional;
 public class AdminService {
 
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BookMarkRepository bookMarkRepository;
+    private final BookMarkFolderRepository bookMarkFolderRepository;
+    private final LogRepository logRepository;
 
     @Transactional
     public SuccessResponse modifyPosition(Long memberId, String pos) {
@@ -70,6 +83,28 @@ public class AdminService {
         return SuccessResponse.of(HttpStatus.OK, "회원가입 성공");
     }
 
+    @Transactional
+    public SuccessResponse removeMember(Long memberId, Member admin, Company company) {
+
+        Optional<Member> findMember = memberRepository.findByIdAndCompany(memberId, company);
+
+        if(findMember.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
+        } else if(findMember.get().getPosition() == PositionEnum.ADMIN){
+            throw new CustomException(ExceptionEnum.NOT_DELETE_ADMIN_POSITION);
+        }
+
+        List<Post> findPosts = postRepository.findAllByMember(findMember.get());
+
+        bookMarkRepository.deleteAllByPostIn(findPosts);
+        logRepository.deleteAllByPostIn(findPosts);
+        postRepository.deleteAll(findPosts);
+        bookMarkFolderRepository.deleteAllByMember(findMember.get());
+        memberRepository.delete(findMember.get());
+
+        return SuccessResponse.of(HttpStatus.OK, "회원 삭제 완료");
+    }
+
     @Transactional(readOnly = true)
     public void checkEmail(String email){
 
@@ -85,5 +120,6 @@ public class AdminService {
             throw new CustomException(ExceptionEnum.DUPLICATE_MEMBER);
         }
     }
+
 
 }
