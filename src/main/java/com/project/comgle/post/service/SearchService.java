@@ -2,6 +2,7 @@ package com.project.comgle.post.service;
 
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.company.entity.Company;
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.entity.Member;
@@ -40,10 +41,22 @@ public class SearchService {
     private final PostRepositoryImpl postRepositoryImpl;
     private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
+    private final PostRepositoryImpl postRepositorys;
 
+    @ExeTimer
     @Transactional
     public List<SearchResponseDto> searchKeyword(String keyword, Company company) {
 
+
+        return postRepositorys.findAllByContainingKeyword(getWords(keyword),company.getId())
+                .stream().map(k -> {
+                            String[] key = k.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
+                            List<Comment> allByPost = commentRepository.findAllByPost(k);
+                            return SearchResponseDto.of(k, key, allByPost.size()); }
+                ).collect(Collectors.toList());
+    }
+
+/*
         List<String> keywords = getWords(keyword);
         List<Post> postList = new ArrayList<>();
 
@@ -63,12 +76,11 @@ public class SearchService {
             }
 
             List<Comment> commentList = commentRepository.findAllByPost(post);
+*/
 
-            searchResponseDtoList.add(SearchResponseDto.of(post, keywordList, commentList.size()));
-        }
 
-        return searchResponseDtoList;
-    }
+
+
 
     @Transactional
     public SearchPageResponseDto searchCategory(String category, int page, Member member) {
@@ -112,7 +124,10 @@ public class SearchService {
     }
 
     // 키워드 명사 추출
-    private static List<String> getWords(String keyword) {
+
+
+    public List<String> getWords(String keyword) {
+        long start = System.currentTimeMillis();
 
         Komoran komoran = new Komoran(DEFAULT_MODEL.LIGHT);
 
@@ -120,7 +135,8 @@ public class SearchService {
 
         List<String> nouns = result.getNouns();
         
-        log.info("search keywords = {}", String.join(", ", nouns));
+        log.info("search keywords = {}, time = {}", String.join(", ", nouns), System.currentTimeMillis() - start  + "ms";
+
         return nouns;
     }
 
