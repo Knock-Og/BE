@@ -1,5 +1,6 @@
 package com.project.comgle.post.controller;
 
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.post.dto.LogResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.post.service.LogService;
@@ -20,6 +21,7 @@ import java.util.List;
 public class LogController {
     private final LogService logService;
 
+    @ExeTimer
     @Operation(summary = "Log 전체조회 API", description = "해당 게시글에 대한 로그 전체를 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/post/{post-id}/logs")

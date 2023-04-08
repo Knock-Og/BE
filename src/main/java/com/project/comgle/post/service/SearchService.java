@@ -117,7 +117,7 @@ public class SearchService {
     // 키워드 명사 추출
     private static List<String> getWords(String keyword) {
 
-        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+        Komoran komoran = new Komoran(DEFAULT_MODEL.LIGHT);
 
         KomoranResult result = komoran.analyze(keyword);
 
