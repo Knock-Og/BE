@@ -2,6 +2,7 @@ package com.project.comgle.post.service;
 
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.company.entity.Company;
+import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.entity.Member;
@@ -14,6 +15,7 @@ import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.post.repository.KeywordRepository;
 import com.project.comgle.post.repository.PostRepository;
+import com.project.comgle.post.repository.PostRepositoryImpl;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
@@ -38,40 +40,21 @@ public class SearchService {
     private final KeywordRepository keywordRepository;
     private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
+    private final PostRepositoryImpl postRepositorys;
 
+    @ExeTimer
     @Transactional
     public List<SearchResponseDto> searchKeyword(String keyword, Company company) {
 
-        List<String> keywords = getWords(keyword);
-        List<Post> postList = new ArrayList<>();
-
-        for (String key : keywords) {
-            postList.addAll(postRepository.findAllByTitleContainsOrContentContaining(key, key));
-            List<Keyword> findKeyWords = keywordRepository.findAllByKeywordContains(key);
-            for (Keyword k : findKeyWords) {
-                postList.add(k.getPost());
-            }
-        }
-
-        Set<Post> allPosts = new HashSet<>(postList);
-        List<Post> companyPost = allPosts.stream().filter(p -> Objects.equals(p.getCategory().getCompany().getId(), company.getId())).collect(Collectors.toList());
-        Collections.sort(companyPost, Comparator.comparingInt(Post::getScore).reversed());
-
-        List<SearchResponseDto> searchResponseDtoList = new ArrayList<>();
-        for (Post post : companyPost) {
-            List<Keyword> keywords2 = post.getKeywords();
-            String[] keywordList = new String[keywords2.size()];
-            for (int i = 0; i < keywords2.size(); i++) {
-                keywordList[i] = keywords2.get(i).getKeyword();
-            }
-
-            List<Comment> commentList = commentRepository.findAllByPost(post);
-
-            searchResponseDtoList.add(SearchResponseDto.of(post, keywordList, commentList.size()));
-        }
-
-        return searchResponseDtoList;
+        return postRepositorys.findAllByContainingKeyword(getWords(keyword),company.getId())
+                .stream().map(k -> {
+                            String[] key = k.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
+                            List<Comment> allByPost = commentRepository.findAllByPost(k);
+                            return SearchResponseDto.of(k, key, allByPost.size()); }
+                ).collect(Collectors.toList());
     }
+
+
 
     @Transactional
     public SearchPageResponseDto searchCategory(String category, int page, Member member) {
@@ -115,15 +98,17 @@ public class SearchService {
     }
 
     // 키워드 명사 추출
-    private static List<String> getWords(String keyword) {
 
-        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+    public List<String> getWords(String keyword) {
+        long start = System.currentTimeMillis();
+        Komoran komoran = new Komoran("models-full");
 
         KomoranResult result = komoran.analyze(keyword);
 
         List<String> nouns = result.getNouns();
         
         log.info("search keywords = {}", String.join(", ", nouns));
+        log.info("komoran = {}", System.currentTimeMillis() - start  + "ms");
         return nouns;
     }
 
