@@ -64,6 +64,8 @@ public enum ExceptionEnum {
     DUPLICATE_EMAIL(400, "Duplicate email exists."),
     // 중복된 사용자가 존재합니다.
     DUPLICATE_MEMBER(400, "Duplicate member exists."),
+    // 중복된 사용자가 존재합니다.
+    DUPLICATE_PHONE_NUMBER(400, "Duplicate phone number exists."),
     // 중복된 게시글이 존재합니다.
     DUPLICATE_POST(400, "Duplicate post exists."),
     // 중복된 폴더가 존재합니다.

@@ -77,6 +77,7 @@ public class AdminService {
 
         checkName(signupRequestDto.getMemberName(),company);
         checkEmail(signupRequestDto.getEmail());
+        checkPhone(signupRequestDto.getPhoneNum());
 
         Member newMember = Member.of(signupRequestDto,password,position,company);
         memberRepository.save(newMember);
@@ -121,5 +122,12 @@ public class AdminService {
         }
     }
 
+
+    public void checkPhone(String phoneNum) {
+
+        if(memberRepository.findByPhoneNum(phoneNum).isPresent()){
+            throw new CustomException(ExceptionEnum.DUPLICATE_PHONE_NUMBER);
+        }
+    }
 
 }
