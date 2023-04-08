@@ -13,7 +13,9 @@ import com.project.comgle.post.entity.Post;
 import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.post.repository.KeywordRepository;
+import com.project.comgle.post.repository.KeywordRepositoryImpl;
 import com.project.comgle.post.repository.PostRepository;
+import com.project.comgle.post.repository.PostRepositoryImpl;
 import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
@@ -35,7 +37,7 @@ import java.util.Comparator;
 public class SearchService {
 
     private final PostRepository postRepository;
-    private final KeywordRepository keywordRepository;
+    private final PostRepositoryImpl postRepositoryImpl;
     private final CommentRepository commentRepository;
     private final CategoryRepository categoryRepository;
 
@@ -46,16 +48,11 @@ public class SearchService {
         List<Post> postList = new ArrayList<>();
 
         for (String key : keywords) {
-            postList.addAll(postRepository.findAllByTitleContainsOrContentContaining(key, key));
-            List<Keyword> findKeyWords = keywordRepository.findAllByKeywordContains(key);
-            for (Keyword k : findKeyWords) {
-                postList.add(k.getPost());
-            }
+            postList.addAll(postRepositoryImpl.findAllByContainingKeyword(key));
         }
 
-        Set<Post> allPosts = new HashSet<>(postList);
-        List<Post> companyPost = allPosts.stream().filter(p -> Objects.equals(p.getCategory().getCompany().getId(), company.getId())).collect(Collectors.toList());
-        Collections.sort(companyPost, Comparator.comparingInt(Post::getScore).reversed());
+        List<Post> companyPost = postList.stream().distinct().filter(p -> Objects.equals(p.getCategory().getCompany().getId(), company.getId()))
+                .sorted(Comparator.comparingInt(Post::getScore).reversed()).collect(Collectors.toList());
 
         List<SearchResponseDto> searchResponseDtoList = new ArrayList<>();
         for (Post post : companyPost) {
