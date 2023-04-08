@@ -1,6 +1,5 @@
 package com.project.comgle.member.service;
 
-import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.company.repository.CompanyRepository;
@@ -11,7 +10,6 @@ import com.project.comgle.global.utils.JwtUtil;
 import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
 import com.project.comgle.member.entity.Member;
-import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
