@@ -30,6 +30,14 @@ public class AdminController {
         return adminService.addMember(signupRequestDto, userDetails.getMember());
     }
 
+    @Operation(summary = "회원탈퇴 API", description = "회원을 탈퇴시킵니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @Secured(PositionEnum.Authority.ADMIN)
+    @DeleteMapping("/member/{member-id}")
+    public SuccessResponse memberRemove(@PathVariable(name = "member-id") Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return adminService.removeMember(memberId, userDetails.getMember(), userDetails.getCompany());
+    }
+
     @Operation(summary = "직책변경 API", description = "회원의 직책을 변경합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
@@ -51,6 +59,14 @@ public class AdminController {
     @GetMapping("/check/name/{member-name}")
     public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkName(memberName,userDetails.getMember().getCompany());
+        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+    }
+
+    @Operation(summary = "연락처 중복 확인 API", description = "회원가입 시 연락처 중복 확인합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/check/phone/{phone-num}")
+    public SuccessResponse phoneCheck(@PathVariable(name = "phone-num") String phoneNum, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        adminService.checkPhone(phoneNum);
         return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
     }
 

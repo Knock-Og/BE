@@ -8,6 +8,7 @@ import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.repository.MemberRepository;
 import com.project.comgle.post.repository.KeywordRepository;
+import com.project.comgle.post.repository.KeywordRepositoryImpl;
 import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.bookmark.dto.BookMarkFolderResponseDto;
@@ -35,6 +36,7 @@ public class BookMarkService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final KeywordRepository keywordRepository;
+    private final KeywordRepositoryImpl keywordRepositoryImpl;
 
     // 즐겨찾기 폴더 추가
     @Transactional
@@ -234,7 +236,7 @@ public class BookMarkService {
         for (int i = 0; i < bookMarkList.size(); i++) {
             Optional<Post> findPost = postRepository.findById(bookMarkList.get(i).getPost().getId());
 
-            List<Keyword> keywords = keywordRepository.findAllByPost(findPost.get());
+            List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(findPost.get());
             String[] keywordList = new String[keywords.size()];
 
             for (int j = 0; j < keywords.size(); j++) {

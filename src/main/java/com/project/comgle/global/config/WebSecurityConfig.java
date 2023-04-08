@@ -38,7 +38,7 @@ public class WebSecurityConfig {
         return web -> {
             web.ignoring()
                     //.requestMatchers(PathRequest.toH2Console())
-                    .antMatchers("/h2-console/**", "/swagger-ui/**",  "/v3/api-docs/**","/api-docs/**")
+                    .antMatchers("/h2-console/**", "/swagger-ui/**",  "/v3/api-docs/**","/api-docs/**", "/s3.amazonaws.com/**")
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
         };
     }

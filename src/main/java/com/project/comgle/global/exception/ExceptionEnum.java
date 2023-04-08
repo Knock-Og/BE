@@ -34,6 +34,8 @@ public enum ExceptionEnum {
     IMMULATABLE_TO_ADMIN(400,"You cannot change your position with the ADMIN account."),
     // ADMIN 계정은 직책을 변경할 수 없습니다.
     IMMULATABLE_ADMIN_POSITION(400, "The ADMIN account cannot change its position."),
+    // ADMIN 계정은 삭제할 수 없습니다.
+    NOT_DELETE_ADMIN_POSITION(400, "The ADMIN account cannot remove"),
     // 수정할 수 있는 권한이 없습니다.
     INVALID_PERMISSION_TO_MODIFY(400,"You do not have permission to modify."),
     // 읽을 수 있는 권한이 없습니다.
@@ -62,6 +64,8 @@ public enum ExceptionEnum {
     DUPLICATE_EMAIL(400, "Duplicate email exists."),
     // 중복된 사용자가 존재합니다.
     DUPLICATE_MEMBER(400, "Duplicate member exists."),
+    // 중복된 사용자가 존재합니다.
+    DUPLICATE_PHONE_NUMBER(400, "Duplicate phone number exists."),
     // 중복된 게시글이 존재합니다.
     DUPLICATE_POST(400, "Duplicate post exists."),
     // 중복된 폴더가 존재합니다.

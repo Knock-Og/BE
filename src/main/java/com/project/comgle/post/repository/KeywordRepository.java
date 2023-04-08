@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
-    List<Keyword> findAllByPost(Post post);
-
-    List<Keyword> findAllByKeywordContains(String keyword);
+//    List<Keyword> findAllByPost(Post post);
+//    List<Keyword> findAllByKeywordContains(String keyword);
     void deleteAllByPost(Post post);
 }
+
