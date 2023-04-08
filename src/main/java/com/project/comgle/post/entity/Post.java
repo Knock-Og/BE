@@ -55,10 +55,10 @@ public class Post extends Timestamped {
     private Category category;
 
     // 연관관계 추가
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keyword> keywords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
