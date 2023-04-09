@@ -70,4 +70,8 @@ public class Member {
         this.password = password;
     }
 
+    public void withdrawal(){
+        valid = false;
+    }
+
 }

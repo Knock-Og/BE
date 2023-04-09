@@ -3,28 +3,31 @@ package com.project.comgle.admin.service;
 import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
+import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.company.entity.Company;
+import com.project.comgle.company.repository.CompanyRepository;
+import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.member.repository.MemberRepository;
-import com.project.comgle.post.entity.Post;
 import com.project.comgle.post.repository.LogRepository;
 import com.project.comgle.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AdminService {
+
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
@@ -60,14 +63,12 @@ public class AdminService {
     }
 
     @Transactional
-    public SuccessResponse addMember(SignupRequestDto signupRequestDto, Member member){
+    public SuccessResponse addMember(SignupRequestDto signupRequestDto, Member member, Company company){
 
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         PositionEnum position = PositionEnum.valueOf(signupRequestDto.getPosition().trim().toUpperCase());
 
-        Company company = member.getCompany();
-
-        if(company == null){
+        if(Objects.isNull(company)){
             throw new CustomException(ExceptionEnum.NOT_EXIST_COMPANY);
         } else if ( member.getPosition() != PositionEnum.ADMIN) {
             throw new CustomException(ExceptionEnum.REQUIRED_ADMIN_POSITION);
@@ -77,29 +78,23 @@ public class AdminService {
         checkEmail(signupRequestDto.getEmail());
         checkPhone(signupRequestDto.getPhoneNum());
 
-        Member newMember = Member.of(signupRequestDto,password,position,company);
-        memberRepository.save(newMember);
+        memberRepository.save(Member.of(signupRequestDto,password,position,company));
+
         return SuccessResponse.of(HttpStatus.OK, "회원가입 성공");
     }
 
     @Transactional
-    public SuccessResponse removeMember(Long memberId, Member admin, Company company) {
+    public SuccessResponse removeMember(Long memberId, Company company) {
 
         Optional<Member> findMember = memberRepository.findByIdAndCompany(memberId, company);
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         } else if(findMember.get().getPosition() == PositionEnum.ADMIN){
             throw new CustomException(ExceptionEnum.NOT_DELETE_ADMIN_POSITION);
         }
 
-        List<Post> findPosts = postRepository.findAllByMember(findMember.get());
-
-        bookMarkRepository.deleteAllByPostIn(findPosts);
-        logRepository.deleteAllByPostIn(findPosts);
-        postRepository.deleteAll(findPosts);
-        bookMarkFolderRepository.deleteAllByMember(findMember.get());
-        memberRepository.delete(findMember.get());
+        findMember.get().withdrawal();
 
         return SuccessResponse.of(HttpStatus.OK, "회원 삭제 완료");
     }
@@ -120,7 +115,7 @@ public class AdminService {
         }
     }
 
-
+    @Transactional(readOnly = true)
     public void checkPhone(String phoneNum) {
 
         if(memberRepository.findByPhoneNum(phoneNum).isPresent()){

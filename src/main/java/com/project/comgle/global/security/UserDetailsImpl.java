@@ -3,6 +3,7 @@ package com.project.comgle.global.security;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,19 +18,30 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
     private final Company company;
 
-    public UserDetailsImpl(Member member, String username, Company company) {
+    @Builder
+    private UserDetailsImpl(Member member, String username, Company company) {
         this.member = member;
         this.username = username;
         this.company = company;
     }
 
+    public static UserDetailsImpl from(Member member){
+        return UserDetailsImpl.builder()
+                .member(member)
+                .username(member.getMemberName())
+                .company(member.getCompany())
+                .build();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        PositionEnum position = member.getPosition();
 
+        PositionEnum position = member.getPosition();
         SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority(position.getAuthority());
         Collection<GrantedAuthority> authorities = new ArrayList<>();
+
         authorities.add(adminAuthority);
+
         return authorities;
     }
 

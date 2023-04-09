@@ -1,6 +1,7 @@
 package com.project.comgle.post.controller;
 
 import com.project.comgle.global.aop.ExeTimer;
+import com.project.comgle.post.dto.SearchPageResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.post.dto.SearchResponseDto;
 import com.project.comgle.post.service.SearchService;
@@ -24,22 +25,16 @@ public class SearchController {
     @Operation(summary = "키워드 조회 API", description = "제목, 내용, 키워드로 검색하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/search")
-    public List<SearchResponseDto> keywordSearch(@RequestParam(value = "page") int page,
-                                                 @RequestParam(value = "keyword") String keyword,
-                                                 @RequestParam(value = "sort") String sortType,
-                                                 @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return searchService.searchKeyword(page, keyword, sortType, userDetails.getCompany());
+    public List<SearchResponseDto> keywordSearch(@RequestParam("k") String keyword, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return searchService.searchKeyword(keyword, userDetails.getCompany());
     }
 
     @ExeTimer
     @Operation(summary = "카테고리 조회 API", description = "해당 카테고리로 조회하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/category")
-    public List<SearchResponseDto> categorySearch(@RequestParam(value = "page") int page,
-                                                  @RequestParam(value = "category") String category,
-                                                  @RequestParam(value = "sort") String sortType,
-                                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return searchService.searchCategory(page, category, sortType, userDetails.getCompany());
+    public SearchPageResponseDto categorySearch(@RequestParam("c") String category, @RequestParam("p") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return searchService.searchCategory(category, page, userDetails.getMember());
     }
 
 }

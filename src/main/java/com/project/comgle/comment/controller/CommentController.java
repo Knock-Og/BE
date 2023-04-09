@@ -28,6 +28,7 @@ public class CommentController {
     public ResponseEntity<MessageResponseDto> createComment(@PathVariable(name = "post-id") Long postId,
                                                             @RequestBody CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         return commentService.createComment(postId, commentRequestDto, userDetails);
     }
 
@@ -36,6 +37,7 @@ public class CommentController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/comments")
     public List<CommentResponseDto> getComments(@PathVariable(name = "post-id") Long postId) {
+
         return commentService.getComments(postId);
     }
 
@@ -46,6 +48,7 @@ public class CommentController {
                                                             @PathVariable(name = "comment-id") Long commentId,
                                                             @RequestBody CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         return commentService.updateComment(postId, commentId, commentRequestDto, userDetails);
     }
 
@@ -55,7 +58,8 @@ public class CommentController {
     public ResponseEntity<MessageResponseDto> deleteComment(@PathVariable(name = "post-id") Long postId,
                                                             @PathVariable(name = "comment-id") Long commentId,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return commentService.deleteComment(postId, commentId, userDetails);
+
+        return commentService.deleteComment(postId, commentId);
     }
 
 }

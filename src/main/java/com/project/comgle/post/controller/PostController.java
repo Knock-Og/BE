@@ -24,8 +24,8 @@ public class PostController {
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/post")
-    public ResponseEntity<MessageResponseDto> postCreate(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.createPost(postRequestDto, userDetails);
+    public ResponseEntity<MessageResponseDto> postAdd(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.addPost(postRequestDto, userDetails);
     }
 
     @Operation(summary = "게시글 삭제 API", description = "해당 게시글을 삭제합니다.")
@@ -47,7 +47,7 @@ public class PostController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/post/{post-id}")
     public ResponseEntity<PostResponseDto> postRead(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.readPost(id, userDetails.getMember());
+        return postService.readPost(id, userDetails.getMember(), userDetails.getCompany());
     }
 
     // 임시로 editingStatus 수정을 위한 API
