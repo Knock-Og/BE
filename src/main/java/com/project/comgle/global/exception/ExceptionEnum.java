@@ -74,6 +74,8 @@ public enum ExceptionEnum {
     DUPLICATE_FOLDER(400, "Duplicate folder exists."),
     // 중복된 카테고리가 존재합니다.
     DUPLICATE_CATEGORY(400,"Duplicate category exists."),
+    // 중복된 비밀번호가 존재합니다.
+    DUPLICATE_PASSWORD(400, "Duplicate password exists."),
 
     /* 그 외 */
     // 최대 폴더 갯수를 초과하였습니다.
