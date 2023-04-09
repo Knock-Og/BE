@@ -4,11 +4,13 @@ import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.company.repository.CompanyRepository;
 import com.project.comgle.global.common.response.MessageResponseDto;
+import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.global.utils.JwtUtil;
 import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
+import com.project.comgle.member.dto.PasswordRequestDto;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -81,6 +83,31 @@ public class MemberService {
         }
 
         return memberResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public void checkPwd(String pwd, Member member){
+
+        Optional<Member> findMember = memberRepository.findById(member.getId());
+
+        if(!passwordEncoder.matches(pwd, findMember.get().getPassword())){
+            throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
+        }
+    }
+
+    @Transactional
+    public SuccessResponse updatePwd(PasswordRequestDto passwordRequestDto, Member member){
+
+        Optional<Member> findMember = memberRepository.findById(member.getId());
+
+        if(passwordEncoder.matches(passwordRequestDto.getPassword(), findMember.get().getPassword())){
+            throw new CustomException(ExceptionEnum.DUPLICATE_PASSWORD);
+        }
+
+        String newPwdEndcode = passwordEncoder.encode(passwordRequestDto.getPassword());
+        findMember.get().updatePwd(newPwdEndcode);
+
+        return SuccessResponse.of(HttpStatus.OK, "Update Password Successful");
     }
 
 }
