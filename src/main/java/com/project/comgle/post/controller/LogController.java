@@ -25,8 +25,8 @@ public class LogController {
     @Operation(summary = "Log 전체조회 API", description = "해당 게시글에 대한 로그 전체를 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/post/{post-id}/logs")
-    public List<LogResponseDto> getAllLogs(@PathVariable(name = "post-id") Long postId,
+    public List<LogResponseDto> logList(@PathVariable(name = "post-id") Long postId,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return logService.getAllLogs(postId, userDetails);
+        return logService.listLog(postId, userDetails);
     }
 }

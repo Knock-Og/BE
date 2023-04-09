@@ -4,7 +4,10 @@ import com.project.comgle.admin.entity.Category;
 import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.comment.repository.CommentRepository;
+import com.project.comgle.company.entity.Company;
 import com.project.comgle.global.common.response.MessageResponseDto;
+import com.project.comgle.global.exception.CustomException;
+import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.PostRequestDto;
@@ -36,13 +39,12 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public ResponseEntity<MessageResponseDto> createPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+    public ResponseEntity<MessageResponseDto> addPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
 
-        log.info("category = {}" , postRequestDto.getCategory());
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getCompany());
 
         if (findCategory.isEmpty()){
-            throw new IllegalArgumentException("카테고리가 유효하지 않습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY);
         }
 
         Post newPost = Post.from(postRequestDto, findCategory.get(),userDetails.getMember());
@@ -63,16 +65,11 @@ public class PostService {
 
         Optional<Post> post = postRepository.findByIdAndMember(id, member);
 
-        if (post.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시물이 없습니다.");
+        if (post.isEmpty() || !post.get().isValid()) {
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
-        keywordRepository.deleteAllByPost(post.get());
-        bookMarkRepository.deleteAllByPost(post.get());
-        commentRepository.deleteAllByPost(post.get());
-        logRepository.deleteAllByPost(post.get());
-
-        postRepository.delete(post.get());
+        post.get().withdrawal();
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "삭제 완료"));
     }
@@ -83,15 +80,13 @@ public class PostService {
         Optional<Post> findPost = postRepository.findById(id);
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), member.getCompany());
 
-        if (findPost.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         } else if (member.getPosition().getNum() < findPost.get().getModifyPermission().getNum()) {
-            throw new IllegalArgumentException("수정 가능한 회원 등급이 아닙니다.");
+            throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         } else if (findCategory.isEmpty()){
-            throw new IllegalArgumentException("해당 카테고리가 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY);
         }
-
-        String oldContent = findPost.get().getContent();
 
         List<Keyword> currentKeywords = keywordRepositoryImpl.findAllByPost(findPost.get());
         List<String> inputKeyWords = new ArrayList<>(Arrays.asList(postRequestDto.getKeywords()));
@@ -114,8 +109,9 @@ public class PostService {
 
         findPost.get().update(postRequestDto, findCategory.get());
 
-        SseEmitters findSubscrbingPosts = emitterRepository.subscibePosts(id);
-        findSubscrbingPosts.getSseEmitters().forEach((postId, emitter) -> {
+        SseEmitters findSubscribingPosts = emitterRepository.subscibePosts(id);
+
+        findSubscribingPosts.getSseEmitters().forEach((postId, emitter) -> {
             try {
                 emitter.send(SseEmitter.event().name("Post Modified").data("수정 완료!"));
                 emitter.complete();
@@ -124,55 +120,56 @@ public class PostService {
             }
         });
 
-        String content = member.getMemberName() + "님이 해당 페이지를 편집하였습니다.";
+        addLog(member.getMemberName(), findPost.get(), postRequestDto.getContent());
 
-        String newContent = postRequestDto.getContent();
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
+    }
 
+    private void addLog(String memberName, Post post, String newContent) {
+
+        String oldContent = post.getContent();
         List<Integer> changedLineNum = new ArrayList<>();
         String[] oldContentLines = oldContent.split("\n");
         String[] newContentLines = newContent.split("\n");
+
         for (int i = 0; i < oldContentLines.length; i++) {
             if (!oldContentLines[i].equals(newContentLines[i])) {
                 changedLineNum.add(i + 1);
             }
         }
 
-        Log newLog = Log.of (member.getMemberName(), content, oldContent, newContent, changedLineNum, findPost.get());
+        Log newLog = Log.of(memberName, oldContent, newContent, changedLineNum, post);
 
         logRepository.save(newLog);
-
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
     }
 
     @Transactional
-    public ResponseEntity<PostResponseDto> readPost(Long id, Member member) {
+    public ResponseEntity<PostResponseDto> readPost(Long id, Member member, Company company) {
 
-        Optional<Post> post = postRepository.findById(id);
-        if (member.getCompany().getId() != post.get().getMember().getCompany().getId()) {
-            throw new IllegalArgumentException("해당 회사의 게시글이 없습니다.");
+        Optional<Post> findPost = postRepository.findById(id);
+
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+        } else if (!Objects.equals(company.getId(), findPost.get().getMember().getCompany().getId())) {
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST_IN_COMPANY);
+        } else if (member.getPosition().getNum() < findPost.get().getReadablePosition().getNum()){
+            throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_READ);
         }
 
-        if (post.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
-        } else if (member.getPosition().getNum() < post.get().getReadablePosition().getNum()){
-            throw new IllegalArgumentException("읽기 가능한 회원 등급이 아닙니다.");
-        }
+        Post post = findPost.get();
 
-        List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(post.get());
-        String[] keywordList = new String[keywords.size()];
-        for (int i=0; i < keywords.size(); i++) {
-            keywordList[i] = keywords.get(i).getKeyword();
-        }
+        List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(post);
+        String[] keywordList = keywords.stream().map(Keyword::getKeyword).toArray(String[]::new);
 
-        post.get().updateMethod(WeightEnum.POSTVIEWS.getNum());
-        postRepository.saveAndFlush(post.get());
+        findPost.get().updateMethod(WeightEnum.POSTVIEWS.getNum());
+        postRepository.saveAndFlush(post);
 
-        Integer postViews = post.get().getPostViews();
+        int postViews = post.getPostViews();
 
         return ResponseEntity.ok()
                 .body(
-                        PostResponseDto.of( post.get(),
-                                post.get().getCategory().getCategoryName(),
+                        PostResponseDto.of( findPost.get(),
+                                findPost.get().getCategory().getCategoryName(),
                                 keywordList,
                                 postViews)
                 );
@@ -184,10 +181,10 @@ public class PostService {
 
         Optional<Post> findPost = postRepository.findById(id);
 
-        if (findPost.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+        if (findPost.isEmpty() ||!findPost.get().isValid()) {
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         } else if (member.getPosition().getNum() < findPost.get().getModifyPermission().getNum()) {
-            throw new IllegalArgumentException("수정 가능한 회원 등급이 아닙니다.");
+            throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         }
 
         findPost.get().updateStatus("true");

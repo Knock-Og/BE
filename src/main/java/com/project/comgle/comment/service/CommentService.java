@@ -22,17 +22,18 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
+    @Transactional
     public ResponseEntity<MessageResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
 
         Optional<Post> findPost = postRepository.findById(postId);
 
-        if (findPost.isEmpty()) {
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
@@ -48,15 +49,15 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentResponseDto> getComments(Long postId) {
 
-        Optional<Post> getPost = postRepository.findById(postId);
+        Optional<Post> findPost = postRepository.findById(postId);
 
-        if (getPost.isEmpty()) {
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
-        List<Comment> getComments = commentRepository.findAllByPostOrderByCreatedAtDesc(getPost.get());
-
+        List<Comment> getComments = commentRepository.findAllByPostOrderByCreatedAtDesc(findPost.get());
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+
         for (Comment comment : getComments) {
             commentResponseDtos.add(CommentResponseDto.from(comment));
         }
@@ -64,20 +65,18 @@ public class CommentService {
         return commentResponseDtos;
     }
 
-
+    @Transactional
     public ResponseEntity<MessageResponseDto> updateComment(Long postId, Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
 
-        Optional<Post> getPost = postRepository.findById(postId);
-        if (getPost.isEmpty()) {
+        Optional<Post> findPost = postRepository.findById(postId);
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         Optional<Comment> getComment = commentRepository.findById(commentId);
         if (getComment.isEmpty()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_COMMENT);
-        }
-
-        if (!getComment.get().getMember().getId().equals(userDetails.getMember().getId())) {
+        } else if (!getComment.get().getMember().getId().equals(userDetails.getMember().getId())) {
             throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         }
 
@@ -86,7 +85,8 @@ public class CommentService {
         return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Update Comment Successfully"));
     }
 
-    public ResponseEntity<MessageResponseDto> deleteComment(Long postId, Long commentId, UserDetailsImpl userDetails) {
+    @Transactional
+    public ResponseEntity<MessageResponseDto> deleteComment(Long postId, Long commentId) {
 
         Optional<Comment> findComment = commentRepository.findById(commentId);
 
@@ -95,7 +95,7 @@ public class CommentService {
         if (findComment.isEmpty()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_COMMENT);
         }
-        if (findPost.isEmpty()) {
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 

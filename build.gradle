@@ -47,7 +47,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
-
+    
     // swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.7'
     // spring-security 사용 시 Swagger에서 @AuthenticationPrincipal 노출 시키지 않기 위해 지정
@@ -76,6 +76,8 @@ dependencies {
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
 }
 

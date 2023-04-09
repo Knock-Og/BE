@@ -47,10 +47,10 @@ public class Log {
         this.post = post;
     }
 
-    public static Log of (String memberName, String content, String oldContent, String newContent, List<Integer> changedLineNum, Post post) {
+    public static Log of (String memberName, String oldContent, String newContent, List<Integer> changedLineNum, Post post) {
         return Log.builder()
                 .memberName(memberName)
-                .content(content)
+                .content(memberName + "님이 해당 페이지를 편집하였습니다.")
                 .oldContent(oldContent)
                 .newContent(newContent)
                 .changedLineNum(changedLineNum)

@@ -1,17 +1,17 @@
 package com.project.comgle.member.service;
 
-import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.company.repository.CompanyRepository;
 import com.project.comgle.global.common.response.MessageResponseDto;
+import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.global.utils.JwtUtil;
 import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
+import com.project.comgle.member.dto.PasswordRequestDto;
 import com.project.comgle.member.entity.Member;
-import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,25 +30,8 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    @Transactional
-    public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
-
-        Company findCompany = companyRepository.findByCompanyName(companyRequestDto.getCompanyName());
-
-        if(findCompany != null){
-            throw new CustomException(ExceptionEnum.DUPLICATE_COMPANY);
-        }
-
-        Company company = Company.from(companyRequestDto);
-        companyRepository.save(company);
-
-        return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
-    }
 
     @Transactional(readOnly = true)
     public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
@@ -84,6 +66,31 @@ public class MemberService {
         }
 
         return memberResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public void checkPwd(String pwd, Member member){
+
+        Optional<Member> findMember = memberRepository.findById(member.getId());
+
+        if(!passwordEncoder.matches(pwd, findMember.get().getPassword())){
+            throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
+        }
+    }
+
+    @Transactional
+    public SuccessResponse updatePwd(PasswordRequestDto passwordRequestDto, Member member){
+
+        Optional<Member> findMember = memberRepository.findById(member.getId());
+
+        if(passwordEncoder.matches(passwordRequestDto.getPassword(), findMember.get().getPassword())){
+            throw new CustomException(ExceptionEnum.DUPLICATE_PASSWORD);
+        }
+
+        String newPwdEndcode = passwordEncoder.encode(passwordRequestDto.getPassword());
+        findMember.get().updatePwd(newPwdEndcode);
+
+        return SuccessResponse.of(HttpStatus.OK, "Update Password Successful");
     }
 
 }

@@ -30,15 +30,17 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
     @PostMapping("/category")
-    public SuccessResponse createCategory(@Valid @RequestBody CategoryRequestDto categoryRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return categoryService.create(categoryRequestDto.getCategoryName().trim(), userDetails.getMember(), userDetails.getCompany());
+    public SuccessResponse categoryAdd(@Valid @RequestBody CategoryRequestDto categoryRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        return categoryService.addCategory(categoryRequestDto.getCategoryName().trim(), userDetails.getMember(), userDetails.getCompany());
     }
 
     @ExeTimer
     @Operation(summary = "모든 카테고리 조회 API", description = "사내 모든 카테고리를 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/categories")
-    public List<CategoryResponseDto> findAll(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public List<CategoryResponseDto> categoryList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+
         return categoryService.findCategories(userDetails.getCompany());
     }
 
@@ -46,10 +48,11 @@ public class CategoryController {
     @ResponseStatus(value = HttpStatus.OK)
     @Secured(PositionEnum.Authority.ADMIN)
     @PutMapping("/category/{category-id}")
-    public SuccessResponse update( @PathVariable(name = "category-id") Long categoryId,
+    public SuccessResponse categoryModify( @PathVariable(name = "category-id") Long categoryId,
                                       @Valid @RequestBody CategoryRequestDto categoryRequestDto,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return categoryService.updateCategory(categoryId, categoryRequestDto.getCategoryName(), userDetails.getMember(), userDetails.getCompany());
+
+        return categoryService.modifyCategory(categoryId, categoryRequestDto.getCategoryName().trim(), userDetails.getCompany());
     }
 
     @Operation(summary = "카테고리 삭제 API", description = "ADMIN PAGE에서 사내 해당 카테고리를 삭제합니다.")
@@ -57,7 +60,8 @@ public class CategoryController {
     @Secured(PositionEnum.Authority.ADMIN)
     @DeleteMapping("/category/{category-id}")
     public SuccessResponse delete(@PathVariable(name = "category-id") Long categoryId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return categoryService.deleteCategory(categoryId, userDetails.getMember(), userDetails.getCompany());
+
+        return categoryService.deleteCategory(categoryId, userDetails.getCompany());
     }
 
 }

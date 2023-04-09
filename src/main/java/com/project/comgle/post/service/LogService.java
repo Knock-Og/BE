@@ -23,10 +23,10 @@ public class LogService {
     private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public List<LogResponseDto> getAllLogs(Long postId, UserDetailsImpl userDetails) {
+    public List<LogResponseDto> listLog(Long postId, UserDetailsImpl userDetails) {
 
         Optional<Post> findPost = postRepository.findById(postId);
-        if (findPost.isEmpty()) {
+        if (findPost.isEmpty() || !findPost.get().isValid()) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
