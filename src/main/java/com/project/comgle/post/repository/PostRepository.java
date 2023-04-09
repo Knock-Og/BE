@@ -5,17 +5,16 @@ import com.project.comgle.post.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface PostRepository extends JpaRepository<Post,Long>{
 
+    @Query("SELECT p FROM Post p WHERE p.valid = true and p.member = :member")
+    Page<Post> findAllByMember(@Param("member") Member member, Pageable pageable);
     Optional<Post> findByIdAndMember(Long postId, Member member);
-    List<Post> findAllByMember(Member member);
-    Page<Post> findAllByMember(Member member, Pageable pageable);
-//    Set<Post> findAllByTitleContainsOrContentContaining(String title,String content);
     int countByCategoryId(Long categoryId);
     int countByMember(Member member);
     Page<Post> findAllByCategoryId(Long categoryId, Pageable pageRequest);

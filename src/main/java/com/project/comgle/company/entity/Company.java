@@ -68,4 +68,8 @@ public class Company {
                 .build();
     }
 
+    public void reRegister(){
+        valid = true;
+    }
+
 }

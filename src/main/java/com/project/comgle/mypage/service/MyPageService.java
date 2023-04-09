@@ -22,7 +22,7 @@ public class MyPageService {
     private final PostRepository postRepository;
 
     @Transactional(readOnly = true)
-    public PostPageResponseDto getAllMyPosts(int page, UserDetailsImpl userDetails) {
+    public PostPageResponseDto listMyPost(int page, UserDetailsImpl userDetails) {
 
         int nowPage = page-1;   // 현재 페이지
         int size = 10;  // 한 페이지당 게시글 수

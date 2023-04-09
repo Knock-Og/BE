@@ -54,7 +54,7 @@ public class EmailService {
     }
 
     @Transactional
-    public EmailAuthResponseDto findPassWord(String toEmail, String code){
+    public EmailAuthResponseDto findPassword(String toEmail, String code){
 
         String codeFoundByEmail = redisUtil.getData(toEmail);
         if (codeFoundByEmail == null) {

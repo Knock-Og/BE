@@ -1,6 +1,5 @@
 package com.project.comgle.member.controller;
 
-import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.member.dto.LoginRequestDto;
@@ -18,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,13 +26,6 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
-
-    @Operation(summary = "회사 등록 API", description = "서비스에 해당 회사를 등록합니다")
-    @ResponseStatus(value = HttpStatus.OK)
-    @PostMapping("/company")
-    public ResponseEntity<MessageResponseDto> companyAdd(@Valid @RequestBody CompanyRequestDto companyRequestDto){
-        return memberService.companyAdd(companyRequestDto);
-    }
 
     @Operation(summary = "로그인 API", description = "로그인하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)

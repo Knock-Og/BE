@@ -35,9 +35,9 @@ public class EmailController {
     @Operation(summary = "이메일 인증코드 확인 API", description = "이메일 인증 코드 확인 후 새로 생성된 비밀번호를 반환합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/member/pwd")
-    public EmailAuthResponseDto passWordFind(@RequestBody EmailAuthRequestDto emailDto){
+    public EmailAuthResponseDto passwordFind(@RequestBody EmailAuthRequestDto emailDto){
 
-        return emailService.findPassWord(emailDto.getEmail(), emailDto.getAuthenticationCode());
+        return emailService.findPassword(emailDto.getEmail(), emailDto.getAuthenticationCode());
     }
 
 }

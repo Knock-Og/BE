@@ -106,4 +106,8 @@ public class Post extends Timestamped {
         this.editingStatus = editingStatus;
     }
 
+    public void withdrawal(){
+        valid = false;
+    }
+
 }

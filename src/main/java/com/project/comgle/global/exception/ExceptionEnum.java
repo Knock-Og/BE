@@ -50,6 +50,8 @@ public enum ExceptionEnum {
     NOT_EXIST_COMPANY(400, "The company does not exist."),
     // 해당 폴더가 존재하지 않습니다.
     NOT_EXIST_FOLDER(400,"The folder does not exist."),
+    // 해당 게시물이 회사에 존재하지 않습니다.
+    NOT_EXIST_POST_IN_COMPANY(400, "The post does not exist in company."),
     // 해당 게시글이 존재하지 않습니다.
     NOT_EXIST_POST(400,"The post does not exist."),
     // 해당 카테고리가 존재하지 않습니다.

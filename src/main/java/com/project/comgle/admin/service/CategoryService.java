@@ -1,14 +1,13 @@
 package com.project.comgle.admin.service;
 
-import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.admin.dto.CategoryResponseDto;
 import com.project.comgle.admin.entity.Category;
+import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.company.entity.Company;
-import com.project.comgle.member.entity.Member;
-import com.project.comgle.member.entity.PositionEnum;
+import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
-import com.project.comgle.admin.repository.CategoryRepository;
+import com.project.comgle.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,9 +26,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional
-    public SuccessResponse create(String categoryName, Member member, Company company) {
-
-        isAdmin(member);
+    public SuccessResponse addCategory(String categoryName, Member member, Company company) {
 
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(categoryName, company);
 
@@ -51,9 +48,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public SuccessResponse updateCategory(Long categoryId, String categoryName, Member member, Company company) {
-
-        isAdmin(member);
+    public SuccessResponse modifyCategory(Long categoryId, String categoryName, Company company) {
 
         Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY)
@@ -63,15 +58,13 @@ public class CategoryService {
             throw new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY);
         }
 
-        findCategory.update(categoryName.trim());
+        findCategory.update(categoryName);
 
         return SuccessResponse.of(HttpStatus.OK,"카테고리 수정 완료");
     }
 
     @Transactional
-    public SuccessResponse deleteCategory(Long categoryId, Member member, Company company) {
-
-        isAdmin(member);
+    public SuccessResponse deleteCategory(Long categoryId, Company company) {
 
         Category findCategory = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY)
@@ -84,12 +77,6 @@ public class CategoryService {
         categoryRepository.delete(findCategory);
 
         return SuccessResponse.of(HttpStatus.OK, "카테고리 삭제 완료");
-    }
-
-    private static void isAdmin(Member member) {
-        if(member.getPosition() != PositionEnum.ADMIN){
-            throw new CustomException(ExceptionEnum.REQUIRED_ADMIN_POSITION);
-        }
     }
 
 }

@@ -30,25 +30,8 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final CompanyRepository companyRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-
-    @Transactional
-    public ResponseEntity<MessageResponseDto> companyAdd(CompanyRequestDto companyRequestDto){
-
-        Company findCompany = companyRepository.findByCompanyName(companyRequestDto.getCompanyName());
-
-        if(findCompany != null){
-            throw new CustomException(ExceptionEnum.DUPLICATE_COMPANY);
-        }
-
-        Company company = Company.from(companyRequestDto);
-        companyRepository.save(company);
-
-        return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
-    }
 
     @Transactional(readOnly = true)
     public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){

@@ -1,27 +1,17 @@
 package com.project.comgle.post.repository;
 
-import com.project.comgle.admin.entity.QCategory;
-import com.project.comgle.member.entity.QMember;
+import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.entity.Post;
-import com.project.comgle.post.entity.QKeyword;
-import com.project.comgle.post.entity.QPost;
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.jpa.impl.JPAQuery;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.Optional;
 
 @Repository
-@Transactional
-@RequiredArgsConstructor
 public class PostRepositoryImpl {
+
     @PersistenceContext
     private EntityManager entityManager;
 

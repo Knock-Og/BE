@@ -1,5 +1,7 @@
 package com.project.comgle.admin.controller;
 
+import com.project.comgle.company.dto.CompanyRequestDto;
+import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.member.dto.PositionRequestDto;
 import com.project.comgle.admin.dto.SignupRequestDto;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +30,7 @@ public class AdminController {
     @Secured(PositionEnum.Authority.ADMIN)
     @PostMapping("/signup")
     public SuccessResponse memberAdd(@Valid @RequestBody SignupRequestDto signupRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminService.addMember(signupRequestDto, userDetails.getMember());
+        return adminService.addMember(signupRequestDto, userDetails.getMember(), userDetails.getCompany());
     }
 
     @Operation(summary = "회원탈퇴 API", description = "회원을 탈퇴시킵니다.")
@@ -35,7 +38,7 @@ public class AdminController {
     @Secured(PositionEnum.Authority.ADMIN)
     @DeleteMapping("/member/{member-id}")
     public SuccessResponse memberRemove(@PathVariable(name = "member-id") Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return adminService.removeMember(memberId, userDetails.getMember(), userDetails.getCompany());
+        return adminService.removeMember(memberId, userDetails.getCompany());
     }
 
     @Operation(summary = "직책변경 API", description = "회원의 직책을 변경합니다.")
@@ -58,7 +61,7 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/check/name/{member-name}")
     public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        adminService.checkName(memberName,userDetails.getMember().getCompany());
+        adminService.checkName(memberName,userDetails.getCompany());
         return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
     }
 

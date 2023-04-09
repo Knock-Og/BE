@@ -44,7 +44,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -64,7 +64,6 @@ public class BookMarkService {
         bookMarkFolderRepository.save(newBookMarkFolder);
 
         return SuccessResponse.of(HttpStatus.CREATED, "Add BookMark Folder Successful");
-
     }
 
     // 즐겨찾기 폴더 삭제
@@ -73,7 +72,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -86,7 +85,6 @@ public class BookMarkService {
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Delete BookMark Folder Successful");
-
     }
 
     // 즐겨찾기 폴더 수정
@@ -95,7 +93,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -114,7 +112,6 @@ public class BookMarkService {
         bookMarkFolder.get().update(modifyFolderName);
 
         return SuccessResponse.of(HttpStatus.CREATED, "Modifying BookMark Folder Successful");
-
     }
 
     // 즐겨찾기 폴더(만) 조회
@@ -123,7 +120,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -140,7 +137,6 @@ public class BookMarkService {
         }
 
         return bookMarkFolderList;
-
     }
 
     // 즐겨찾기 추가
@@ -149,7 +145,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -177,7 +173,6 @@ public class BookMarkService {
         findPost.get().updateMethod(WeightEnum.BOOKMARK.getNum());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Register BookMark");
-
     }
 
     // 즐겨찾기 취소
@@ -186,7 +181,7 @@ public class BookMarkService {
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -201,15 +196,15 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Unregister BookMark");
-
     }
 
     // 즐겨찾기 폴더 별 게시글 조회
+    @Transactional
     public PostPageResponseDto readPostForBookMark(Long folderId, int page, Member member){
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(findMember.isEmpty()){
+        if(findMember.isEmpty() || !findMember.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
         }
 
@@ -253,7 +248,6 @@ public class BookMarkService {
         }
 
         return PostPageResponseDto.of(endP,postResponseDtoList);
-
     }
 
 }
