@@ -34,7 +34,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto){
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -48,10 +48,9 @@ public class MemberService {
             throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()));
-
         return ResponseEntity.ok()
                 .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
+                .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()))
     }
 
     @Transactional(readOnly = true)
