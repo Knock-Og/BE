@@ -43,7 +43,7 @@ public class CommentService {
 
         findPost.get().updateMethod(WeightEnum.COMMENTCOUNT.getNum());
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Add Comment Successfully"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Your comment has been added successfully."));
     }
 
     @Transactional(readOnly = true)
@@ -82,7 +82,7 @@ public class CommentService {
 
         getComment.get().updateComment(commentRequestDto);
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Update Comment Successfully"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Your comment has been updated successfully."));
     }
 
     @Transactional
@@ -101,7 +101,7 @@ public class CommentService {
 
         commentRepository.delete(findComment.get());
 
-        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Delete Comment Successfully"));
+        return ResponseEntity.ok(MessageResponseDto.of(HttpStatus.OK.value(), "Your comment has been deleted successfully."));
     }
 
 }

@@ -30,11 +30,7 @@ public class AdminService {
 
 
     private final MemberRepository memberRepository;
-    private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
-    private final BookMarkRepository bookMarkRepository;
-    private final BookMarkFolderRepository bookMarkFolderRepository;
-    private final LogRepository logRepository;
 
     @Transactional
     public SuccessResponse modifyPosition(Long memberId, String pos) {
@@ -59,7 +55,7 @@ public class AdminService {
 
         findMember.get().updatePosition(position);
 
-        return SuccessResponse.of(HttpStatus.OK, "Change successful"); // 변경 완료
+        return SuccessResponse.of(HttpStatus.OK, "Your position has been changed successfully.");
     }
 
     @Transactional
@@ -80,7 +76,7 @@ public class AdminService {
 
         memberRepository.save(Member.of(signupRequestDto,password,position,company));
 
-        return SuccessResponse.of(HttpStatus.OK, "join membership successful"); //회원 추가 성공
+        return SuccessResponse.of(HttpStatus.OK, "You have successfully signed up.");
     }
 
     @Transactional
@@ -96,7 +92,7 @@ public class AdminService {
 
         findMember.get().withdrawal();
 
-        return SuccessResponse.of(HttpStatus.OK, "Member deletion successful"); //회원  삭제 성공
+        return SuccessResponse.of(HttpStatus.OK, "Your account is deleted successfully."); //회원  삭제 성공
     }
 
     @Transactional(readOnly = true)

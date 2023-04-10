@@ -49,8 +49,8 @@ public class MemberService {
         }
 
         return ResponseEntity.ok()
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
                 .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()))
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "Login Successful"));
     }
 
     @Transactional(readOnly = true)
@@ -89,7 +89,7 @@ public class MemberService {
         String newPwdEndcode = passwordEncoder.encode(passwordRequestDto.getPassword());
         findMember.get().updatePwd(newPwdEndcode);
 
-        return SuccessResponse.of(HttpStatus.OK, "Update Password Successful");
+        return SuccessResponse.of(HttpStatus.OK, "Your password has been successfully updated.");
     }
 
 }

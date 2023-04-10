@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 public class PasswordRequestDto {
 
     @NotNull(message = "Password is required value.")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?]).{8,32}$", message = "Password must be 8-32 characters long, including case, number, and special characters.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[`~!@#$%^&*()\\-_=+\\\\|\\[{\\]};:'\",<.>/?]).{8,32}$", message = "Passwords must be 8-32 letters long, including upper and lower cases or special characters.")
     @Schema(description = SchemaDescriptionUtils.Member.PASSWORD, example = "패스워드" ,minLength = 8, maxLength = 32)
     private String password;
 
