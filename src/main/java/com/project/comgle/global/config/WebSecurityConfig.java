@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         http.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
 
-            cors.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000"));
+            cors.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000/**"));
 
             cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
             cors.setAllowedHeaders(Arrays.asList("Authorization"));
