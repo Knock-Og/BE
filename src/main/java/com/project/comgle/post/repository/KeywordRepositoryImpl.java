@@ -22,7 +22,6 @@ public class KeywordRepositoryImpl {
     private final QPost newPost = QPost.post;
 
     public List<Keyword> findAllByPost(Post post) {
-
         JPAQuery<Keyword> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(keyword)
                 .from(keyword)
