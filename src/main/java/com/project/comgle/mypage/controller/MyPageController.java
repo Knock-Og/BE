@@ -3,6 +3,7 @@ package com.project.comgle.mypage.controller;
 import com.project.comgle.bookmark.dto.PostPageResponseDto;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.security.UserDetailsImpl;
+import com.project.comgle.member.dto.MemberResponseDto;
 import com.project.comgle.mypage.service.MyPageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,13 @@ public class MyPageController {
     @GetMapping("/mypage/posts")
     public PostPageResponseDto myPostList(@RequestParam("p") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return myPageService.listMyPost(page, userDetails);
+    }
+
+    @Operation(summary = "로그인 한 사용자 정보 조회 API", description = "로그인 한 사용자 정보를 조회합니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/mypage")
+    public MemberResponseDto myInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return myPageService.myInfo(userDetails);
     }
 
 }

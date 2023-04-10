@@ -50,7 +50,7 @@ public class MemberService {
 
         return ResponseEntity.ok()
                 .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()))
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "로그인 성공"));
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "Login Successful"));
     }
 
     @Transactional(readOnly = true)

@@ -11,12 +11,12 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class EmailAuthRequestDto{
 
-    @NotEmpty(message = "이메일을 입력해주세요")
+    @NotEmpty(message = "Please enter your email.")
     @Email
     @Schema(description = SchemaDescriptionUtils.EMAIL, example = "이메일")
     private String email;
 
-    @NotNull(message = "인증코드가 없습니다.")
+    @NotNull(message = "No authentication code.")
     @Schema(description = SchemaDescriptionUtils.SMS.AUTHENTICATION_CODE, example = "xxxxxx")
     private String authenticationCode;
 

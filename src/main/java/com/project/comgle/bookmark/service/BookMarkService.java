@@ -7,7 +7,6 @@ import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.repository.MemberRepository;
-import com.project.comgle.post.repository.KeywordRepository;
 import com.project.comgle.post.repository.KeywordRepositoryImpl;
 import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.global.common.response.SuccessResponse;
@@ -35,7 +34,6 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final KeywordRepository keywordRepository;
     private final KeywordRepositoryImpl keywordRepositoryImpl;
 
     // 즐겨찾기 폴더 추가

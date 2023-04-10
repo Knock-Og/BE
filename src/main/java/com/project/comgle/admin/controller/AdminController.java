@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -56,7 +55,7 @@ public class AdminController {
     @GetMapping("/check/email/{email}")
     public SuccessResponse emailCheck(@PathVariable String email){
         adminService.checkEmail(email);
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
     @Operation(summary = "회원명 중복 확인 API", description = "회원가입 시 회원명 중복 확인합니다.")
@@ -64,7 +63,7 @@ public class AdminController {
     @GetMapping("/check/name/{member-name}")
     public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkName(memberName,userDetails.getCompany());
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
     @Operation(summary = "연락처 중복 확인 API", description = "회원가입 시 연락처 중복 확인합니다.")
@@ -72,7 +71,7 @@ public class AdminController {
     @GetMapping("/check/phone/{phone-num}")
     public SuccessResponse phoneCheck(@PathVariable(name = "phone-num") String phoneNum){
         adminService.checkPhone(phoneNum);
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
 }

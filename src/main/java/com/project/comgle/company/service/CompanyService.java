@@ -33,7 +33,7 @@ public class CompanyService {
             findCompany.get().reRegister();
         }
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "회사 추가 성공"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Add Company Successful"));
     }
 
 }
