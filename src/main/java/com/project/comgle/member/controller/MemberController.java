@@ -48,8 +48,7 @@ public class MemberController {
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/check/password")
     public SuccessResponse pwdCheck(@AuthenticationPrincipal UserDetailsImpl userDetails, @Valid @RequestBody PasswordRequestDto passwordRequestDto){
-        memberService.checkPwd(passwordRequestDto.getPassword(), userDetails.getMember());
-        return SuccessResponse.of(HttpStatus.OK, "correct password");
+        return memberService.checkPwd(passwordRequestDto.getPassword(), userDetails.getMember());
     }
 
     @Operation(summary = "비밀번호 변경 API", description = "비밀번호를 변경합니다.")
