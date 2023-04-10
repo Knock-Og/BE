@@ -47,7 +47,6 @@ public class PostRepositoryImpl {
                 .limit(10)
                 .orderBy(sortingFilter(sortType))
                 .fetch());
-
     }
 
     public Page<Post> findAllByContainingCategory(int page,  String c, String sortType, Long companyId) {

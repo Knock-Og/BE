@@ -35,6 +35,7 @@ public class PostController {
         return postService.deletePost(id, userDetails.getMember());
     }
 
+    @ExeTimer
     @Operation(summary = "게시글 수정 API", description = "해당 게시글을 수정합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/post/{post-id}")

@@ -8,8 +8,9 @@ import lombok.Getter;
 public class PositionRequestDto {
 
     @Schema(description = SchemaDescriptionUtils.Member.POSITION,
-            example = "MEMBER", allowableValues = {"MEM" +
-            "BER", "MANAGER","OWNER"})
+            example = "MEMBER", allowableValues = {"MEMBER", "MANAGER","OWNER"})
     private String position;
+
+    private String email;
 
 }
