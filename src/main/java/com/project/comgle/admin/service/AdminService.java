@@ -59,7 +59,7 @@ public class AdminService {
 
         findMember.get().updatePosition(position);
 
-        return SuccessResponse.of(HttpStatus.OK, "변경 완료");
+        return SuccessResponse.of(HttpStatus.OK, "Change successful"); // 변경 완료
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class AdminService {
 
         memberRepository.save(Member.of(signupRequestDto,password,position,company));
 
-        return SuccessResponse.of(HttpStatus.OK, "회원가입 성공");
+        return SuccessResponse.of(HttpStatus.OK, "join membership successful"); //회원 추가 성공
     }
 
     @Transactional
@@ -96,7 +96,7 @@ public class AdminService {
 
         findMember.get().withdrawal();
 
-        return SuccessResponse.of(HttpStatus.OK, "회원 삭제 완료");
+        return SuccessResponse.of(HttpStatus.OK, "Member deletion successful"); //회원  삭제 성공
     }
 
     @Transactional(readOnly = true)

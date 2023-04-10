@@ -57,7 +57,7 @@ public class PostService {
 
         postRepository.save(newPost);
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "작성 완료"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post Creation Successful"));
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class PostService {
 
         post.get().withdrawal();
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "삭제 완료"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post Deletion Completed"));
     }
 
     @Transactional
@@ -122,7 +122,7 @@ public class PostService {
 
         addLog(member.getMemberName(), findPost.get(), postRequestDto.getContent());
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "수정 완료"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post modification complete"));
     }
 
     private void addLog(String memberName, Post post, String newContent) {
@@ -190,7 +190,7 @@ public class PostService {
         findPost.get().updateStatus("true");
         postRepository.save(findPost.get());
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "편집상태 수정"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Edit Status Modification Status"));
     }
 
 }

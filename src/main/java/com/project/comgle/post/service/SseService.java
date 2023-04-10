@@ -1,5 +1,7 @@
 package com.project.comgle.post.service;
 
+import com.project.comgle.global.exception.CustomException;
+import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.post.entity.Post;
 import com.project.comgle.post.entity.SseEmitters;
 import com.project.comgle.post.repository.EmitterRepository;
@@ -21,7 +23,7 @@ public class SseService {
 
         Optional<Post> findPosts = postRepository.findById(postId);
         if (findPosts.isEmpty()) {
-            throw new IllegalArgumentException("해당 게시글이 없습니다.");
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
         SseEmitters postEmitters = emitterRepository.subscibePosts(postId);
