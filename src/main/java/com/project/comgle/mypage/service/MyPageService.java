@@ -3,6 +3,9 @@ package com.project.comgle.mypage.service;
 import com.project.comgle.bookmark.dto.PostPageResponseDto;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
+import com.project.comgle.member.dto.MemberResponseDto;
+import com.project.comgle.member.entity.Member;
+import com.project.comgle.member.repository.MemberRepository;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
@@ -14,12 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class MyPageService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public PostPageResponseDto listMyPost(int page, UserDetailsImpl userDetails) {
@@ -55,6 +60,16 @@ public class MyPageService {
         }
 
         return PostPageResponseDto.of(endP,responseDtos);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponseDto myInfo(UserDetailsImpl userDetails) {
+
+        Optional<Member> findMember = memberRepository.findById(userDetails.getMember().getId());
+
+        MemberResponseDto memberResponseDto = MemberResponseDto.from(findMember.get());
+
+        return memberResponseDto;
     }
 
 }
