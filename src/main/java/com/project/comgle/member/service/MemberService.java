@@ -49,8 +49,8 @@ public class MemberService {
         }
 
         return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
                 .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()))
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
     }
 
     @Transactional(readOnly = true)
