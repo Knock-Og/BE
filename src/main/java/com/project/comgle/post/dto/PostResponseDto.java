@@ -1,6 +1,7 @@
 package com.project.comgle.post.dto;
 
 import com.project.comgle.global.utils.SchemaDescriptionUtils;
+import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.post.entity.Post;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -32,7 +33,6 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Category.NAME, example = "공지사항")
     private String category;
 
-
     @Schema(description = SchemaDescriptionUtils.Keyword.NAME)
     private String[] keywords;
 
@@ -42,8 +42,21 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Post.EditingStatus)
     private String editingStatus;
 
+    @Schema(description = SchemaDescriptionUtils.Post.MEDIFY_PERMISSION)
+    private PositionEnum modifyPermission;
+
+    @Schema(description = SchemaDescriptionUtils.Post.READABLE_POSITION)
+    private PositionEnum readablePosition;
+
+    @Schema(description = SchemaDescriptionUtils.Post.READABLE_POSITION)
+    private Integer[] folders;
+
     @Builder
-    private PostResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String category, String[] keywords, int postViews, String editingStatus) {
+    private PostResponseDto(Long id, String memberName, String title, String content,
+                            LocalDateTime createdAt, LocalDateTime modifiedAt, String category,
+                            String[] keywords, int postViews, String editingStatus,
+                            PositionEnum modifyPermission, PositionEnum readablePosition,
+                            Integer[] folders) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
@@ -54,6 +67,9 @@ public class PostResponseDto {
         this.keywords = keywords;
         this.postViews = postViews;
         this.editingStatus = editingStatus;
+        this.modifyPermission = modifyPermission;
+        this.readablePosition = readablePosition;
+        this.folders = folders;
     }
 
     public static PostResponseDto of(Post post, String category, String[] keywords) {
@@ -66,10 +82,12 @@ public class PostResponseDto {
                 .modifiedAt(post.getModifiedAt())
                 .category(category)
                 .keywords(keywords)
+                .modifyPermission(post.getModifyPermission())
+                .readablePosition(post.getReadablePosition())
                 .build();
     }
 
-    public static PostResponseDto of(Post post, String category, String[] keywords, int postViews) {
+    public static PostResponseDto of(Post post, String category, String[] keywords, Integer[] folders,int postViews) {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .memberName(post.getMember().getMemberName())
@@ -81,6 +99,9 @@ public class PostResponseDto {
                 .keywords(keywords)
                 .postViews(postViews)
                 .editingStatus(post.getEditingStatus())
+                .modifyPermission(post.getModifyPermission())
+                .readablePosition(post.getReadablePosition())
+                .folders(folders)
                 .build();
     }
 }
