@@ -16,7 +16,7 @@ public class EmailAuthRequestDto{
     @Schema(description = SchemaDescriptionUtils.EMAIL, example = "이메일")
     private String email;
 
-    @NotNull(message = "No authentication code.")
+    @NotNull(message = "Authentication code does not exist.")
     @Schema(description = SchemaDescriptionUtils.SMS.AUTHENTICATION_CODE, example = "xxxxxx")
     private String authenticationCode;
 

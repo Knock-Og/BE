@@ -52,7 +52,7 @@ public class AdminController {
     @GetMapping("/check/email/{email}")
     public SuccessResponse emailCheck(@PathVariable String email){
         adminService.checkEmail(email);
-        return SuccessResponse.of(HttpStatus.OK,"It's available.");
+        return SuccessResponse.of(HttpStatus.OK,"This ID is available.");
     }
 
     @Operation(summary = "회원명 중복 확인 API", description = "회원가입 시 회원명 중복 확인합니다.")
@@ -60,7 +60,7 @@ public class AdminController {
     @GetMapping("/check/name/{member-name}")
     public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkName(memberName,userDetails.getCompany());
-        return SuccessResponse.of(HttpStatus.OK,"It's available.");
+        return SuccessResponse.of(HttpStatus.OK,"This member name is available.");
     }
 
     @Operation(summary = "연락처 중복 확인 API", description = "회원가입 시 연락처 중복 확인합니다.")
@@ -68,7 +68,7 @@ public class AdminController {
     @GetMapping("/check/phone/{phone-num}")
     public SuccessResponse phoneCheck(@PathVariable(name = "phone-num") String phoneNum, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkPhone(phoneNum);
-        return SuccessResponse.of(HttpStatus.OK,"It's available.");
+        return SuccessResponse.of(HttpStatus.OK,"This phone number is available.");
     }
 
 }

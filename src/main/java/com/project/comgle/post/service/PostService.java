@@ -57,7 +57,7 @@ public class PostService {
 
         postRepository.save(newPost);
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post Creation Successful"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been created successfully."));
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class PostService {
 
         post.get().withdrawal();
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post Deletion Completed"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been deleted successfully."));
     }
 
     @Transactional
@@ -122,7 +122,7 @@ public class PostService {
 
         addLog(member.getMemberName(), findPost.get(), postRequestDto.getContent());
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Post modification complete"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been modified successfully."));
     }
 
     private void addLog(String memberName, Post post, String newContent) {
@@ -190,7 +190,7 @@ public class PostService {
         findPost.get().updateStatus("true");
         postRepository.save(findPost.get());
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Edit Status Modification Status"));
+        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Edit status changed successfully."));
     }
 
 }

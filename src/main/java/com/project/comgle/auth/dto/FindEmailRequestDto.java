@@ -13,16 +13,16 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class FindEmailRequestDto {
 
-    @NotNull(message = "Member name is required value.")
+    @NotNull(message = "Member name is required.")
     @Schema(description = SchemaDescriptionUtils.Member.NAME, example = "회원명" , maxLength = 20)
     private String memberName;
 
-    @NotNull(message = "Contact is a required value.")
+    @NotNull(message = "Phone number is required.")
     @Schema(description = SchemaDescriptionUtils.Member.TEL, example = "010-xxxx-xxxx")
     @Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$" , message = "올바르지 않은 연락처 형식입니다.")
     private String phoneNum;
 
-    @NotNull(message = "No authentication code.")
+    @NotNull(message = "Authentication code does not exist.")
     @Schema(description = SchemaDescriptionUtils.SMS.AUTHENTICATION_CODE, example = "xxxxxx")
     private int authenticationCode;
 

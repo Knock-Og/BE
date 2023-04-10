@@ -50,7 +50,7 @@ public class EmailService {
 
         emailSender.send(emailForm);
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Email sent successfully");
+        return SuccessResponse.of(HttpStatus.CREATED, "The email has been sent successfully.");
     }
 
     @Transactional
