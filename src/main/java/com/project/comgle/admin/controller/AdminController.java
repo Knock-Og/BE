@@ -1,7 +1,5 @@
 package com.project.comgle.admin.controller;
 
-import com.project.comgle.company.dto.CompanyRequestDto;
-import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.member.dto.PositionRequestDto;
 import com.project.comgle.admin.dto.SignupRequestDto;
@@ -54,7 +52,7 @@ public class AdminController {
     @GetMapping("/check/email/{email}")
     public SuccessResponse emailCheck(@PathVariable String email){
         adminService.checkEmail(email);
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
     @Operation(summary = "회원명 중복 확인 API", description = "회원가입 시 회원명 중복 확인합니다.")
@@ -62,7 +60,7 @@ public class AdminController {
     @GetMapping("/check/name/{member-name}")
     public SuccessResponse nameCheck(@PathVariable(name = "member-name") String memberName, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkName(memberName,userDetails.getCompany());
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
     @Operation(summary = "연락처 중복 확인 API", description = "회원가입 시 연락처 중복 확인합니다.")
@@ -70,7 +68,7 @@ public class AdminController {
     @GetMapping("/check/phone/{phone-num}")
     public SuccessResponse phoneCheck(@PathVariable(name = "phone-num") String phoneNum, @AuthenticationPrincipal UserDetailsImpl userDetails){
         adminService.checkPhone(phoneNum);
-        return SuccessResponse.of(HttpStatus.OK,"사용 가능합니다.");
+        return SuccessResponse.of(HttpStatus.OK,"It's available.");
     }
 
 }

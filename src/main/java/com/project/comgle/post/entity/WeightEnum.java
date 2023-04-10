@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum WeightEnum {
+
     BOOKMARK(5),
     POSTVIEWS(3),
     COMMENTCOUNT(1);
@@ -13,4 +14,5 @@ public enum WeightEnum {
     WeightEnum(int num) {
         this.num = num;
     }
+
 }

@@ -14,10 +14,6 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
     Page<BookMark> findAllByBookMarkFolderId(Long folderId, Pageable pageable);
 
-    void deleteAllByPost(Post post);
-
     int countByBookMarkFolderId(Long folderId);
-
-    void deleteAllByPostIn(List<Post> post);
 
 }

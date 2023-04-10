@@ -36,7 +36,7 @@ public class CategoryService {
 
         categoryRepository.save(Category.of(categoryName, member.getCompany()));
 
-        return SuccessResponse.of(HttpStatus.OK, "카테고리 추가 완료");
+        return SuccessResponse.of(HttpStatus.OK, "Add Category Successful");    //카테고리 추가 성공
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +60,7 @@ public class CategoryService {
 
         findCategory.update(categoryName);
 
-        return SuccessResponse.of(HttpStatus.OK,"카테고리 수정 완료");
+        return SuccessResponse.of(HttpStatus.OK,"Category Modification Successful");  //카테고리 수정 성공
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class CategoryService {
 
         categoryRepository.delete(findCategory);
 
-        return SuccessResponse.of(HttpStatus.OK, "카테고리 삭제 완료");
+        return SuccessResponse.of(HttpStatus.OK, "Delete Category Successful");   //카테고리 삭제 성공
     }
 
 }
