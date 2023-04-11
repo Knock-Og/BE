@@ -3,7 +3,6 @@ package com.project.comgle.post.dto;
 import com.project.comgle.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,6 +19,7 @@ public class SearchResponseDto {
     private int postViews;
 
     private String editingStatus;
+
 
     @Builder
     private SearchResponseDto(Long id, String memberName, String title, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String[] keywords, int commentCount, int postViews, String editingStatus) {
@@ -50,4 +50,5 @@ public class SearchResponseDto {
                 .editingStatus(post.getEditingStatus())
                 .build();
     }
+
 }
