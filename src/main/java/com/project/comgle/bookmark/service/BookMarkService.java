@@ -61,7 +61,7 @@ public class BookMarkService {
         BookMarkFolder newBookMarkFolder = BookMarkFolder.of(folderName, member);
         bookMarkFolderRepository.save(newBookMarkFolder);
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Add BookMark Folder Successful");
+        return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been created successfully.");
     }
 
     // 즐겨찾기 폴더 삭제
@@ -82,7 +82,7 @@ public class BookMarkService {
 
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Delete BookMark Folder Successful");
+        return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been deleted successfully.");
     }
 
     // 즐겨찾기 폴더 수정
@@ -109,7 +109,7 @@ public class BookMarkService {
 
         bookMarkFolder.get().update(modifyFolderName);
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Modifying BookMark Folder Successful");
+        return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been modified successfully.");
     }
 
     // 즐겨찾기 폴더(만) 조회
@@ -170,7 +170,7 @@ public class BookMarkService {
 
         findPost.get().updateMethod(WeightEnum.BOOKMARK.getNum());
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Register BookMark");
+        return SuccessResponse.of(HttpStatus.CREATED, "Your post has been added successfully to the folder.");
     }
 
     // 즐겨찾기 취소
@@ -193,7 +193,7 @@ public class BookMarkService {
 
         bookMarkRepository.delete(bookMark.get());
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Unregister BookMark");
+        return SuccessResponse.of(HttpStatus.CREATED, "Your post has been deleted successfully to the folder.");
     }
 
     // 즐겨찾기 폴더 별 게시글 조회

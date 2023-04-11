@@ -34,7 +34,7 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto){
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -48,10 +48,9 @@ public class MemberService {
             throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()));
-
         return ResponseEntity.ok()
-                .body(MessageResponseDto.of(HttpStatus.OK.value(), "Login Successful"));
+                .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(foundMember.get().getEmail()))
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
     }
 
     @Transactional(readOnly = true)
@@ -69,13 +68,15 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public void checkPwd(String pwd, Member member){
+    public SuccessResponse checkPwd(String pwd, Member member){
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
         if(!passwordEncoder.matches(pwd, findMember.get().getPassword())){
             throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
         }
+
+        return SuccessResponse.of(HttpStatus.OK, "Correct password");
     }
 
     @Transactional
@@ -90,7 +91,7 @@ public class MemberService {
         String newPwdEndcode = passwordEncoder.encode(passwordRequestDto.getPassword());
         findMember.get().updatePwd(newPwdEndcode);
 
-        return SuccessResponse.of(HttpStatus.OK, "Update Password Successful");
+        return SuccessResponse.of(HttpStatus.OK, "Your password has been successfully updated.");
     }
 
 }

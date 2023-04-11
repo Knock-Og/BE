@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,8 +32,8 @@ public class MemberController {
     @Operation(summary = "로그인 API", description = "로그인하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/login")
-    public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
-        return memberService.login(loginRequestDto,response);
+    public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto){
+        return memberService.login(loginRequestDto);
     }
 
     @ExeTimer
@@ -45,10 +46,9 @@ public class MemberController {
 
     @Operation(summary = "비밀번호 확인 API", description = "비밀번호 변경 전 기전 비밀번호를 확인합니다.")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping("/pwd/{password}")
-    public SuccessResponse pwdCheck(@PathVariable(name = "password") String pwd, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        memberService.checkPwd(pwd, userDetails.getMember());
-        return SuccessResponse.of(HttpStatus.OK, "correct password");
+    @PostMapping("/check/password")
+    public SuccessResponse pwdCheck(@AuthenticationPrincipal UserDetailsImpl userDetails, @Valid @RequestBody PasswordRequestDto passwordRequestDto){
+        return memberService.checkPwd(passwordRequestDto.getPassword(), userDetails.getMember());
     }
 
     @Operation(summary = "비밀번호 변경 API", description = "비밀번호를 변경합니다.")

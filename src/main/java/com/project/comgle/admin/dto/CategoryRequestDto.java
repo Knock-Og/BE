@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class CategoryRequestDto {
 
-    @NotBlank(message = "빈 칸입니다.")
+    @NotBlank(message = "Please enter a category name.")
     @Schema(description = SchemaDescriptionUtils.Category.NAME, example = "공지사항" , maxLength = 20)
     private String categoryName;
 

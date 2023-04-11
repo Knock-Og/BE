@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
-    Optional<Member> findByEmail(String email);
+    @Query("SELECT m FROM Member m join fetch m.company c where m.email = :email and m.valid = true and  c.valid = true")
+    Optional<Member> findByEmail(@Param("email") String email);
 
     Optional<Member> findByMemberNameAndCompany(String memberName,Company company);
 
