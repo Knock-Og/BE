@@ -43,7 +43,7 @@ public class SearchService {
                 ).collect(Collectors.toList());
 
         int totalCount = postRepositorys.findAllByContainingKeywordCount(keywordResult, company.getId()).size();
-        int endPage = (int)(Math.ceil(totalCount/10));
+        int endPage = totalCount%10 != 0 ? totalCount/10+1 : totalCount/10;
 
         return SearchPageResponseDto.of(endPage, searchResponseDtoList);
     }
@@ -59,7 +59,7 @@ public class SearchService {
                 ).collect(Collectors.toList());
 
         int totalCount = postRepositorys.findAllByContainingCategoryCount(category, company.getId()).size();
-        int endPage = (int)(Math.ceil(totalCount/10));
+        int endPage = (int)(Math.round(totalCount/10 + 0.4));
 
         return SearchPageResponseDto.of(endPage, searchResponseDtoList);
     }
