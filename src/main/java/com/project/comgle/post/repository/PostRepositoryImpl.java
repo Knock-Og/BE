@@ -14,7 +14,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class PostRepositoryImpl {
@@ -27,7 +29,7 @@ public class PostRepositoryImpl {
     private final QKeyword keyword = QKeyword.keyword1;
     private final QCategory category = QCategory.category;
 
-    public Page<Post> findAllByContainingKeyword(int page, List<String> keywords, String sortType, Long companyId) {
+    public Page<Post> findAllByContainingKeyword(int page, Set<String> keywords, String sortType, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
         for (String key : keywords) {
             builder.or(post.content.like("%"+key+"%"))
@@ -49,6 +51,25 @@ public class PostRepositoryImpl {
                 .fetch());
     }
 
+    public List<Post> findAllByContainingKeywordCount(Set<String> keywords, Long companyId) {
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String key : keywords) {
+            builder.or(post.content.like("%"+key+"%"))
+                    .or(post.title.like("%"+key+"%"))
+                    .or(keyword.keyword.like("%"+key+"%"));
+        }
+
+        builder.and(post.member.company.id.eq(companyId));
+        JPAQuery<Post> result = new JPAQuery<>(entityManager);
+        return new ArrayList<>(result.select(post)
+                .from(post)
+                .join(post.keywords, keyword).fetchJoin()
+                .join(post.member, member).fetchJoin()
+                .where(builder)
+                .distinct()
+                .fetch());
+    }
+
     public Page<Post> findAllByContainingCategory(int page,  String c, String sortType, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(post.member.company.id.eq(companyId));
@@ -65,6 +86,20 @@ public class PostRepositoryImpl {
                 .orderBy(sortingFilter(sortType))
                 .fetch());
 
+    }
+
+    public List<Post> findAllByContainingCategoryCount(String c, Long companyId) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(post.member.company.id.eq(companyId));
+        JPAQuery<Post> result = new JPAQuery<>(entityManager);
+        return new ArrayList<>(result.select(post)
+                .from(post)
+                .join(post.keywords, keyword).fetchJoin()
+                .join(post.member, member).fetchJoin()
+                .where(builder)
+                .distinct()
+                .fetch());
     }
 
    private OrderSpecifier<?> sortingFilter(String sortType) {

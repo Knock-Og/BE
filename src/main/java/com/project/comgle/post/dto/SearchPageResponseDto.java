@@ -2,7 +2,6 @@ package com.project.comgle.post.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-
 import java.util.List;
 
 @Getter
