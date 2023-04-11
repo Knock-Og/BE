@@ -3,7 +3,6 @@ package com.project.comgle.post.dto;
 import com.project.comgle.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
