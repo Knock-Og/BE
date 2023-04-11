@@ -6,6 +6,7 @@ import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
+import com.project.comgle.member.dto.NewPasswordRequestDto;
 import com.project.comgle.member.dto.PasswordRequestDto;
 import com.project.comgle.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,9 +54,9 @@ public class MemberController {
 
     @Operation(summary = "비밀번호 변경 API", description = "비밀번호를 변경합니다.")
     @ResponseStatus(value = HttpStatus.OK)
-    @PutMapping("/pwd")
-    public SuccessResponse pwdUpdate(@RequestBody @Valid PasswordRequestDto passwordRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return memberService.updatePwd(passwordRequestDto, userDetails.getMember());
+    @PutMapping("/password")
+    public SuccessResponse pwdUpdate(@RequestBody @Valid NewPasswordRequestDto passwordRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return memberService.updatePwd(passwordRequestDto.getNewPassword(), userDetails.getMember());
     }
 
 }

@@ -10,7 +10,6 @@ import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.global.utils.JwtUtil;
 import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.MemberResponseDto;
-import com.project.comgle.member.dto.PasswordRequestDto;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -80,15 +78,15 @@ public class MemberService {
     }
 
     @Transactional
-    public SuccessResponse updatePwd(PasswordRequestDto passwordRequestDto, Member member){
+    public SuccessResponse updatePwd(String newPwd, Member member){
 
         Optional<Member> findMember = memberRepository.findById(member.getId());
 
-        if(passwordEncoder.matches(passwordRequestDto.getPassword(), findMember.get().getPassword())){
+        if(passwordEncoder.matches(newPwd, findMember.get().getPassword())){
             throw new CustomException(ExceptionEnum.DUPLICATE_PASSWORD);
         }
 
-        String newPwdEndcode = passwordEncoder.encode(passwordRequestDto.getPassword());
+        String newPwdEndcode = passwordEncoder.encode(newPwd);
         findMember.get().updatePwd(newPwdEndcode);
 
         return SuccessResponse.of(HttpStatus.OK, "Your password has been successfully updated.");
