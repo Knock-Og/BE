@@ -1,11 +1,8 @@
 package com.project.comgle.post.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.comgle.post.entity.Post;
-import lombok.*;
-import org.springframework.data.domain.Page;
-
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Getter
