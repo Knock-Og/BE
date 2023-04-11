@@ -97,7 +97,8 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
-                .where(builder)
+                .where(builder
+                        .and(post.category.categoryName.eq(c)))
                 .distinct()
                 .fetch());
     }
