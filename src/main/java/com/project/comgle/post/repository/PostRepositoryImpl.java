@@ -37,7 +37,8 @@ public class PostRepositoryImpl {
                     .or(keyword.keyword.like("%"+key+"%"));
         }
 
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId)
+                .and(post.valid.eq(true)));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
                 .from(post)
@@ -59,7 +60,8 @@ public class PostRepositoryImpl {
                     .or(keyword.keyword.like("%"+key+"%"));
         }
 
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)
@@ -72,7 +74,8 @@ public class PostRepositoryImpl {
 
     public Page<Post> findAllByContainingCategory(int page,  String c, String sortType, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
 
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
@@ -90,8 +93,9 @@ public class PostRepositoryImpl {
 
     public List<Post> findAllByContainingCategoryCount(String c, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
 
-        builder.and(post.member.company.id.eq(companyId));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)
