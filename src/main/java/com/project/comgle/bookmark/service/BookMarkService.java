@@ -227,14 +227,14 @@ public class BookMarkService {
         for(BookMark b : bookMarkList){
 
             Post findPost = b.getPost();
-            List<Comment> allByPost = commentRepository.findAllByPost(findPost);
+            int commentCount = commentRepository.findAllByPost(findPost).size();
             String[] keywordList = findPost.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
 
             postResponseDtoList.add(PostResponseDto.of(
                     findPost,
                     findPost.getCategory().getCategoryName(),
                     keywordList,
-                    allByPost.size()));
+                    commentCount));
         }
 
         return PostPageResponseDto.of(endP,postResponseDtoList);

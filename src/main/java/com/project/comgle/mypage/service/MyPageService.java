@@ -32,8 +32,8 @@ public class MyPageService {
         List<PostResponseDto> postResponseDtoList = postRepositorys.findAllByMember(page, userDetails.getMember().getId())
                 .stream().map(k -> {
                     String[] keywordList = k.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
-                    List<Comment> allByPost = commentRepository.findAllByPost(k);
-                    return PostResponseDto.of(k, k.getCategory().getCategoryName(), keywordList, allByPost.size());}
+                    int commentCount = commentRepository.findAllByPost(k).size();
+                    return PostResponseDto.of(k, k.getCategory().getCategoryName(), keywordList, commentCount);}
                 ).collect(Collectors.toList());
 
         int totalCount = postRepositorys.findAllByMemberCount(userDetails.getMember().getId()).size();

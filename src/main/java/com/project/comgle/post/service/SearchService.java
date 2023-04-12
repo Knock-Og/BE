@@ -37,8 +37,8 @@ public class SearchService {
         List<SearchResponseDto> searchResponseDtoList = postRepositorys.findAllByContainingKeyword(page, keywordResult, sortType, company.getId())
                 .stream().map(k -> {
                             String[] key = k.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
-                            List<Comment> allByPost = commentRepository.findAllByPost(k);
-                            return SearchResponseDto.of(k, key, allByPost.size());
+                            int commentCount = commentRepository.findAllByPost(k).size();
+                            return SearchResponseDto.of(k, key, commentCount);
                         }
                 ).collect(Collectors.toList());
 
@@ -54,8 +54,8 @@ public class SearchService {
         List<SearchResponseDto> searchResponseDtoList = postRepositorys.findAllByContainingCategory(page, category, sortType, company.getId())
                 .stream().map(k -> {
                     String[] key = k.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
-                    List<Comment> allByPost = commentRepository.findAllByPost(k);
-                    return SearchResponseDto.of(k, key, allByPost.size());}
+                    int commentCount = commentRepository.findAllByPost(k).size();
+                    return SearchResponseDto.of(k, key, commentCount);}
                 ).collect(Collectors.toList());
 
         int totalCount = postRepositorys.findAllByContainingCategoryCount(category, company.getId()).size();

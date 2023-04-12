@@ -163,7 +163,7 @@ public class PostService {
         String[] keywordList = keywords.stream().map(Keyword::getKeyword).toArray(String[]::new);
         Integer[] folders = bookMarkRepository.findFoldersByPost(member, post).toArray(Integer[]::new);
         findPost.get().updateMethod(WeightEnum.POSTVIEWS.getNum());
-        List<Comment> allByPost = commentRepository.findAllByPost(post);
+        int commentCount = commentRepository.findAllByPost(post).size();
 
         int postViews = post.getPostViews();
 
@@ -174,7 +174,7 @@ public class PostService {
                                 keywordList,
                                 folders,
                                 postViews,
-                                allByPost.size())
+                                commentCount)
                 );
     }
 

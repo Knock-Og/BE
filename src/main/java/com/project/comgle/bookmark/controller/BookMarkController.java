@@ -69,7 +69,7 @@ public class BookMarkController {
     @Operation(summary = "즐겨찾기 폴더 별 게시글 조회 API", description = "해당 폴더에 즐겨찾기한 게시글을 모두 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/folder/{folder-id}/bookmarks")
-    public PostPageResponseDto postReadByBookMark(@PathVariable(name = "folder-id") Long folderId, @RequestParam(value = "p", defaultValue = "1") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public PostPageResponseDto postReadByBookMark(@PathVariable(name = "folder-id") Long folderId, @RequestParam(value = "page", defaultValue = "1") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.readPostForBookMark(folderId, page, userDetails.getMember());
     }
 
