@@ -18,6 +18,7 @@ import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -215,24 +216,18 @@ public class BookMarkService {
         int nowPage = page - 1;   // 현재 페이지
         int size = 10;  // 한 페이지당 게시글 수
 
-        int endP = bookMarkRepository.countByBookMarkFolderId(findBookMarkFolder.get().getId());
+        Page<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId, PageRequest.of(nowPage, size));
+        int endP = bookMarkList.getTotalPages();
 
-        if(endP % size == 0){
-            endP = endP / size;
-        } else if (endP % size > 0) {
-            endP = endP / size + 1;
-        }
-
-        List<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId, PageRequest.of(nowPage, size)).toList();
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
-        for (int i = 0; i < bookMarkList.size(); i++) {
-            Optional<Post> findPost = postRepository.findById(bookMarkList.get(i).getPost().getId());
-            List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(findPost.get());
-            String[] keywordList = keywords.stream().map(Keyword::getKeyword).toArray(String[]::new);
+        for(BookMark b : bookMarkList){
 
-            postResponseDtoList.add(PostResponseDto.of(findPost.get(),
-                    findPost.get().getCategory().getCategoryName(),
+            Post findPost = b.getPost();
+            String[] keywordList = findPost.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
+
+            postResponseDtoList.add(PostResponseDto.of(findPost,
+                    findPost.getCategory().getCategoryName(),
                     keywordList));
         }
 
