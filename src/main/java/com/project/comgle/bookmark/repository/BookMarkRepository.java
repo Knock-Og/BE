@@ -21,6 +21,8 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
     Page<BookMark> findAllByBookMarkFolderId(Long folderId, Pageable pageable);
 
+    List<BookMark> findAllByBookMarkFolderId(Long folderId);
+
     int countByBookMarkFolderId(Long folderId);
 
 }

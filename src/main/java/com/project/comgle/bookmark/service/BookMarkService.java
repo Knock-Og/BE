@@ -223,17 +223,22 @@ public class BookMarkService {
         int endP = bookMarkList.getTotalPages();
 
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
+        List<BookMark> bookMarks = bookMarkRepository.findAllByBookMarkFolderId(folderId);
 
-        for(BookMark b : bookMarkList){
+        for(BookMark b : bookMarks){
 
             Post findPost = b.getPost();
             int commentCount = commentRepository.findAllByPost(findPost).size();
             String[] keywordList = findPost.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
+            Integer[] folders = bookMarkRepository.findFoldersByPost(member, findPost).toArray(Integer[]::new);
+            int postViews = findPost.getPostViews();
 
             postResponseDtoList.add(PostResponseDto.of(
                     findPost,
                     findPost.getCategory().getCategoryName(),
                     keywordList,
+                    folders,
+                    postViews,
                     commentCount));
         }
 

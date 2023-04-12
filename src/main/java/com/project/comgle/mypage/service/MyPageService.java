@@ -1,5 +1,6 @@
 package com.project.comgle.mypage.service;
 
+import com.project.comgle.bookmark.repository.BookMarkRepository;
 import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.post.dto.PostPageResponseDto;
@@ -25,6 +26,7 @@ public class MyPageService {
     private final MemberRepository memberRepository;
     private final PostRepositoryImpl postRepositorys;
     private final CommentRepository commentRepository;
+    private final BookMarkRepository bookMarkRepository;
 
     @Transactional(readOnly = true)
     public PostPageResponseDto listMyPost(int page, UserDetailsImpl userDetails) {
@@ -40,6 +42,7 @@ public class MyPageService {
         int endPage = totalCount%10 != 0 ? totalCount/10+1 : totalCount/10;
 
         return PostPageResponseDto.of(endPage, postResponseDtoList);
+
     }
 
     @Transactional(readOnly = true)

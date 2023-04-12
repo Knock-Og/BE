@@ -85,6 +85,7 @@ public class PostResponseDto {
                 .modifiedAt(post.getModifiedAt())
                 .category(category)
                 .keywords(keywords)
+                .editingStatus(post.getEditingStatus())
                 .modifyPermission(post.getModifyPermission())
                 .readablePosition(post.getReadablePosition())
                 .commentCount(commentCount)
