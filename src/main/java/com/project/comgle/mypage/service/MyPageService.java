@@ -1,6 +1,6 @@
 package com.project.comgle.mypage.service;
 
-import com.project.comgle.bookmark.dto.PostPageResponseDto;
+import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.dto.MemberResponseDto;

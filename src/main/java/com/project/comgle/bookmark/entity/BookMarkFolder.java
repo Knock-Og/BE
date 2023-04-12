@@ -24,7 +24,7 @@ public class BookMarkFolder {
     private Member member;
 
     @Builder
-    public BookMarkFolder(String bookMarkFolderName, Member member) {
+    private BookMarkFolder(String bookMarkFolderName, Member member) {
         this.bookMarkFolderName = bookMarkFolderName;
         this.member = member;
     }

@@ -1,8 +1,5 @@
-package com.project.comgle.bookmark.dto;
+package com.project.comgle.post.dto;
 
-import com.project.comgle.post.dto.PostResponseDto;
-import com.project.comgle.post.dto.SearchPageResponseDto;
-import com.project.comgle.post.dto.SearchResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 
