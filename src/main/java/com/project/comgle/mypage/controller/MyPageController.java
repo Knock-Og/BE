@@ -26,7 +26,7 @@ public class MyPageController {
     @Operation(summary = "내 게시글 전체조회 API", description = "내가 작성한 게시글 전체를 조회합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/mypage/posts")
-    public PostPageResponseDto myPostList(@RequestParam("p") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public PostPageResponseDto myPostList(@RequestParam(value = "p", defaultValue = "1") int page, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return myPageService.listMyPost(page, userDetails);
     }
 

@@ -1,5 +1,7 @@
 package com.project.comgle.bookmark.service;
 
+import com.project.comgle.comment.entity.Comment;
+import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.bookmark.entity.BookMark;
 import com.project.comgle.bookmark.entity.BookMarkFolder;
@@ -35,7 +37,8 @@ public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final KeywordRepositoryImpl keywordRepositoryImpl;
+    private final CommentRepository commentRepository;
+
 
     // 즐겨찾기 폴더 추가
     @Transactional
@@ -224,11 +227,14 @@ public class BookMarkService {
         for(BookMark b : bookMarkList){
 
             Post findPost = b.getPost();
+            List<Comment> allByPost = commentRepository.findAllByPost(findPost);
             String[] keywordList = findPost.getKeywords().stream().map(Keyword::getKeyword).toArray(String[]::new);
 
-            postResponseDtoList.add(PostResponseDto.of(findPost,
+            postResponseDtoList.add(PostResponseDto.of(
+                    findPost,
                     findPost.getCategory().getCategoryName(),
-                    keywordList));
+                    keywordList,
+                    allByPost.size()));
         }
 
         return PostPageResponseDto.of(endP,postResponseDtoList);

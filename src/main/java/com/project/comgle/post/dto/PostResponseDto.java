@@ -51,12 +51,14 @@ public class PostResponseDto {
     @Schema(description = SchemaDescriptionUtils.Post.READABLE_POSITION)
     private Integer[] folders;
 
+    private int commentCount;
+
     @Builder
     private PostResponseDto(Long id, String memberName, String title, String content,
                             LocalDateTime createdAt, LocalDateTime modifiedAt, String category,
                             String[] keywords, int postViews, String editingStatus,
                             PositionEnum modifyPermission, PositionEnum readablePosition,
-                            Integer[] folders) {
+                            Integer[] folders, int commentCount) {
         this.id = id;
         this.memberName = memberName;
         this.title = title;
@@ -70,9 +72,10 @@ public class PostResponseDto {
         this.modifyPermission = modifyPermission;
         this.readablePosition = readablePosition;
         this.folders = folders;
+        this.commentCount = commentCount;
     }
 
-    public static PostResponseDto of(Post post, String category, String[] keywords) {
+    public static PostResponseDto of(Post post, String category, String[] keywords, int commentCount) {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .memberName(post.getMember().getMemberName())
@@ -84,10 +87,11 @@ public class PostResponseDto {
                 .keywords(keywords)
                 .modifyPermission(post.getModifyPermission())
                 .readablePosition(post.getReadablePosition())
+                .commentCount(commentCount)
                 .build();
     }
 
-    public static PostResponseDto of(Post post, String category, String[] keywords, Integer[] folders,int postViews) {
+    public static PostResponseDto of(Post post, String category, String[] keywords, Integer[] folders, int postViews, int commentCount) {
         return PostResponseDto.builder()
                 .id(post.getId())
                 .memberName(post.getMember().getMemberName())
@@ -102,6 +106,7 @@ public class PostResponseDto {
                 .modifyPermission(post.getModifyPermission())
                 .readablePosition(post.getReadablePosition())
                 .folders(folders)
+                .commentCount(commentCount)
                 .build();
     }
 }
