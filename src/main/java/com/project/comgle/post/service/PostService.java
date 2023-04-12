@@ -190,7 +190,12 @@ public class PostService {
             throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         }
 
-        findPost.get().updateStatus("true");
+        if (findPost.get().getEditingStatus().equals("false")) {
+            findPost.get().updateStatus("true");
+        } else {
+            findPost.get().updateStatus("false");
+        }
+
         postRepository.save(findPost.get());
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Edit status changed successfully."));
