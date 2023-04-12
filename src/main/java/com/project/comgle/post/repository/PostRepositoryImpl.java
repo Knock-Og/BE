@@ -34,11 +34,11 @@ public class PostRepositoryImpl {
         for (String key : keywords) {
             builder.or(post.content.like("%"+key+"%"))
                     .or(post.title.like("%"+key+"%"))
-                    .or(keyword.keyword.like("%"+key+"%"))
-                    .and(post.valid.eq(true));
+                    .or(keyword.keyword.like("%"+key+"%"));
         }
 
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId)
+                .and(post.valid.eq(true)));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
                 .from(post)
@@ -57,11 +57,11 @@ public class PostRepositoryImpl {
         for (String key : keywords) {
             builder.or(post.content.like("%"+key+"%"))
                     .or(post.title.like("%"+key+"%"))
-                    .or(keyword.keyword.like("%"+key+"%"))
-                    .and(post.valid.eq(true));
+                    .or(keyword.keyword.like("%"+key+"%"));
         }
 
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)
