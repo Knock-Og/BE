@@ -1,6 +1,6 @@
 package com.project.comgle.mypage.controller;
 
-import com.project.comgle.bookmark.dto.PostPageResponseDto;
+import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.dto.MemberResponseDto;

@@ -1,6 +1,6 @@
 package com.project.comgle.bookmark.service;
 
-import com.project.comgle.bookmark.dto.PostPageResponseDto;
+import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.bookmark.entity.BookMark;
 import com.project.comgle.bookmark.entity.BookMarkFolder;
 import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
@@ -228,21 +228,12 @@ public class BookMarkService {
 
         for (int i = 0; i < bookMarkList.size(); i++) {
             Optional<Post> findPost = postRepository.findById(bookMarkList.get(i).getPost().getId());
-
             List<Keyword> keywords = keywordRepositoryImpl.findAllByPost(findPost.get());
-            String[] keywordList = new String[keywords.size()];
+            String[] keywordList = keywords.stream().map(Keyword::getKeyword).toArray(String[]::new);
 
-            for (int j = 0; j < keywords.size(); j++) {
-                keywordList[j] = keywords.get(j).getKeyword();
-            }
-
-            String getCategory = findPost.get().getCategory().getCategoryName();
-
-            postResponseDtoList.add(PostResponseDto.of(findPost.get(), getCategory, keywordList));
-        }
-
-        if(postResponseDtoList.isEmpty()){
-            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+            postResponseDtoList.add(PostResponseDto.of(findPost.get(),
+                    findPost.get().getCategory().getCategoryName(),
+                    keywordList));
         }
 
         return PostPageResponseDto.of(endP,postResponseDtoList);

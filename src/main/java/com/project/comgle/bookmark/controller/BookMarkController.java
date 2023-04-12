@@ -1,6 +1,6 @@
 package com.project.comgle.bookmark.controller;
 
-import com.project.comgle.bookmark.dto.PostPageResponseDto;
+import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.bookmark.dto.BookMarkFolderRequestDto;
@@ -36,7 +36,7 @@ public class BookMarkController {
         return bookMarkService.delBookMarkFolder(folderId, userDetails.getMember());
     }
 
-    @Operation(summary = "즐겨찾기 폴더 수정 API", description = "해당 MEMBER가 지정한 즐겨찾기 폴더명을수정합니다")
+    @Operation(summary = "즐겨찾기 폴더 수정 API", description = "해당 MEMBER가 지정한 즐겨찾기 폴더명을 수정합니다")
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/bookmark/folder/{folder-id}")
     public SuccessResponse bookMarkFolderUpdate(@PathVariable(name = "folder-id") Long folderId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
