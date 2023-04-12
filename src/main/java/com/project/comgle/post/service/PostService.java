@@ -3,6 +3,7 @@ package com.project.comgle.post.service;
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
+import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.global.common.response.MessageResponseDto;
@@ -162,6 +163,7 @@ public class PostService {
         String[] keywordList = keywords.stream().map(Keyword::getKeyword).toArray(String[]::new);
         Integer[] folders = bookMarkRepository.findFoldersByPost(member, post).toArray(Integer[]::new);
         findPost.get().updateMethod(WeightEnum.POSTVIEWS.getNum());
+        List<Comment> allByPost = commentRepository.findAllByPost(post);
 
         int postViews = post.getPostViews();
 
@@ -171,7 +173,8 @@ public class PostService {
                                 findPost.get().getCategory().getCategoryName(),
                                 keywordList,
                                 folders,
-                                postViews)
+                                postViews,
+                                allByPost.size())
                 );
     }
 
