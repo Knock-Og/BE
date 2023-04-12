@@ -34,7 +34,8 @@ public class PostRepositoryImpl {
         for (String key : keywords) {
             builder.or(post.content.like("%"+key+"%"))
                     .or(post.title.like("%"+key+"%"))
-                    .or(keyword.keyword.like("%"+key+"%"));
+                    .or(keyword.keyword.like("%"+key+"%"))
+                    .and(post.valid.eq(true));
         }
 
         builder.and(post.member.company.id.eq(companyId));
@@ -43,8 +44,7 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
-                .where(builder
-                        .and(post.valid.eq(true)))
+                .where(builder)
                 .distinct()
                 .offset((page-1)*10)
                 .limit(10)
@@ -57,7 +57,8 @@ public class PostRepositoryImpl {
         for (String key : keywords) {
             builder.or(post.content.like("%"+key+"%"))
                     .or(post.title.like("%"+key+"%"))
-                    .or(keyword.keyword.like("%"+key+"%"));
+                    .or(keyword.keyword.like("%"+key+"%"))
+                    .and(post.valid.eq(true));
         }
 
         builder.and(post.member.company.id.eq(companyId));
@@ -66,23 +67,22 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
-                .where(builder
-                        .and(post.valid.eq(true)))
+                .where(builder)
                 .distinct()
                 .fetch());
     }
 
     public Page<Post> findAllByContainingCategory(int page,  String c, String sortType, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(post.member.company.id.eq(companyId));
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
 
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
                 .from(post)
                 .join(post.category, category).fetchJoin()
                 .where(builder
-                        .and(post.category.categoryName.eq(c))
-                        .and(post.valid.eq(true)))
+                        .and(post.category.categoryName.eq(c)))
                 .distinct()
                 .offset((page-1)*10)
                 .limit(10)
@@ -93,16 +93,16 @@ public class PostRepositoryImpl {
 
     public List<Post> findAllByContainingCategoryCount(String c, Long companyId) {
         BooleanBuilder builder = new BooleanBuilder();
+        builder.and(post.member.company.id.eq(companyId))
+                .and(post.valid.eq(true));
 
-        builder.and(post.member.company.id.eq(companyId));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
                 .where(builder
-                        .and(post.category.categoryName.eq(c))
-                        .and(post.valid.eq(true)))
+                        .and(post.category.categoryName.eq(c)))
                 .distinct()
                 .fetch());
     }
