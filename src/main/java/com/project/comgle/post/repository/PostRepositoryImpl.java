@@ -43,7 +43,8 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
-                .where(builder)
+                .where(builder
+                        .and(post.valid.eq(true)))
                 .distinct()
                 .offset((page-1)*10)
                 .limit(10)
@@ -65,7 +66,8 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
-                .where(builder)
+                .where(builder
+                        .and(post.valid.eq(true)))
                 .distinct()
                 .fetch());
     }
@@ -79,7 +81,8 @@ public class PostRepositoryImpl {
                 .from(post)
                 .join(post.category, category).fetchJoin()
                 .where(builder
-                        .and(post.category.categoryName.eq(c)))
+                        .and(post.category.categoryName.eq(c))
+                        .and(post.valid.eq(true)))
                 .distinct()
                 .offset((page-1)*10)
                 .limit(10)
@@ -98,7 +101,8 @@ public class PostRepositoryImpl {
                 .join(post.keywords, keyword).fetchJoin()
                 .join(post.member, member).fetchJoin()
                 .where(builder
-                        .and(post.category.categoryName.eq(c)))
+                        .and(post.category.categoryName.eq(c))
+                        .and(post.valid.eq(true)))
                 .distinct()
                 .fetch());
     }
