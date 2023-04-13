@@ -2,8 +2,10 @@ package com.project.comgle.admin.controller;
 
 import com.project.comgle.admin.dto.SignupRequestDto;
 import com.project.comgle.admin.service.AdminService;
+import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.security.UserDetailsImpl;
+import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.dto.PositionRequestDto;
 import com.project.comgle.member.entity.PositionEnum;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,10 +13,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -73,5 +76,14 @@ public class AdminController {
         adminService.checkPhone(phoneNum);
         return SuccessResponse.of(HttpStatus.OK,"This phone number is available.");
     }
+
+    @Operation(summary = "ADMIN 로그인 API", description = "관리자 로그인하는 기능입니다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping("/admin/login")
+    public ResponseEntity<MessageResponseDto> login(@RequestBody LoginRequestDto loginRequestDto){
+        return adminService.login(loginRequestDto);
+    }
+
+
 
 }

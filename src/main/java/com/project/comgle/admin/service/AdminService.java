@@ -1,26 +1,23 @@
 package com.project.comgle.admin.service;
 
 import com.project.comgle.admin.dto.SignupRequestDto;
-import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
-import com.project.comgle.bookmark.repository.BookMarkRepository;
-import com.project.comgle.company.dto.CompanyRequestDto;
 import com.project.comgle.company.entity.Company;
-import com.project.comgle.company.repository.CompanyRepository;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
+import com.project.comgle.global.utils.JwtUtil;
+import com.project.comgle.member.dto.LoginRequestDto;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.member.repository.MemberRepository;
-import com.project.comgle.post.repository.LogRepository;
-import com.project.comgle.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,6 +28,7 @@ public class AdminService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public SuccessResponse modifyPosition(Long memberId, String pos) {
@@ -117,6 +115,26 @@ public class AdminService {
         if(memberRepository.findByPhoneNum(phoneNum).isPresent()){
             throw new CustomException(ExceptionEnum.DUPLICATE_PHONE_NUMBER);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<MessageResponseDto> login(LoginRequestDto loginRequestDto){
+
+        String email = loginRequestDto.getEmail();
+        String password = loginRequestDto.getPassword();
+
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if(findMember.isEmpty() || !findMember.get().isValid()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
+        } else if(findMember.get().getPosition() != PositionEnum.ADMIN){
+            throw new CustomException(ExceptionEnum.REQUIRED_ADMIN_POSITION);
+        } else if(!passwordEncoder.matches(password, findMember.get().getPassword())){
+            throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
+        }
+
+        return ResponseEntity.ok()
+                .header(JwtUtil.AUTHORIZATION_HEADER,jwtUtil.createToken(findMember.get().getEmail()))
+                .body(MessageResponseDto.of(HttpStatus.OK.value(), "You have successfully logged in."));
     }
 
 }

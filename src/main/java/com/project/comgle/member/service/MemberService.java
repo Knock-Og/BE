@@ -1,8 +1,5 @@
 package com.project.comgle.member.service;
 
-import com.project.comgle.company.dto.CompanyRequestDto;
-import com.project.comgle.company.entity.Company;
-import com.project.comgle.company.repository.CompanyRepository;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.global.exception.CustomException;
@@ -40,9 +37,7 @@ public class MemberService {
         Optional<Member> foundMember = memberRepository.findByEmail(email);
         if(foundMember.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
-        }
-
-        if(!passwordEncoder.matches(password, foundMember.get().getPassword())){
+        } else if(!passwordEncoder.matches(password, foundMember.get().getPassword())){
             throw new CustomException(ExceptionEnum.WORNG_PASSWORD);
         }
 

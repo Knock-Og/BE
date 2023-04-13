@@ -68,6 +68,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests() //  요청에 대한 보안 검사를 구성한다.
                 .antMatchers("/login").permitAll()
+                .antMatchers("/admin/login").permitAll()
                 .antMatchers("/check/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/member/**").permitAll()
