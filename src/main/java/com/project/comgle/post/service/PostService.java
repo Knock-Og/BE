@@ -108,6 +108,8 @@ public class PostService {
             }
         }
 
+        String oldContent = findPost.get().getContent();
+
         findPost.get().update(postRequestDto, findCategory.get());
 
         SseEmitters findSubscribingPosts = emitterRepository.subscibePosts(id);
@@ -121,14 +123,13 @@ public class PostService {
             }
         });
 
-        addLog(member.getMemberName(), findPost.get(), postRequestDto.getContent());
+        addLog(member.getMemberName(), oldContent, postRequestDto.getContent(), findPost.get());
 
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been modified successfully."));
     }
 
-    private void addLog(String memberName, Post post, String newContent) {
+    private void addLog(String memberName, String oldContent, String newContent, Post post) {
 
-        String oldContent = post.getContent();
         List<Integer> changedLineNum = new ArrayList<>();
         String[] oldContentLines = oldContent.split("\n");
         String[] newContentLines = newContent.split("\n");
