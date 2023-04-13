@@ -1,30 +1,29 @@
 package com.project.comgle.bookmark.service;
 
-import com.project.comgle.comment.entity.Comment;
-import com.project.comgle.comment.repository.CommentRepository;
-import com.project.comgle.post.dto.PostPageResponseDto;
+import com.project.comgle.bookmark.dto.BookMarkFolderResponseDto;
 import com.project.comgle.bookmark.entity.BookMark;
 import com.project.comgle.bookmark.entity.BookMarkFolder;
 import com.project.comgle.bookmark.repository.BookMarkFolderRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
-import com.project.comgle.member.entity.Member;
-import com.project.comgle.member.repository.MemberRepository;
-import com.project.comgle.post.repository.KeywordRepositoryImpl;
-import com.project.comgle.post.repository.PostRepository;
+import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.global.common.response.SuccessResponse;
-import com.project.comgle.bookmark.dto.BookMarkFolderResponseDto;
-import com.project.comgle.post.dto.PostResponseDto;
-import com.project.comgle.post.entity.WeightEnum;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
+import com.project.comgle.member.entity.Member;
+import com.project.comgle.member.repository.MemberRepository;
+import com.project.comgle.post.dto.PostPageResponseDto;
+import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.entity.Keyword;
 import com.project.comgle.post.entity.Post;
+import com.project.comgle.post.entity.WeightEnum;
+import com.project.comgle.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -153,7 +152,7 @@ public class BookMarkService {
 
         Optional<Post> findPost = postRepository.findById(postId);
 
-        if(findPost.isEmpty()){
+        if(findPost.isEmpty() || !findPost.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
         }
 
@@ -195,6 +194,10 @@ public class BookMarkService {
 
         Optional<BookMark> bookMark = bookMarkRepository.findByBookMarkFolderIdAndPostId(folderId, postId);
 
+        if(bookMark.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_POST);
+        }
+
         bookMarkRepository.delete(bookMark.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Your post has been deleted successfully to the folder.");
@@ -216,14 +219,13 @@ public class BookMarkService {
             throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
         }
 
-        int nowPage = page - 1;   // 현재 페이지
-        int size = 10;  // 한 페이지당 게시글 수
+        int nowPage = page - 1;
+        int size = 10;
 
         Page<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(findBookMarkFolder.get(), PageRequest.of(nowPage, size));
         int endP = bookMarkList.getTotalPages();
 
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-//        List<BookMark> bookMarks = bookMarkRepository.findAllByBookMarkFolderId(folderId);
 
         for(BookMark b : bookMarkList){
 
