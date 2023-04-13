@@ -1,6 +1,7 @@
 package com.project.comgle.bookmark.repository;
 
 import com.project.comgle.bookmark.entity.BookMark;
+import com.project.comgle.bookmark.entity.BookMarkFolder;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.entity.Post;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,8 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
     Optional<BookMark> findByBookMarkFolderIdAndPostId(Long folderId, Long postId);
 
-    Page<BookMark> findAllByBookMarkFolderId(Long folderId, Pageable pageable);
+    @Query("SELECT b FROM BookMark b join b.post p where b.bookMarkFolder = :folder and p.valid = true order by  p.modifiedAt desc")
+    Page<BookMark> findAllByBookMarkFolderId(@Param("folder") BookMarkFolder folder, Pageable pageable);
 
     List<BookMark> findAllByBookMarkFolderId(Long folderId);
 

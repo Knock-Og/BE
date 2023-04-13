@@ -109,13 +109,14 @@ public class PostRepositoryImpl {
 
     public Page<Post> findAllByMember(int page, Long memberId) {
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(post.member.id.eq(memberId));
+        builder.and(post.member.id.eq(memberId)).and(post.valid.eq(true));
 
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
                 .from(post)
                 .join(post.member, member).fetchJoin()
                 .where(builder)
+                .orderBy(post._super.modifiedAt.desc())
                 .distinct()
                 .offset((page-1)*10)
                 .limit(10)
@@ -125,7 +126,7 @@ public class PostRepositoryImpl {
     public List<Post> findAllByMemberCount(Long memberId) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(post.member.id.eq(memberId));
+        builder.and(post.member.id.eq(memberId)).and(post.valid.eq(true));
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)

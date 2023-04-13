@@ -219,13 +219,13 @@ public class BookMarkService {
         int nowPage = page - 1;   // 현재 페이지
         int size = 10;  // 한 페이지당 게시글 수
 
-        Page<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(folderId, PageRequest.of(nowPage, size));
+        Page<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(findBookMarkFolder.get(), PageRequest.of(nowPage, size));
         int endP = bookMarkList.getTotalPages();
 
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
-        List<BookMark> bookMarks = bookMarkRepository.findAllByBookMarkFolderId(folderId);
+//        List<BookMark> bookMarks = bookMarkRepository.findAllByBookMarkFolderId(folderId);
 
-        for(BookMark b : bookMarks){
+        for(BookMark b : bookMarkList){
 
             Post findPost = b.getPost();
             int commentCount = commentRepository.findAllByPost(findPost).size();
