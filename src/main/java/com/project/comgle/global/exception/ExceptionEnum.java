@@ -40,6 +40,8 @@ public enum ExceptionEnum {
     INVALID_PERMISSION_TO_MODIFY(400,"You are not authorized to edit this post."),
     // 읽을 수 있는 권한이 없습니다.
     INVALID_PERMISSION_TO_READ(400,"You are not authorized to read this post."),
+    // 읽을 수 있는 권한이 없습니다.
+    INVALID_PERMISSION_TO_DELETE_COMMENT(400,"You are not authorized to delete this comment."),
 
     /* 존재하지 않는 요소 */
     // 해당 직책이 존재하지 않습니다.

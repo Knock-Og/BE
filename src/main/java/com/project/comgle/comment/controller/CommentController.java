@@ -59,7 +59,7 @@ public class CommentController {
                                                             @PathVariable(name = "comment-id") Long commentId,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        return commentService.deleteComment(postId, commentId);
+        return commentService.deleteComment(postId, commentId, userDetails.getMember());
     }
 
 }
