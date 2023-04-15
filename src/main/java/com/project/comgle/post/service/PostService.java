@@ -128,23 +128,6 @@ public class PostService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been modified successfully."));
     }
 
-    private void addLog(String memberName, String oldContent, String newContent, Post post) {
-
-        List<Integer> changedLineNum = new ArrayList<>();
-        String[] oldContentLines = oldContent.split("\n");
-        String[] newContentLines = newContent.split("\n");
-
-        for (int i = 0; i < oldContentLines.length; i++) {
-            if (!oldContentLines[i].equals(newContentLines[i])) {
-                changedLineNum.add(i + 1);
-            }
-        }
-
-        Log newLog = Log.of(memberName, oldContent, newContent, changedLineNum, post);
-
-        logRepository.save(newLog);
-    }
-
     @Transactional
     public ResponseEntity<PostResponseDto> readPost(Long id, Member member, Company company) {
 
@@ -202,4 +185,20 @@ public class PostService {
         return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Edit status changed successfully."));
     }
 
+    private void addLog(String memberName, String oldContent, String newContent, Post post) {
+
+        List<Integer> changedLineNum = new ArrayList<>();
+        String[] oldContentLines = oldContent.split("\n");
+        String[] newContentLines = newContent.split("\n");
+
+        for (int i = 0; i < oldContentLines.length; i++) {
+            if (!oldContentLines[i].equals(newContentLines[i])) {
+                changedLineNum.add(i + 1);
+            }
+        }
+
+        Log newLog = Log.of(memberName, oldContent, newContent, changedLineNum, post);
+
+        logRepository.save(newLog);
+    }
 }

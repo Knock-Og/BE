@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,7 +98,6 @@ public class CommentService {
         } else if(Objects.equals(findComment.get().getMember().getId(), member.getId())){
             throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_DELETE_COMMENT);
         }
-
 
         commentRepository.delete(findComment.get());
 
