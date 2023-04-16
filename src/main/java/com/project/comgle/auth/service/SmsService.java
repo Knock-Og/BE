@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,12 +64,12 @@ public class SmsService {
 
         FindEmailResponseDto findEmailResponseDto = sendSms(SmsMessageDto.of(findMember.getPhoneNum().replaceAll("-", ""), "[knock 본인인증] " + authenticationCode));
         findEmailResponseDto.setPhoneNum(findMember.getPhoneNum());
+        findEmailResponseDto.setMessage("The sms has been sent successfully.");
 
         smsCodeMap.put(findMember.getPhoneNum(), authenticationCode);
 
-        return ResponseEntity.ok()
+        return ResponseEntity.accepted()
                 .body(findEmailResponseDto);
-
     }
 
     @Transactional(readOnly = true)

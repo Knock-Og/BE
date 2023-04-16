@@ -18,6 +18,9 @@ public class FindEmailResponseDto {
     private String statusName;
 
     @Setter
+    private String message;
+
+    @Setter
     private String phoneNum;
 
     public static FindEmailResponseDto of(String requestId, LocalDateTime requestTime, String statusCode, String statusName){
