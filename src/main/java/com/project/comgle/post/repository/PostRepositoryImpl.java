@@ -39,6 +39,7 @@ public class PostRepositoryImpl {
 
         builder.and(post.member.company.id.eq(companyId)
                 .and(post.valid.eq(true)));
+
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new PageImpl<>(result.select(post)
                 .from(post)
@@ -62,6 +63,7 @@ public class PostRepositoryImpl {
 
         builder.and(post.member.company.id.eq(companyId))
                 .and(post.valid.eq(true));
+
         JPAQuery<Post> result = new JPAQuery<>(entityManager);
         return new ArrayList<>(result.select(post)
                 .from(post)
@@ -136,20 +138,17 @@ public class PostRepositoryImpl {
                 .fetch());
     }
 
-   private OrderSpecifier<?> sortingFilter(String sortType) {
-        Order order = Order.DESC;
-
-        if (sortType.equals("관심도")) {
-            return new OrderSpecifier<>(order, post.score);
-        } else if (sortType.equals("조회수")) {
-            return new OrderSpecifier<>(order, post.postViews);
-        } else if (sortType.equals("댓글수")) {
-            return new OrderSpecifier<>(order, post.comments.size());
-        } else if (sortType.equals("생성일자")) {
-            return new OrderSpecifier<>(order, post.createdAt);
+    private OrderSpecifier<?> sortingFilter(String sortType) {
+        switch (sortType) {
+            case "관심도":
+                return new OrderSpecifier<>(Order.DESC, post.score);
+            case "댓글수":
+                return new OrderSpecifier<>(Order.DESC, post.comments.size());
+            case "생성일자":
+                return new OrderSpecifier<>(Order.DESC, post.createdAt);
         }
 
-        return null;
-   }
+        return new OrderSpecifier<>(Order.DESC, post.postViews);
+    }
 }
 
