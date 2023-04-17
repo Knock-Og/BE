@@ -46,7 +46,7 @@
 
 <br><br>
 
-# Project Details
+# 프로젝트 세부사항
 - ### 구현 영상<br>
     - [최종 발표영상 or ppt 영상 추가예정]() <br>
 - ###  구현목표
@@ -102,7 +102,7 @@
 <br><br><br>
 
 # Service Architecture
-![🛠️ image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbV1GaK%2FbtsakgF80sj%2F6zx39AfbkVO7aB7KiNjgx0%2Fimg.png)
+![🛠️ image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcqJt5s%2FbtsaXl6DMeO%2FBrNlkwhkQu7PazYIxRGTxk%2Fimg.png)
 
 <br>
 
@@ -111,19 +111,19 @@
 <summary> ERD 펼쳐보기 </summary>
 <div markdown="1">  
 
-![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbDAxiF%2Fbtsar4ETVqx%2FDokjkEJbXakcElVJqykBLk%2Fimg.png)
+![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc6spkU%2FbtsaKx8Q9jA%2FCy287vuTk2KBChVNSSckn0%2Fimg.png)
 
 </div>
 </details>
 
 <br>
 
-# API
+# API 명세서
 [📄 API 바로가기](https://www.notion.so/API-7576e48635ea4890a06d95cc2657a1a0)
 
 <br>
 
-# Main Function
+# 주요 기능
 
 | 문서 검색 및 유형별 조회 기능 | 편집상태 조회 기능 |
 |:------:|:------:|
