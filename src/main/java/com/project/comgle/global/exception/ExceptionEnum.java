@@ -47,7 +47,7 @@ public enum ExceptionEnum {
     NOT_EXIST_POST(404,"The post does not exist."),
     NOT_EXIST_CATEGORY(404,"The category does not exist."),
     NOT_EXIST_COMMENT(404,"The comment does not exist."),
-    NOT_EXIST_AUTHENTICATION_CODE(404," Authentication code does not exist.");
+    NOT_EXIST_AUTHENTICATION_CODE(404,"Authentication code does not exist.");
 
 
     private final int code;
