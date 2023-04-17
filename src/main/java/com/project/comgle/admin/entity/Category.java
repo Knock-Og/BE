@@ -19,6 +19,9 @@ public class Category {
     @Column(nullable = false, length = 20)
     private String categoryName;
 
+    @Column(nullable = true)
+    private boolean valid = true;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID", nullable = false)
     private Company company;
@@ -40,4 +43,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public void withdrawal(){
+        valid = false;
+    }
+
+    public void restore(){
+        valid = true;
+    }
 }

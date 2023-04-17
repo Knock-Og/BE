@@ -1,6 +1,5 @@
 package com.project.comgle.post.service;
 
-import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.global.aop.ExeTimer;
@@ -12,7 +11,7 @@ import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.KomoranResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;;;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;

@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository <Category,Long> {
 
     Optional<Category> findByCategoryNameAndCompany(String categoryName, Company company);
-    List<Category> findAllByCompany(Company company);
+    @Query("SELECT c FROM Category c where c.company = :company and c.valid = true")
+    List<Category> findAllByCompany(@Param("company") Company company);
 
 }

@@ -71,18 +71,14 @@ public class BookMarkService {
     @Transactional
     public SuccessResponse delBookMarkFolder(Long folderId, Member member){
 
-        Optional<Member> findMember = memberRepository.findById(member.getId());
-
-        if(findMember.isEmpty() || !findMember.get().isValid()){
-            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
-        }
-
         Optional<BookMarkFolder> bookMarkFolder = bookMarkFolderRepository.findByIdAndMember(folderId, member);
 
         if(bookMarkFolder.isEmpty()){
-            throw new CustomException(ExceptionEnum.NOT_EXIST_FOLDER);
+            throw new CustomException(ExceptionEnum.NOT_EXIST_USERS_FOLDER);
         }
 
+        List<BookMark> bookmarkList = bookMarkRepository.findAllByBookMarkFolder(bookMarkFolder.get());
+        bookMarkRepository.deleteAll(bookmarkList);
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
         return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been deleted successfully.");

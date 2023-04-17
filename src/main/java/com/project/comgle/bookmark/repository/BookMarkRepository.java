@@ -23,4 +23,5 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     @Query("SELECT b FROM BookMark b join b.post p where b.bookMarkFolder = :folder and p.valid = true order by  p.modifiedAt desc")
     Page<BookMark> findAllByBookMarkFolderId(@Param("folder") BookMarkFolder folder, Pageable pageable);
 
+    List<BookMark> findAllByBookMarkFolder( BookMarkFolder bookMarkFolder);
 }

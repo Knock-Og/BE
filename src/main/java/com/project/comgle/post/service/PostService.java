@@ -44,7 +44,7 @@ public class PostService {
 
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getCompany());
 
-        if (findCategory.isEmpty()){
+        if (findCategory.isEmpty() || !findCategory.get().isValid()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY);
         }
 
