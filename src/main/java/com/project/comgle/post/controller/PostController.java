@@ -5,6 +5,7 @@ import com.project.comgle.post.dto.PostRequestDto;
 import com.project.comgle.global.common.response.MessageResponseDto;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.global.security.UserDetailsImpl;
+import com.project.comgle.post.dto.PostSuccessResponseDto;
 import com.project.comgle.post.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +25,7 @@ public class PostController {
     @Operation(summary = "게시글 작성 API", description = "게시글을 작성합니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/post")
-    public ResponseEntity<MessageResponseDto> postAdd(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<PostSuccessResponseDto> postAdd(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.addPost(postRequestDto, userDetails);
     }
 

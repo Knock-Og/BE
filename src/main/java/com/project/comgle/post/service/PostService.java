@@ -3,7 +3,6 @@ package com.project.comgle.post.service;
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.admin.repository.CategoryRepository;
 import com.project.comgle.bookmark.repository.BookMarkRepository;
-import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.company.entity.Company;
 import com.project.comgle.global.common.response.MessageResponseDto;
@@ -13,6 +12,7 @@ import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.post.dto.PostRequestDto;
 import com.project.comgle.post.dto.PostResponseDto;
+import com.project.comgle.post.dto.PostSuccessResponseDto;
 import com.project.comgle.post.entity.*;
 import com.project.comgle.post.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class PostService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public ResponseEntity<MessageResponseDto> addPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
+    public ResponseEntity<PostSuccessResponseDto> addPost(PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
 
         Optional<Category> findCategory = categoryRepository.findByCategoryNameAndCompany(postRequestDto.getCategory(), userDetails.getCompany());
 
@@ -58,7 +58,7 @@ public class PostService {
 
         postRepository.save(newPost);
 
-        return ResponseEntity.ok().body(MessageResponseDto.of(HttpStatus.OK.value(), "Your post has been created successfully."));
+        return ResponseEntity.ok().body(PostSuccessResponseDto.of(HttpStatus.OK.value(), "Your post has been created successfully.", newPost.getId()));
     }
 
     @Transactional
