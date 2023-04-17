@@ -14,20 +14,20 @@ public class PostSuccessResponseDto {
     private String message;
 
     @Schema(description = SchemaDescriptionUtils.ID )
-    private Long id;
+    private Long postId;
 
     @Builder
-    private PostSuccessResponseDto(int status, String message, Long id){
+    private PostSuccessResponseDto(int status, String message, Long postId){
         this.status = status;
         this.message = message;
-        this.id = id;
+        this.postId = postId;
     }
 
-    public static PostSuccessResponseDto of(int status, String message, Long id){
+    public static PostSuccessResponseDto of(int status, String message, Long postId){
         return PostSuccessResponseDto.builder()
                 .status(status)
                 .message(message)
-                .id(id)
+                .postId(postId)
                 .build();
     }
 
