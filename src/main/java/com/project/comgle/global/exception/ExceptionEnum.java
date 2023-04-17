@@ -15,7 +15,7 @@ public enum ExceptionEnum {
     // 비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-32자 이내여야 합니다.
     INVALID_PASSWD_REG(400,"Passwords must be 8-32 letters long, including upper and lower cases or special characters."),
     //토큰이 유효하지 않습니다.
-    INVALID_TOKEN(400,"Invalid token"),
+    INVALID_TOKEN(401,"Invalid token"),
     // 잘못된 요청값입니다
     INVALID_VALUE(400,"Invalid request"),
     // SMS 전송 에러발생입니다.
@@ -25,43 +25,43 @@ public enum ExceptionEnum {
     // SMS 전송 에러발생입니다.
     SEND_EMAIL_CODE_ERR(400,"Failed to send email code"),
     // SMS 인증한 내역이 없을경우
-    NOT_EXIST_AUTHENTICATION_CODE(400," Authentication code does not exist."),
+    NOT_EXIST_AUTHENTICATION_CODE(404," Authentication code does not exist."),
 
     /* 계정 권한 */
     // ADMIN 권한이 필요합니다.
-    REQUIRED_ADMIN_POSITION(400, "ADMIN permission is required."),
+    REQUIRED_ADMIN_POSITION(403, "ADMIN permission is required."),
     // ADMIN 계정으로 직책을 변경할 수 없습니다.
-    IMMULATABLE_TO_ADMIN(400,"You cannot change your position to an ADMIN account."),
+    IMMULATABLE_TO_ADMIN(403,"You cannot change your position to an ADMIN account."),
     // ADMIN 계정은 직책을 변경할 수 없습니다.
-    IMMULATABLE_ADMIN_POSITION(400, "ADMIN accounts cannot change its position."),
+    IMMULATABLE_ADMIN_POSITION(403, "ADMIN accounts cannot change its position."),
     // ADMIN 계정은 삭제할 수 없습니다.
-    NOT_DELETE_ADMIN_POSITION(400, "ADMIN accounts cannot be deleted."),
+    NOT_DELETE_ADMIN_POSITION(403, "ADMIN accounts cannot be deleted."),
     // 수정할 수 있는 권한이 없습니다.
-    INVALID_PERMISSION_TO_MODIFY(400,"You are not authorized to edit this post."),
+    INVALID_PERMISSION_TO_MODIFY(403,"You are not authorized to edit this post."),
     // 읽을 수 있는 권한이 없습니다.
-    INVALID_PERMISSION_TO_READ(400,"You are not authorized to read this post."),
+    INVALID_PERMISSION_TO_READ(403,"You are not authorized to read this post."),
     // 읽을 수 있는 권한이 없습니다.
-    INVALID_PERMISSION_TO_DELETE_COMMENT(400,"You are not authorized to delete this comment."),
+    INVALID_PERMISSION_TO_DELETE_COMMENT(403,"You are not authorized to delete this comment."),
 
     /* 존재하지 않는 요소 */
     // 해당 직책이 존재하지 않습니다.
-    NOT_EXIST_POSITION(400,"The position does not exist."),
+    NOT_EXIST_POSITION(404,"The position does not exist."),
     // 해당 계정(사용자)이 존재하지 않습니다.
-    NOT_EXIST_MEMBER(400,"That account(member) does not exist."),
+    NOT_EXIST_MEMBER(404,"That account(member) does not exist."),
     // 해당 회사가 존재하지 않습니다.
-    NOT_EXIST_COMPANY(400, "The company does not exist."),
+    NOT_EXIST_COMPANY(404, "The company does not exist."),
     // 해당 폴더가 존재하지 않습니다.
-    NOT_EXIST_FOLDER(400,"The folder does not exist."),
+    NOT_EXIST_FOLDER(404,"The folder does not exist."),
     // 해당 유저 폴더가 존재하지 않습니다.
-    NOT_EXIST_USERS_FOLDER(400,"The user's folder does not exist."),
+    NOT_EXIST_USERS_FOLDER(404,"The user's folder does not exist."),
     // 해당 게시물이 회사에 존재하지 않습니다.
-    NOT_EXIST_POST_IN_COMPANY(400, "The post does not exist in the company."),
+    NOT_EXIST_POST_IN_COMPANY(404, "The post does not exist in the company."),
     // 해당 게시글이 존재하지 않습니다.
-    NOT_EXIST_POST(400,"The post does not exist."),
+    NOT_EXIST_POST(404,"The post does not exist."),
     // 해당 카테고리가 존재하지 않습니다.
-    NOT_EXIST_CATEGORY(400,"The category does not exist."),
+    NOT_EXIST_CATEGORY(404,"The category does not exist."),
     // 해당 댓글이 존재하지 않습니다.
-    NOT_EXIST_COMMENT(400,"The comment does not exist."),
+    NOT_EXIST_COMMENT(404,"The comment does not exist."),
 
     /* 중복 */
     // 중복된 회사가 존재합니다.
