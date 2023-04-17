@@ -38,10 +38,10 @@ public class MyPageService {
                     return PostResponseDto.of(k, k.getCategory().getCategoryName(), keywordList, commentCount);}
                 ).collect(Collectors.toList());
 
-        int totalCount = postRepositorys.findAllByMemberCount(userDetails.getMember().getId()).size();
-        int endPage = totalCount%10 != 0 ? totalCount/10+1 : totalCount/10;
+        int totalPost = postRepositorys.findAllByMemberCount(userDetails.getMember().getId()).size();
+        int endPage = totalPost%10 != 0 ? totalPost/10+1 : totalPost/10;
 
-        return PostPageResponseDto.of(endPage, postResponseDtoList);
+        return PostPageResponseDto.of(endPage, totalPost, postResponseDtoList);
 
     }
 

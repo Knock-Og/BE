@@ -223,7 +223,8 @@ public class BookMarkService {
         int size = 10;
 
         Page<BookMark> bookMarkList = bookMarkRepository.findAllByBookMarkFolderId(findBookMarkFolder.get(), PageRequest.of(nowPage, size));
-        int endP = bookMarkList.getTotalPages();
+        int endPage = bookMarkList.getTotalPages();
+        int totalPost = bookMarkList.getNumberOfElements();
 
         List<PostResponseDto> postResponseDtoList = new ArrayList<>();
 
@@ -244,7 +245,7 @@ public class BookMarkService {
                     commentCount));
         }
 
-        return PostPageResponseDto.of(endP,postResponseDtoList);
+        return PostPageResponseDto.of(endPage, totalPost, postResponseDtoList);
     }
 
 }
