@@ -25,9 +25,9 @@ public class SearchController {
     @Operation(summary = "키워드 조회 API", description = "제목, 내용, 키워드로 검색하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/search")
-    public SearchPageResponseDto keywordSearch(@RequestParam(defaultValue = "1") int page,
+    public SearchPageResponseDto keywordSearch(@RequestParam(value = "page", defaultValue = "1") int page,
                                                  @RequestParam(value = "keyword") String keyword,
-                                                 @RequestParam(defaultValue = "관심도") String sortType,
+                                                 @RequestParam(value = "sort", defaultValue = "조회수") String sortType,
                                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
         return searchService.searchKeyword(page, keyword, sortType, userDetails.getCompany());
     }
@@ -36,9 +36,9 @@ public class SearchController {
     @Operation(summary = "카테고리 조회 API", description = "해당 카테고리로 조회하는 기능입니다.")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/category")
-    public SearchPageResponseDto categorySearch(@RequestParam(defaultValue = "1") int page,
+    public SearchPageResponseDto categorySearch(@RequestParam(value = "page", defaultValue = "1") int page,
                                                   @RequestParam(value = "category") String category,
-                                                  @RequestParam(defaultValue = "관심도") String sortType,
+                                                  @RequestParam(value = "sort", defaultValue = "조회수") String sortType,
                                                   @AuthenticationPrincipal UserDetailsImpl userDetails){
         return searchService.searchCategory(page, category, sortType, userDetails.getCompany());
     }

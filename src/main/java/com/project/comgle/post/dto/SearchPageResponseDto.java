@@ -8,18 +8,21 @@ import java.util.List;
 public class SearchPageResponseDto {
 
     private int endPage;
+    private int totalPost;
 
     private List<SearchResponseDto> searchResponseDtoList;
 
     @Builder
-    private SearchPageResponseDto(int endPage, List<SearchResponseDto> searchResponseDtoList) {
+    private SearchPageResponseDto(int endPage, int totalPost, List<SearchResponseDto> searchResponseDtoList) {
         this.endPage = endPage;
+        this.totalPost = totalPost;
         this.searchResponseDtoList = searchResponseDtoList;
     }
 
-    public static SearchPageResponseDto of(int endPage, List<SearchResponseDto> searchResponseDtoList){
+    public static SearchPageResponseDto of(int endPage, int totalPost, List<SearchResponseDto> searchResponseDtoList){
         return SearchPageResponseDto.builder()
                 .endPage(endPage)
+                .totalPost(totalPost)
                 .searchResponseDtoList(searchResponseDtoList)
                 .build();
     }
