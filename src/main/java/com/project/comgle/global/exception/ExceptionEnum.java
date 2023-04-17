@@ -14,7 +14,6 @@ public enum ExceptionEnum {
     SEND_SMS_CODE_ERR(400,"Failed to send sms code."),
     SEND_EMAIL_CODE_ERR(400,"Failed to send email code"),
 
-
     DUPLICATE_COMPANY(400, "Duplicate company exists."),
     DUPLICATE_EMAIL(400, "Duplicate email exists."),
     DUPLICATE_MEMBER(400, "Duplicate member exists."),
@@ -49,6 +48,7 @@ public enum ExceptionEnum {
     NOT_EXIST_CATEGORY(404,"The category does not exist."),
     NOT_EXIST_COMMENT(404,"The comment does not exist."),
     NOT_EXIST_AUTHENTICATION_CODE(404," Authentication code does not exist.");
+
 
     private final int code;
     private final String msg;
