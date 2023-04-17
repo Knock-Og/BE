@@ -42,10 +42,10 @@ public class SearchService {
                         }
                 ).collect(Collectors.toList());
 
-        int totalCount = postRepositorys.findAllByContainingKeywordCount(keywordResult, company.getId()).size();
-        int endPage = totalCount%10 != 0 ? totalCount/10+1 : totalCount/10;
+        int totalPost = postRepositorys.findAllByContainingKeywordCount(keywordResult, company.getId()).size();
+        int endPage = totalPost%10 != 0 ? totalPost/10+1 : totalPost/10;
 
-        return SearchPageResponseDto.of(endPage, searchResponseDtoList);
+        return SearchPageResponseDto.of(endPage, totalPost, searchResponseDtoList);
     }
 
     @Transactional
@@ -58,10 +58,10 @@ public class SearchService {
                     return SearchResponseDto.of(k, key, commentCount);}
                 ).collect(Collectors.toList());
 
-        int totalCount = postRepositorys.findAllByContainingCategoryCount(category, company.getId()).size();
-        int endPage = totalCount%10 != 0 ? totalCount/10+1 : totalCount/10;
+        int totalPost = postRepositorys.findAllByContainingCategoryCount(category, company.getId()).size();
+        int endPage = totalPost%10 != 0 ? totalPost/10+1 : totalPost/10;
 
-        return SearchPageResponseDto.of(endPage, searchResponseDtoList);
+        return SearchPageResponseDto.of(endPage, totalPost, searchResponseDtoList);
     }
 
     private Set<String> getWords(String keyword) {
