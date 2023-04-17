@@ -31,7 +31,7 @@
 - #내가원하는대로 #내맘대로 #다꾸아닌문꾸
 - 즐겨찾기 기능이 있어, 내가 원하는 글을 원하는 폴더에 넣어 꾸밀 수 있어요!
 - 즐겨찾기 폴더는 나만 볼 수 있으니, 안심하고 넣을 수 있어요!
-  <br><br>
+  <br><br><br><br>
 
 
 # Knock Backend Team
@@ -48,23 +48,23 @@
 
 # 프로젝트 세부사항
 - ### 구현 영상<br>
-    - [최종 발표영상 or ppt 영상 추가예정]() <br>
+  - [최종 발표영상 or ppt 영상 추가예정]() <br>
 - ###  구현목표
-    - 검색 성능 : 형태소 분석을 통한 정확하고 빠른 검색 결과 제공
-    - 편집상태 알림 : 게시글의 편집상태를 보여주고, 편집이 완료되면 알림 제공
-    - 개인별 문서 관리 : 자신이 작성한 문서를 관리하고, 필요한 사내 문서들은 폴더로 관리
-    - 게시글 공유 커뮤니티 : 댓글을 통해 소통하고, 편집 로그를 확인하여 다른 직원들의 편집 내역을 조회 가능
-    - 로그 기능 : 게시글이 편집되어 왔던 기록을 과거와 현재로 모두 열람 가능
+  - 검색 성능 : 형태소 분석을 통한 정확하고 빠른 검색 결과 제공
+  - 편집상태 알림 : 게시글의 편집상태를 보여주고, 편집이 완료되면 알림 제공
+  - 개인별 문서 관리 : 자신이 작성한 문서를 관리하고, 필요한 사내 문서들은 폴더로 관리
+  - 게시글 공유 커뮤니티 : 댓글을 통해 소통하고, 편집 로그를 확인하여 다른 직원들의 편집 내역을 조회 가능
+  - 로그 기능 : 게시글이 편집되어 왔던 기록을 과거와 현재로 모두 열람 가능
 - ###  구현기능
-    - 검색 및 유형별 조회 기능
-    - 게시물 상세페이지 기능
-    - 마이페이지, 즐겨찾기 기능
-    - 관리자 페이지 기능 (회사, 사원, 카테고리 등 관리)
-    - 댓글, 로그 기능
+  - 검색 및 유형별 조회 기능
+  - 게시물 상세페이지 기능
+  - 마이페이지, 즐겨찾기 기능
+  - 관리자 페이지 기능 (회사, 사원, 카테고리 등 관리)
+  - 댓글, 로그 기능
 - ### 기간 :
-    - 2023.03.10 ~ 2023.04.21
+  - 2023.03.10 ~ 2023.04.21
 
-<br><br>
+<br><br><br>
 
 # Tech Stack
 
@@ -99,7 +99,7 @@
 
 </div>
 
-<br><br><br>
+<br><br><br><br>
 
 # Service Architecture
 ![🛠️ image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcqJt5s%2FbtsaXl6DMeO%2FBrNlkwhkQu7PazYIxRGTxk%2Fimg.png)
@@ -116,12 +116,12 @@
 </div>
 </details>
 
-<br>
+<br><br>
 
 # API 명세서
 [📄 API 바로가기](https://www.notion.so/API-7576e48635ea4890a06d95cc2657a1a0)
 
-<br>
+<br><br>
 
 # 주요 기능
 
@@ -157,20 +157,20 @@
 - 실행시간 측정을 위해 AOP Execution Timer 도입 <br>
 - Komoran의 설정을 light한 버전으로 해 주었다,
 - 결과 : 부하테스트 쓰레드 10배 정도 증가 가능(40 -> 450), 실행속도 1/10 (1.5초 -> 0.5초대로 개선)<br>
-👉 https://www.notion.so/STEP2-4bd04dd85a6e4edb9b5e8dc47f6fcc27
-<br><br>
-(3) 키워드 검색시 쿼리 개선 (Query DSL 적용) <br>
+  👉 https://www.notion.so/STEP2-4bd04dd85a6e4edb9b5e8dc47f6fcc27
+  <br><br>
+  (3) 키워드 검색시 쿼리 개선 (Query DSL 적용) <br>
 - 동적 쿼리와 fetch join을 통해 한 번에 키워드 조회
 - 동적 쿼리로 return 받은 타입이 List<Post>로 바뀌었으므로, for문 한 번으로 추가 가능.
 - 결과 : 부하테스트 쓰레드 700->2500d으로 증가, 실행시간은 400~500ms에서 300ms 정도로 단축됨.<br>
-👉 https://www.notion.so/STEP3-Query-DSL-939026377148406f93c7a571b767cd42
+  👉 https://www.notion.so/STEP3-Query-DSL-939026377148406f93c7a571b767cd42
 
 (4) 검색 결과 정렬 시 쿼리 개선 <br>
 - 관심도, 조회수, 댓글수, 생성일자 등 검색 결과 정렬 시 동적 쿼리로 한 번에 처리하는 방식 <br>
 - 페이징 추가 <br>
 - 결과 : 수행시간 100ms대 까지 감소 <br>
-👉 추가예정
-<br>
+  👉 추가예정
+  <br>
 </div>
 </details>
 
@@ -225,12 +225,12 @@
 </div>
 </details>
 
-<br><br>
+<br><br><br>
 
 
 # User Test
 - [📄 Knock_설문조사응답 바로가기](https://docs.google.com/spreadsheets/d/1VkckXfRz1ukOFfBA3SHJD-oMWbFlo2dhDR_gOvEHvgw/edit?usp=sharing)
-<br>
+  <br>
 
 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Thank%20you%20for%20watching&fontSize=50)
