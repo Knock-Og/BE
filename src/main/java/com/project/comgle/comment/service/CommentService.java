@@ -95,7 +95,7 @@ public class CommentService {
 
         if (findComment.isEmpty() ) {
             throw new CustomException(ExceptionEnum.NOT_EXIST_COMMENT);
-        } else if(Objects.equals(findComment.get().getMember().getId(), member.getId())){
+        } else if(!Objects.equals(findComment.get().getMember().getId(), member.getId())){
             throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_DELETE_COMMENT);
         }
 
