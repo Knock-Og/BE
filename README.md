@@ -227,10 +227,4 @@
 
 <br><br><br>
 
-
-# User Test
-- [📄 Knock_설문조사응답 바로가기](https://www.notion.so/User-Test-593f29cc48f54924babce74363cdd245)
-  <br>
-
-
 ![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Thank%20you%20for%20watching&fontSize=50)
