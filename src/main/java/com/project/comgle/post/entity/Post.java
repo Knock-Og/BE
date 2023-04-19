@@ -93,12 +93,14 @@ public class Post extends Timestamped {
     public void update(PostRequestDto postRequestDto,Category category) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
+        this.modifyPermission = PositionEnum.valueOf(postRequestDto.getModifyPermission().strip().toUpperCase());
+        this.readablePosition = PositionEnum.valueOf(postRequestDto.getReadablePosition().strip().toUpperCase());
         this.editingStatus = "false";
         this.category = category;
     }
 
     public void updateMethod(int weight) {
-        this.postViews += (weight==3) ? 1 : 0;
+        this.postViews += ( weight == 3 ) ? 1 : 0;
         this.score += weight;
     }
 

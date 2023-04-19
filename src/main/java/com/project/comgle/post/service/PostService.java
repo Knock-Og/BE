@@ -10,6 +10,7 @@ import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.member.entity.Member;
+import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.post.dto.PostRequestDto;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.dto.PostSuccessResponseDto;
@@ -87,6 +88,8 @@ public class PostService {
             throw new CustomException(ExceptionEnum.INVALID_PERMISSION_TO_MODIFY);
         } else if (findCategory.isEmpty()){
             throw new CustomException(ExceptionEnum.NOT_EXIST_CATEGORY);
+        } else if( !positionValid(postRequestDto)){
+            throw new CustomException(ExceptionEnum.IMMULATABLE_TO_ADMIN);
         }
 
         List<Keyword> currentKeywords = keywordRepositoryImpl.findAllByPost(findPost.get());
@@ -200,5 +203,16 @@ public class PostService {
         Log newLog = Log.of(memberName, oldContent, newContent, changedLineNum, post);
 
         logRepository.save(newLog);
+    }
+
+    private boolean positionValid(PostRequestDto postRequestDto) {
+
+        PositionEnum modifyPermission = PositionEnum.valueOf(postRequestDto.getModifyPermission().toUpperCase());
+        PositionEnum readablePosition = PositionEnum.valueOf(postRequestDto.getReadablePosition().toUpperCase());
+
+        if( modifyPermission == PositionEnum.ADMIN || readablePosition == PositionEnum.ADMIN){
+            return false;
+        }
+        return true;
     }
 }
