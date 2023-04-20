@@ -1,6 +1,6 @@
 package com.project.comgle.admin.dto;
 
-import com.project.comgle.global.utils.SchemaDescriptionUtils;
+import com.project.comgle.global.config.swagger.SchemaDescriptionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 

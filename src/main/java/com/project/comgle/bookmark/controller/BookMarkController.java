@@ -1,18 +1,29 @@
 package com.project.comgle.bookmark.controller;
 
-import com.project.comgle.post.dto.PostPageResponseDto;
-import com.project.comgle.global.aop.ExeTimer;
-import com.project.comgle.global.common.response.SuccessResponse;
 import com.project.comgle.bookmark.dto.BookMarkFolderRequestDto;
 import com.project.comgle.bookmark.dto.BookMarkFolderResponseDto;
-import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.bookmark.service.BookMarkService;
+import com.project.comgle.global.aop.ExeTimer;
+import com.project.comgle.global.common.response.SuccessResponse;
+import com.project.comgle.global.config.swagger.Message_200;
+import com.project.comgle.global.config.swagger.Message_201;
+import com.project.comgle.global.config.swagger.Message_400;
+import com.project.comgle.global.config.swagger.Message_404;
+import com.project.comgle.global.security.UserDetailsImpl;
+import com.project.comgle.post.dto.PostPageResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -22,52 +33,95 @@ public class BookMarkController {
 
     private final BookMarkService bookMarkService;
 
-    @Operation(summary = "즐겨찾기 폴더 추가 API", description = "해당 MEMBER의 즐겨찾기 폴더를 추가합니다. 폴더는 최대 100개까지 가능합니다.")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 폴더 추가 API", description = "해당 MEMBER의 즐겨찾기 폴더를 추가합니다. 폴더는 최대 100개까지 가능합니다.",
+        responses = {
+                @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Message_201.class))),
+                @ApiResponse(responseCode = "400", description = "400 에러", content = @Content(schema = @Schema(implementation = Message_400.class))),
+                @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class))),
+        }
+    )
     @PostMapping("/bookmark/folder")
     public SuccessResponse bookMarkFolderCreate(@RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.createBookMarkFolder(bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
-    @Operation(summary = "즐겨찾기 폴더 삭제 API", description = "해당 MEMBER의 즐겨찾기 폴더를 삭제합니다")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 폴더 삭제 API", description = "해당 MEMBER의 즐겨찾기 폴더를 삭제합니다",
+        parameters = @Parameter(name = "folder-id", description = "폴더 고유번호", in = ParameterIn.PATH),
+        responses = {
+                @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Message_200.class))),
+                @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class)))
+        }
+    )
     @DeleteMapping("/bookmark/folder/{folder-id}")
     public SuccessResponse bookMarkFolderDelete(@PathVariable(name = "folder-id") Long folderId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMarkFolder(folderId, userDetails.getMember());
     }
 
-    @Operation(summary = "즐겨찾기 폴더 수정 API", description = "해당 MEMBER가 지정한 즐겨찾기 폴더명을 수정합니다")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 폴더 수정 API", description = "해당 MEMBER가 지정한 즐겨찾기 폴더명을 수정합니다",
+        parameters = @Parameter(name = "folder-id", description = "폴더 고유번호", in = ParameterIn.PATH),
+        responses = {
+                @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Message_201.class))),
+                @ApiResponse(responseCode = "400", description = "400 에러", content = @Content(schema = @Schema(implementation = Message_400.class))),
+                @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class)))
+        }
+    )
     @PutMapping("/bookmark/folder/{folder-id}")
     public SuccessResponse bookMarkFolderUpdate(@PathVariable(name = "folder-id") Long folderId, @RequestBody BookMarkFolderRequestDto bookMarkFolderRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.updateBookMarkFolder(folderId, bookMarkFolderRequestDto.getBookMarkFolderName(), userDetails.getMember());
     }
 
     @ExeTimer
-    @Operation(summary = "즐겨찾기 폴더 전체 조회 API", description = "해당 MEMBER가 생성한 모든 폴더를 조회합니다.")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 폴더 전체 조회 API", description = "해당 MEMBER가 생성한 모든 폴더를 조회합니다.",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "성공", content = @Content( array = @ArraySchema(schema = @Schema(implementation = BookMarkFolderResponseDto.class)))),
+                @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class)))
+        }
+    )
     @GetMapping("/bookmark/folders")
     public List<BookMarkFolderResponseDto> bookMarkFolderRead(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.readBookMarkFolder(userDetails.getMember());
     }
 
-    @Operation(summary = "즐겨찾기 추가 API", description = "해당 폴더에 즐겨찾기를 추가합니다.")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 추가 API", description = "해당 폴더에 즐겨찾기를 추가합니다.",
+        parameters = {
+            @Parameter(name = "folder-id", description = "폴더 고유번호", in = ParameterIn.PATH),
+            @Parameter(name = "post-id", description = "게시글 고유번호", in = ParameterIn.PATH)
+        }, responses = {
+            @ApiResponse(responseCode = "201", description = "성공", content = @Content(schema = @Schema(implementation = Message_201.class))),
+            @ApiResponse(responseCode = "400", description = "400 에러", content = @Content(schema = @Schema(implementation = Message_400.class))),
+            @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class))),
+        }
+    )
     @PostMapping("/bookmark/folder/{folder-id}/post/{post-id}")
     public SuccessResponse bookMarkAdd(@PathVariable(name = "folder-id") Long folderId, @PathVariable(name = "post-id") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.postBookMark(folderId, postId, userDetails.getMember());
     }
 
-    @Operation(summary = "즐겨찾기 취소 API", description = "해당 폴더에 즐겨찾기를 취소합니다.")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 취소 API", description = "해당 폴더에 즐겨찾기를 취소합니다.",
+        parameters = {
+                @Parameter(name = "folder-id", description = "폴더 고유번호", in = ParameterIn.PATH),
+                @Parameter(name = "post-id", description = "게시글 고유번호", in = ParameterIn.PATH)
+        }, responses = {
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = Message_200.class))),
+            @ApiResponse(responseCode = "400", description = "400 에러", content = @Content(schema = @Schema(implementation = Message_400.class))),
+            @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class)))
+        }
+    )
     @DeleteMapping("/bookmark/folder/{folder-id}/post/{post-id}")
     public SuccessResponse bookMarkCancel(@PathVariable(name = "folder-id") Long folderId, @PathVariable(name = "post-id") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.delBookMark(folderId, postId, userDetails.getMember());
     }
 
     @ExeTimer
-    @Operation(summary = "즐겨찾기 폴더 별 게시글 조회 API", description = "해당 폴더에 즐겨찾기한 게시글을 모두 조회합니다.")
-    @ResponseStatus(value = HttpStatus.OK)
+    @Operation(summary = "즐겨찾기 폴더 별 게시글 조회 API", description = "해당 폴더에 즐겨찾기한 게시글을 모두 조회합니다.",
+        parameters = {
+            @Parameter(name = "folder-id", description = "폴더 고유번호", in = ParameterIn.PATH),
+            @Parameter(name = "page", description = "페이지 번호", in = ParameterIn.QUERY)
+        }, responses = {
+                @ApiResponse(responseCode = "200", description = "성공", content = @Content( array = @ArraySchema(schema = @Schema(implementation = PostPageResponseDto.class)))),
+                @ApiResponse(responseCode = "404", description = "404 에러", content = @Content(schema = @Schema(implementation = Message_404.class)))
+        }
+    )
     @GetMapping("/bookmark/folder/{folder-id}/bookmarks")
     public PostPageResponseDto postReadByBookMark(@PathVariable(name = "folder-id") Long folderId, @RequestParam(value = "page", defaultValue = "1") int page, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return bookMarkService.readPostForBookMark(folderId, page, userDetails.getMember());

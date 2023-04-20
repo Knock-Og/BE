@@ -1,6 +1,6 @@
 package com.project.comgle.post.dto;
 
-import com.project.comgle.global.utils.SchemaDescriptionUtils;
+import com.project.comgle.global.config.swagger.SchemaDescriptionUtils;
 import com.project.comgle.member.entity.PositionEnum;
 import com.project.comgle.post.entity.Post;
 import io.swagger.v3.oas.annotations.media.Schema;

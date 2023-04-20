@@ -2,14 +2,11 @@ package com.project.comgle.auth.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.comgle.auth.dto.FindEmailRequestDto;
+import com.project.comgle.auth.dto.*;
 import com.project.comgle.member.entity.Member;
 import com.project.comgle.global.exception.CustomException;
 import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.member.repository.MemberRepository;
-import com.project.comgle.auth.dto.SmsMessageDto;
-import com.project.comgle.auth.dto.SmsRequestDto;
-import com.project.comgle.auth.dto.FindEmailResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -52,7 +49,7 @@ public class SmsService {
     private String phone;
 
     @Transactional(readOnly = true)
-    public ResponseEntity<FindEmailResponseDto> sendSmsCode(FindEmailRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+    public ResponseEntity<FindEmailResponseDto> sendSmsCode(SendSmsRequestDto emailCheckRequestDto) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
 
         Member findMember = memberRepository.findByMemberNameStartingWithAndPhoneNum(emailCheckRequestDto.getMemberName(),
                 emailCheckRequestDto.getPhoneNum()).orElseThrow(
@@ -72,7 +69,7 @@ public class SmsService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Map<String, String>> findEmail(FindEmailRequestDto emailCheckRequestDto) {
+    public ResponseEntity<EmailResponseDto> findEmail(FindEmailRequestDto emailCheckRequestDto) {
 
         Member findMember = memberRepository.findByPhoneNum(emailCheckRequestDto.getPhoneNum()).orElseThrow(
                 () -> new CustomException(ExceptionEnum.NOT_EXIST_MEMBER)
@@ -86,11 +83,9 @@ public class SmsService {
             throw new CustomException(ExceptionEnum.INVALID_AUTHENTICATION_CODE);
         }
 
-        Map<String, String> findEmail = new HashMap<>();
-        findEmail.put("email", findMember.getEmail());
         smsCodeMap.remove(findMember.getPhoneNum());
 
-        return ResponseEntity.ok().body(findEmail);
+        return ResponseEntity.ok().body(new EmailResponseDto(findMember.getEmail()));
     }
 
     public void clearSmsCode(){

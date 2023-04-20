@@ -1,6 +1,8 @@
 package com.project.comgle.mypage.service;
 
 import com.project.comgle.comment.repository.CommentRepository;
+import com.project.comgle.global.exception.CustomException;
+import com.project.comgle.global.exception.ExceptionEnum;
 import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.member.dto.MemberResponseDto;
 import com.project.comgle.member.entity.Member;
@@ -46,9 +48,11 @@ public class MyPageService {
 
         Optional<Member> findMember = memberRepository.findById(userDetails.getMember().getId());
 
-        MemberResponseDto memberResponseDto = MemberResponseDto.from(findMember.get());
+        if(findMember.isEmpty()){
+            throw new CustomException(ExceptionEnum.NOT_EXIST_MEMBER);
+        }
 
-        return memberResponseDto;
+        return MemberResponseDto.from(findMember.get());
     }
 
 }

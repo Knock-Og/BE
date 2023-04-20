@@ -79,7 +79,7 @@ public class BookMarkService {
         bookMarkRepository.deleteAll(bookmarkList);
         bookMarkFolderRepository.delete(bookMarkFolder.get());
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been deleted successfully.");
+        return SuccessResponse.of(HttpStatus.OK, "Your bookmark folder has been deleted successfully.");
     }
 
     @Transactional
@@ -105,7 +105,7 @@ public class BookMarkService {
 
         bookMarkFolder.get().update(modifyFolderName);
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been modified successfully.");
+        return SuccessResponse.of(HttpStatus.OK, "Your bookmark folder has been modified successfully.");
     }
 
     @Transactional(readOnly = true)
@@ -190,7 +190,7 @@ public class BookMarkService {
 
         bookMarkRepository.delete(bookMark.get());
 
-        return SuccessResponse.of(HttpStatus.CREATED, "Your post has been deleted successfully to the folder.");
+        return SuccessResponse.of(HttpStatus.OK, "Your post has been deleted successfully to the folder.");
     }
 
     @Transactional

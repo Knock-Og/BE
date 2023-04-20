@@ -1,4 +1,4 @@
-package com.project.comgle.global.utils;
+package com.project.comgle.global.config.swagger;
 
 public class SchemaDescriptionUtils {
 
