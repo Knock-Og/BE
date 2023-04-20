@@ -119,7 +119,8 @@
 <br><br>
 
 # API 명세서
-[📄 API 바로가기](https://www.notion.so/API-7576e48635ea4890a06d95cc2657a1a0)
+[📂  Swagger 바로가기](https://clicknock.shop/swagger-ui/index.html) <br>
+[📂  API 바로가기](https://www.notion.so/API-7576e48635ea4890a06d95cc2657a1a0)
 
 <br><br>
 
