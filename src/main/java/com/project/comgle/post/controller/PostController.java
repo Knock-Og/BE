@@ -52,7 +52,6 @@ public class PostController {
         return postService.readPost(id, userDetails.getMember(), userDetails.getCompany());
     }
 
-    // 임시로 editingStatus 수정을 위한 API
     @PutMapping("post/{post-id}/editingStatus")
     public ResponseEntity<MessageResponseDto> editingStatusChange(@PathVariable("post-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.changeEditingStatus(id, userDetails.getMember());

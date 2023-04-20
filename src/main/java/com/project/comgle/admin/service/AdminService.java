@@ -90,7 +90,7 @@ public class AdminService {
 
         findMember.get().withdrawal();
 
-        return SuccessResponse.of(HttpStatus.OK, "Your account is deleted successfully."); //회원  삭제 성공
+        return SuccessResponse.of(HttpStatus.OK, "Your account is deleted successfully.");
     }
 
     @Transactional(readOnly = true)

@@ -14,11 +14,9 @@ import org.springframework.util.StopWatch;
 @Component
 public class ExecutionTimer {
 
-    // 조인포인트를 어노테이션으로 설정
     @Pointcut("@annotation(com.project.comgle.global.aop.ExeTimer)")
     private void timer(){};
 
-    // 메서드 실행 전,후로 시간을 공유해야 하기 때문
     @Around(value = "timer()")
     public Object AssumeExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 

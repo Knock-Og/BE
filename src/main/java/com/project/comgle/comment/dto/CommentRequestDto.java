@@ -1,6 +1,5 @@
 package com.project.comgle.comment.dto;
 
-
 import com.project.comgle.global.utils.SchemaDescriptionUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

@@ -35,7 +35,7 @@ public class SseService {
             throw new RuntimeException(e);
         }
 
-        findPosts.get().updateStatus("true"); // true = 수정 중
+        findPosts.get().updateStatus("true");
         postRepository.save(findPosts.get());
 
         return memberEmitter;

@@ -9,7 +9,4 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
     List<Log> findAllByPostOrderByCreateDateDesc(Post post);
 
-    void deleteAllByPost(Post post);
-
-    void deleteAllByPostIn(List<Post> post);
 }

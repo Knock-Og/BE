@@ -87,7 +87,7 @@ public class CategoryService {
 
         findCategory.get().withdrawal();
 
-        return SuccessResponse.of(HttpStatus.OK, "The category has been deleted successfully.");   //카테고리 삭제 성공
+        return SuccessResponse.of(HttpStatus.OK, "The category has been deleted successfully.");
     }
 
 }

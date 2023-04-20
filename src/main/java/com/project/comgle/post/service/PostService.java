@@ -165,7 +165,6 @@ public class PostService {
                 );
     }
 
-    // 임시로 editingStatus 수정
     @Transactional
     public ResponseEntity<MessageResponseDto> changeEditingStatus(Long id, Member member) {
 

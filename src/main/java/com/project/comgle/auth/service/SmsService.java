@@ -39,7 +39,6 @@ public class SmsService {
     private final MemberRepository memberRepository;
     private static final Map<String,Integer> smsCodeMap = new ConcurrentHashMap<>();
 
-    // 환경변수 설정
     @Value("${naver-cloud-sms.accessKey}")
     private String accessKey;
 
@@ -100,19 +99,15 @@ public class SmsService {
         log.info("Current Time : {} - Success smsCodeMap Clear ", LocalTime.now());
     }
 
-    // Signature 필드 값 생성을 위한 메서드
     private String makeSignature(Long time) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
-        // one space
+
         String space = " ";
-        // new line
         String newLine = "\n";
-        // method
         String method = "POST";
-        // url (include query string)
         String url = "/sms/v2/services/"+ this.serviceId + "/messages";
-        // current timestamp (epoch)
+
         String timestamp = time.toString();
-        // access key id (from portal or Sub Account)
+
         String accessKey = this.accessKey;
         String secretKey = this.secretKey;
 
@@ -126,7 +121,6 @@ public class SmsService {
                 .append(accessKey)
                 .toString();
 
-        // secretKey HMAC 암호화 알고리즘 암호화
         SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes("UTF-8"), "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(signingKey);
@@ -138,10 +132,8 @@ public class SmsService {
         return encodeBase64String;
     }
 
-    // 메세지 발송 메서드
     private FindEmailResponseDto sendSms(SmsMessageDto messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
 
-        // NAVER SMS Service를 활용하기 위한 요청 Header
         Long time = System.currentTimeMillis();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -149,7 +141,6 @@ public class SmsService {
         headers.set("x-ncp-iam-access-key", accessKey);
         headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 
-        // 인증코드 발송을 위한 인증코드 생성
         List<SmsMessageDto> messages = new ArrayList<>();
         messages.add(messageDto);
 

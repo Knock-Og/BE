@@ -82,13 +82,13 @@ public class EmailService {
 
         String authNum = createCode();
 
-        String title = "[Knock] 본인인증 코드 발송"; //이메일 제목
+        String title = "[Knock] 본인인증 코드 발송";
 
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject(title);
         message.setText(setContext(authNum), "utf-8", "html");
-        redisUtil.setDataExpire(email, authNum, 60 * 3L);   // 3분 뒤 Redis에 저장된 인증코드 삭제
+        redisUtil.setDataExpire(email, authNum, 60 * 3L);
 
         return message;
     }
@@ -127,7 +127,6 @@ public class EmailService {
 
     private String getRandomPwd(){
 
-        // 강력한 난수를 발생시키기 위해 SecureRandom을 사용
         SecureRandom sr = new SecureRandom();
         StringBuilder sb = new StringBuilder();
         char[] charSet = new char[] {

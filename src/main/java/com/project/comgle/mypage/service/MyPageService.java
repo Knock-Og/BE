@@ -1,7 +1,5 @@
 package com.project.comgle.mypage.service;
 
-import com.project.comgle.bookmark.repository.BookMarkRepository;
-import com.project.comgle.comment.entity.Comment;
 import com.project.comgle.comment.repository.CommentRepository;
 import com.project.comgle.post.dto.PostPageResponseDto;
 import com.project.comgle.member.dto.MemberResponseDto;
@@ -9,7 +7,6 @@ import com.project.comgle.member.entity.Member;
 import com.project.comgle.member.repository.MemberRepository;
 import com.project.comgle.post.dto.PostResponseDto;
 import com.project.comgle.post.entity.Keyword;
-import com.project.comgle.post.repository.PostRepository;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.post.repository.PostRepositoryImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,6 @@ public class MyPageService {
     private final MemberRepository memberRepository;
     private final PostRepositoryImpl postRepositorys;
     private final CommentRepository commentRepository;
-    private final BookMarkRepository bookMarkRepository;
 
     @Transactional(readOnly = true)
     public PostPageResponseDto listMyPost(int page, UserDetailsImpl userDetails) {

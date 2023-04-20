@@ -57,7 +57,6 @@ public class Post extends Timestamped {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // 연관관계 추가
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keyword> keywords = new ArrayList<>();
 

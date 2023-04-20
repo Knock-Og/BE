@@ -13,22 +13,20 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        // Swagger Ui 문서 상 표시할 정보들
+
         Info info = new Info()
                 .version("v0.0.1")
-                .title("사내 문서 검색 서비스 Knock \uD83D\uDECE") // 문서 제목
-                .description("Knock 프로젝트 API 명세서입니다."); // 문서 설명
+                .title("사내 문서 검색 서비스 Knock \uD83D\uDECE")
+                .description("Knock 프로젝트 API 명세서입니다.");
 
-/*         Swagger UI에서 요청 시 Token을 Header에 담아 보내기 위한 설정
-        추후 적용*/
         String jwtSchemeName = "jwtAuth";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
         Components components = new Components()
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
                         .name(jwtSchemeName)
-                        .type(SecurityScheme.Type.HTTP) // HTTP 방식
+                        .type(SecurityScheme.Type.HTTP)
                         .scheme("bearer")
-                        .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
+                        .bearerFormat("JWT"));
 
         return new OpenAPI()
                 .info(info)

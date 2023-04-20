@@ -3,7 +3,6 @@ package com.project.comgle.post.controller;
 import com.project.comgle.global.aop.ExeTimer;
 import com.project.comgle.global.security.UserDetailsImpl;
 import com.project.comgle.post.dto.SearchPageResponseDto;
-import com.project.comgle.post.dto.SearchResponseDto;
 import com.project.comgle.post.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

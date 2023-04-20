@@ -39,7 +39,6 @@ public class BookMarkService {
     private final CommentRepository commentRepository;
 
 
-    // 즐겨찾기 폴더 추가
     @Transactional
     public SuccessResponse createBookMarkFolder(String folderName, Member member){
 
@@ -67,7 +66,6 @@ public class BookMarkService {
         return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been created successfully.");
     }
 
-    // 즐겨찾기 폴더 삭제
     @Transactional
     public SuccessResponse delBookMarkFolder(Long folderId, Member member){
 
@@ -84,7 +82,6 @@ public class BookMarkService {
         return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been deleted successfully.");
     }
 
-    // 즐겨찾기 폴더 수정
     @Transactional
     public SuccessResponse updateBookMarkFolder(Long folderId, String modifyFolderName, Member member){
 
@@ -111,7 +108,6 @@ public class BookMarkService {
         return SuccessResponse.of(HttpStatus.CREATED, "Your bookmark folder has been modified successfully.");
     }
 
-    // 즐겨찾기 폴더(만) 조회
     @Transactional(readOnly = true)
     public List<BookMarkFolderResponseDto> readBookMarkFolder(Member member){
 
@@ -136,7 +132,6 @@ public class BookMarkService {
         return bookMarkFolderList;
     }
 
-    // 즐겨찾기 추가
     @Transactional
     public SuccessResponse postBookMark(Long folderId, Long postId, Member member){
 
@@ -172,7 +167,6 @@ public class BookMarkService {
         return SuccessResponse.of(HttpStatus.CREATED, "Your post has been added successfully to the folder.");
     }
 
-    // 즐겨찾기 취소
     @Transactional
     public SuccessResponse delBookMark(Long folderId, Long postId, Member member){
 
@@ -199,7 +193,6 @@ public class BookMarkService {
         return SuccessResponse.of(HttpStatus.CREATED, "Your post has been deleted successfully to the folder.");
     }
 
-    // 즐겨찾기 폴더 별 게시글 조회
     @Transactional
     public PostPageResponseDto readPostForBookMark(Long folderId, int page, Member member){
 

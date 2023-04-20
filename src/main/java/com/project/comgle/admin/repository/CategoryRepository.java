@@ -1,6 +1,5 @@
 package com.project.comgle.admin.repository;
 
-import com.project.comgle.admin.dto.CategoryResponseDto;
 import com.project.comgle.admin.entity.Category;
 import com.project.comgle.company.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
