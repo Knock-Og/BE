@@ -15,7 +15,7 @@
 <b>1. Search</b>
 - #동료에게물어보기힘든것 #내가놓친것
 - 고민하지 말고 Knock에 물어보자!
-- 가중치, 중요도 계산으로 연관성이 높은 게시글이 검색 돼요!
+- 헝태소 분석과 중요도 계산으로 연관성이 높은 게시글이 빠르게 검색 돼요!
 
 <b>2. Security</b>
 - #사내문서 #보안이생명
@@ -48,7 +48,7 @@
 
 # 프로젝트 세부사항
 - ### 구현 영상<br>
-  - [최종 발표영상 or ppt 영상 추가예정]() <br>
+  - [최종 발표영상 📷](https://www.youtube.com/watch?v=8PyelCFdVgQ) <br>
 - ###  구현목표
   - 검색 성능 : 형태소 분석을 통한 정확하고 빠른 검색 결과 제공
   - 편집상태 알림 : 게시글의 편집상태를 보여주고, 편집이 완료되면 알림 제공
@@ -135,22 +135,24 @@
 | ![관리자](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FE4V5x%2FbtsamXGbUiJ%2F9cZBLjXNvOFt3uNlS4DUg1%2Fimg.png) | ![댓글로그](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FySs8E%2FbtsajdpKFK6%2FIi09fic5HemPuNjvb32Vs1%2Fimg.png) |
 |- 직원의 직급 및 권한 관리<br> - 사내 게시글의 카테고리 등록 및 관리<br> |- 댓글로 커뮤니티 기능 <br> - 로그를 통해 이전과 이후 게시글 비교 가능 <br> |
 
-[📷 시연영상 바로가기 - 추가 예정](https://www.notion.so/Knock-a9dbba271c2645559d9a1d965357e146)
-
 <br><br>
 
 
 # Trouble Shooting
 
+💡 자세한 사항과 수치 및 통계자료는 토글 아래 링크를 통해 확인해 주세요. <br>
+<br>
 <details>
 <summary> 검색 성능 개선</summary>
 <div markdown="1">  
+
 <br>
- (1) 검색 성능 문제와 원인, 개선 방향 <br>
-    - 문제 : 실행환경(local과 ec2 서버 등)에 따라 속도와 성능의 차이가 많이 남. <br>
-    - 원인 : 라이브러리의 비효울적인 사용, 불필요한 쿼리 <br>
-    - 개선 방향 : 쿼리를 개선한 후, Jmeter 부하테스트를 통해 향상된 성능을 측정해 나감.<br>
-    👉 https://www.notion.so/STEP1-fad9129c662e44859f1ff7d4df0dd75f
+
+(1) 검색 성능 문제와 원인, 개선 방향 <br>
+- 문제 : 실행환경(local과 ec2 서버 등)에 따라 속도와 성능의 차이가 많이 남. <br>
+- 원인 : 라이브러리의 비효율적인 사용, 불필요한 쿼리 <br>
+- 개선 방향 : 쿼리를 개선한 후, Jmeter 부하테스트를 통해 향상된 성능을 측정해 나감.<br>
+👉 https://www.notion.so/STEP1-fad9129c662e44859f1ff7d4df0dd75f
 <br><br>
 
 (2)  형태소 분석 라이브러리 변경<br>
@@ -169,8 +171,10 @@
 - 관심도, 조회수, 댓글수, 생성일자 등 검색 결과 정렬 시 동적 쿼리로 한 번에 처리하는 방식 <br>
 - 페이징 추가 <br>
 - 결과 : 수행시간 100ms대 까지 감소 <br>
-  👉 추가예정
+  👉 https://www.notion.so/STEP4-Query-b142f6187b964433a73e4118458bc35c
   <br>
+  
+
 </div>
 </details>
 
@@ -180,7 +184,7 @@
     <br>
     (1) 편집 상태를 알고, 편집이 완료 되면 알림을 보내는 기능을 위해 API call 대신 다른 방식을 고민함. <br>
     (2) SSE는 서버- 클라이언트의 단방향 통신으로 지속적인 연결을 통해,  서버의 데이터를 실시간으로 클라이언트로 보낸다는 점과 처음 한 번 맺은 HTTP 연결을 통해 서버는 클라이언트로 지속적으로 데이터 전송이 가능하다는 점에서 사용함. <br>
-   👉 링크 추가예정 <br>
+   👉 https://www.notion.so/SSE-d46754926bdd4ba2a69be6a6e94405a2 <br>
 
 </div>
 </details>
@@ -212,18 +216,6 @@
 </details>
 
 
-<details>
-<summary> Log </summary>
-<div markdown="1">
-    <br>
-   - 문제 상황 : <br>
-   - 원인 : <br>
-   - 해결 : <br>
-    👉 
-
-
-</div>
-</details>
 
 <br><br><br>
 
