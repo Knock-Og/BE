@@ -48,7 +48,7 @@
 
 # 프로젝트 세부사항
 - ### 구현 영상<br>
-  - [최종 발표영상 📷](https://www.youtube.com/watch?v=8PyelCFdVgQ) <br>
+  - [최종 발표영상 📷](https://www.youtube.com/watch?v=lwkJ1jiaoyk&t=247s) <br>
 - ###  구현목표
   - 검색 성능 : 형태소 분석을 통한 정확하고 빠른 검색 결과 제공
   - 편집상태 알림 : 게시글의 편집상태를 보여주고, 편집이 완료되면 알림 제공
